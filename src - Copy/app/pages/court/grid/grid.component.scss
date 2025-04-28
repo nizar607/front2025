@@ -1,0 +1,39 @@
+.file-input {
+  display: none;
+}
+
+.dropzone {
+  text-align: center;
+  cursor: pointer;
+/*
+  border-radius: 100% !important;
+  height: 25vh;
+  width: 25vh;
+
+ */
+  color: #8e8e8e;
+}
+
+.cs{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.custom-list-group-item{
+  border: 1px solid #e5e5e5;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.custom-list-group{
+  max-height: 300px;
+  overflow-y: auto;
+}
+.custom-list-group-item:hover{
+  background-color: #f5f5f5;
+
+
+}
+
+
+

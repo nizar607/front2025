@@ -1,0 +1,470 @@
+<div class="calendar-wrapper d-lg-flex gap-4">
+
+  <div class="w-100">
+    <div class="card card-h-100">
+      <div class="row">
+        <div class="col-xxl-2">
+          <div class="card">
+            <div class="card-header d-flex align-items-center">
+              <div class="flex-grow-1">
+                <h5 class="card-title mb-0">Filters</h5>
+              </div>
+              <div class="flex-shrink-0">
+                <a href="javascript:void(0);" class="text-reset text-decoration-underline">Clear All</a>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="search-box mb-3">
+
+              </div>
+
+              <accordion class="accordion accordion-flush filter-panel" id="accordionExample">
+
+                <!-- filter by clients -->
+                <accordion-group [isOpen]="false" class="accordion-item">
+                  <h2 accordion-heading class="accordion-header" id="clientsAccordion">
+                    <button class="accordion-button bg-success-subtle text-success fw-bold" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#collapseBrands" aria-expanded="true"
+                      aria-controls="collapseBrands">
+                      Clients <span class="badge bg-success ms-2 fs-xxs">2</span>
+                    </button>
+                  </h2>
+                  <div id="collapseClients" class="accordion-collapse collapse show" aria-labelledby="brandsAccordion"
+                    data-bs-parent="#brandsFilters">
+                    <div class="accordion-body">
+
+                      <div class="border-bottom d-flex justify-content-between mb-3">
+                        <span class="fw-semibold">Client 1</span>
+                        <i class="bi bi-x-lg close"></i>
+                      </div>
+                      <div class="border-bottom d-flex justify-content-between mb-3">
+                        <span class="fw-semibold">Client 2</span>
+                        <i class="bi bi-x-lg remove"></i>
+                      </div>
+                      <div class="border-bottom d-flex justify-content-between mb-3">
+                        <span class="fw-semibold">Client 3</span>
+                        <i class="bi bi-x-lg"></i>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </accordion-group>
+                <!-- filter by cases -->
+                <accordion-group [isOpen]="true" class="accordion-item">
+                  <h2 accordion-heading class="accordion-header" id="casesAccordion">
+                    <button class="accordion-button bg-warning-subtle text-warning fw-bold" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#collapseBrands" aria-expanded="true"
+                      aria-controls="collapseBrands">
+                      Cases <span class="badge bg-warning ms-2 fs-xxs">2</span>
+                    </button>
+                  </h2>
+                  <div id="collapseCases" class="accordion-collapse collapse show" aria-labelledby="brandsAccordion"
+                    data-bs-parent="#brandsFilters">
+                    <div class="accordion-body">
+
+                      @for(case of cases; track $index){
+                      <div class="border-bottom d-flex justify-content-between mb-3">
+                        <span class="fw-semibold">{{case.title}}</span>
+                        <i class="bi bi-x-lg"></i>
+                      </div>
+                      }
+
+
+                    </div>
+                  </div>
+                </accordion-group>
+
+                <accordion-group [isOpen]="true" class="accordion-item">
+                  <h2 accordion-heading class="accordion-header" id="brandsAccordion">
+                    <button class="accordion-button fw-bold bg-primary-subtle" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseBrands" aria-expanded="true" aria-controls="collapseBrands">
+                      Events type <span class="badge bg-primary ms-2 fs-xxs">3</span>
+                    </button>
+                  </h2>
+                  <div id="collapseBrands" class="accordion-collapse collapse show" aria-labelledby="brandsAccordion"
+                    data-bs-parent="#brandsFilters">
+                    <div class="accordion-body">
+                      <div class="d-flex flex-column gap-2 filter-check">
+
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="Boat" id="productBrandRadio5" checked>
+                          <label class="form-check-label" for="productBrandRadio5">Client Meetings</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="OnePlus" id="productBrandRadio4">
+                          <label class="form-check-label" for="productBrandRadio4">Hearings</label>
+                        </div>
+
+                        <!-- <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="Realme" id="productBrandRadio3">
+                          <label class="form-check-label" for="productBrandRadio3">Tasks</label>
+                        </div> -->
+
+
+                      </div>
+                    </div>
+                  </div>
+                </accordion-group>
+
+
+              </accordion>
+            </div>
+          </div>
+        </div><!--end col-->
+
+        <div id="calendar" class="col-xxl-10 col-12">
+          @if (calendarOptions != undefined) {
+          <full-calendar [options]="calendarOptions"></full-calendar>
+          }
+        </div>
+
+      </div>
+    </div>
+  </div><!-- end col -->
+</div>
+<!--end row-->
+
+<div style='clear:both'></div>
+
+<!-- Add New Event MODAL -->
+<div bsModal #eventModal="bs-modal" class="modal fade" id="event-modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0">
+      <div class="modal-header p-3 bg-info-subtle">
+        <h5 class="modal-title" id="modal-title">Event</h5>
+        <button type="button" class="btn-close" (click)="eventModal.hide()"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form [formGroup]="formData" (ngSubmit)="saveEvent()" class="needs-validation" name="event-form" id="form-event"
+          novalidate>
+
+          @if (isEditMode) {
+          <div class="text-end">
+            <a href="javascript:void(0);" class="btn btn-sm btn-subtle-primary" id="edit-event-btn"
+              (click)="editEventModal.show()" role="button">Edit</a>
+          </div>
+          }
+
+
+          <div class="row event-form">
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label">Event Name</label>
+                <input class="form-control" placeholder="Enter event name" type="text" name="title" id="event-title"
+                  formControlName="title" required value="">
+                <div class="invalid-feedback">Please provide a valid event name</div>
+              </div>
+            </div>
+            <!--end col-->
+            <div class="col-12" id="event-time">
+              <div class="row">
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label class="form-label">Start Time</label>
+                    <div class="input-group">
+                      <input id="timepicker1" type="text" mwlFlatpickr [noCalendar]="true" [enableTime]="true"
+                        [dateFormat]="'H:i'" formControlName="startTime" class="form-control flatpickr flatpickr-input"
+                        placeholder="Select start time" readonly>
+                      <span class="input-group-text"><i class="ri-time-line"></i></span>
+                    </div>
+                  </div>
+                </div><!--end col-->
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label class="form-label">End Time</label>
+                    <div class="input-group">
+                      <!-- <timepicker formControlName="end"></timepicker> -->
+                      <input id="timepicker2" type="text" mwlFlatpickr [noCalendar]="true" [enableTime]="true"
+                        [dateFormat]="'H:i'" formControlName="endTime" class="form-control flatpickr flatpickr-input"
+                        placeholder="Select end time" readonly>
+                      <span class="input-group-text"><i class="ri-time-line"></i></span>
+                    </div>
+                  </div>
+                </div><!--END col-->
+              </div><!--end row-->
+            </div>
+            <!--end col-->
+
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="event-type" class="form-label">Event Type</label>
+                <div>
+                  <ng-select id="event-type" placeholder="Select event type" formControlName="type"
+                    [items]="['meeting','hearing','task']" [multiple]="false" bindLabel="type"></ng-select>
+                </div>
+              </div>
+            </div><!--end col-->
+
+
+
+            <div class="col-12">
+              <div class="mb-3">
+
+                <label for="search-by-case-number" class="form-label col-sm-12 mb-2">Select Case</label>
+
+                <ng-select id="search-by-case-number" placeholder="Select Case" formControlName="selectedCase"
+                  [items]="cases" [multiple]="false" bindLabel="title"></ng-select>
+
+
+
+              </div>
+
+            </div>
+
+            @if (formData.value.type === 'meeting') {
+
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="event-purpose" class="form-label">Purpose</label>
+                <div>
+                  <input id="event-purpose" class="form-control flatpickr flatpickr-input" formControlName="purpose"
+                    placeholder="Enter Meeting purpose" />
+                </div>
+              </div>
+            </div>
+
+            }
+            <!--end col-->
+
+            @if (formData.value.type === 'hearing') {
+            <div class="col-12">
+              <div class="mb-3">
+
+                <label for="search-by-case-number" class="form-label col-sm-12 mb-2">Select Phase</label>
+
+
+                <ng-select id="search-by-phase-number" placeholder="Select Phase" formControlName="selectedPhase"
+                  [items]="form['selectedCase'].value.phases" [multiple]="false" bindLabel="name"></ng-select>
+              </div>
+
+            </div>
+
+            <div class="col-12">
+              <div class="mb-3">
+
+                <label for="search-by-case-number" class="form-label col-sm-12 mb-2">Select Court</label>
+
+
+                <ng-select id="search-by-phase-number" placeholder="Select Phase" formControlName="selectedCourt"
+                  [items]="courts" [multiple]="false" bindLabel="name"></ng-select>
+              </div>
+
+            </div>
+            }
+            <!--end col-->
+
+
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="event-location" class="form-label">Location</label>
+                <div>
+                  <input type="text" class="form-control" name="event-location" id="event-location"
+                    formControlName="location" placeholder="Event location">
+                </div>
+              </div>
+            </div><!--end col-->
+            <input type="hidden" id="eventid" name="eventid" value="">
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" id="event-description" placeholder="Enter a description" rows="3"
+                  formControlName="description" spellcheck="false"></textarea>
+              </div>
+            </div>
+            <!--end col-->
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label">Type</label>
+                <select class="form-select" name="category" id="event-category" formControlName="category" required>
+                  <option value="bg-danger-subtle">Danger</option>
+                  <option value="bg-success-subtle">Success</option>
+                  <option value="bg-primary-subtle">Primary</option>
+                  <option value="bg-info-subtle">Info</option>
+                  <option value="bg-dark-subtle">Dark</option>
+                  <option value="bg-warning-subtle">Warning</option>
+                </select>
+                <div class="invalid-feedback">Please select a valid event category</div>
+              </div>
+            </div>
+            <!--end col-->
+          </div>
+          <!--end row-->
+          <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-subtle-danger" id="btn-delete-event" (click)="deleteEventData()"><i
+                class="ri-close-line align-bottom"></i> Delete
+            </button>
+            <button type="submit" class="btn btn-success" id="btn-save-event">Add Event</button>
+          </div>
+        </form>
+      </div>
+    </div> <!-- end modal-content-->
+  </div> <!-- end modal dialog-->
+</div> <!-- end modal-->
+
+
+
+<!-- Simplified Event Modal -->
+<div bsModal #editEventModal="bs-modal" class="modal fade" id="event-modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0">
+      <div class="modal-header p-3 bg-info-subtle">
+        <h5 class="modal-title" id="modal-title">Event</h5>
+        <button type="button" class="btn-close" (click)="editEventModal.hide()"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form [formGroup]="formData" (ngSubmit)="saveEvent()" class="needs-validation" id="form-event" novalidate>
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label">Event Name</label>
+                <input class="form-control" type="text" placeholder="Enter event name" formControlName="title" required>
+                <div class="invalid-feedback">Please provide a valid event name</div>
+              </div>
+            </div>
+            <!-- Start and End Time -->
+            <div class="col-6">
+              <div class="mb-3">
+                <label class="form-label">Start Time</label>
+                <input type="text" mwlFlatpickr [noCalendar]="true" [enableTime]="true" [dateFormat]="'H:i'"
+                  formControlName="start" class="form-control flatpickr" placeholder="Select start time" readonly>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="mb-3">
+                <label class="form-label">End Time</label>
+                <input type="text" mwlFlatpickr [noCalendar]="true" [enableTime]="true" [dateFormat]="'H:i'"
+                  formControlName="end" class="form-control flatpickr" placeholder="Select end time" readonly>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" placeholder="Enter a description" rows="3" formControlName="description"
+                  spellcheck="false"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-subtle-danger" (click)="editEventModal.hide()">
+              <i class="ri-close-line align-bottom"></i> cancel
+            </button>
+            <button type="submit" class="btn btn-success">Save Event</button>
+          </div>
+        </form>
+      </div>
+    </div> <!-- end modal-content-->
+  </div> <!-- end modal dialog-->
+</div> <!-- end modal -->
+
+<!-- Simplified Event Modal -->
+<div bsModal #detaisEventModal="bs-modal" class="modal fade" id="event-modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0">
+      <div class="modal-header p-3 bg-info-subtle">
+        <h5 class="modal-title" id="modal-title">Event</h5>
+        <button type="button" class="btn-close" (click)="detaisEventModal.hide()"></button>
+      </div>
+      <div class="modal-body p-4">
+
+
+        <div class="custom-details">
+
+
+          <div class="d-flex align-items-center mb-2">
+            <div class="flex-shrink-0 me-3">
+              <i class="ri-calendar-event-line text-muted fs-lg meeting-icon"></i>
+            </div>
+            <div class="flex-grow-1">
+              <h6 class="d-block fw-semibold mb-0">
+                <a id="event-location-tag">
+                  {{ editEvent?.start | date: 'h:mm a' }} - {{ editEvent?.end | date:'h:mm a' }}
+                </a>
+              </h6>
+            </div>
+          </div>
+
+
+
+          <div class="d-flex align-items-center mb-2">
+            <div class="flex-shrink-0 me-3">
+              <i class="bi bi-camera-video text-muted fs-lg meeting-icon"></i>
+            </div>
+            <div class="flex-grow-1">
+              <h6 class="d-block fw-semibold mb-0">
+                <a id="event-location-tag" [href]='editEvent?.extendedProps["purpose"]'>
+                  {{editEvent?.extendedProps["purpose"] }}
+                </a>
+              </h6>
+            </div>
+          </div>
+
+          <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-subtle-danger" id="btn-delete-event" (click)="deleteEventData()"><i
+              class="ri-close-line align-bottom"></i> Delete
+            </button>
+            <button type="submit" class="btn btn-success" id="btn-save-event" (click)="editEventModal.show()">Edit</button>
+          </div>
+        </div>
+
+
+        <div class="event-details">
+          <div class="d-flex mb-2">
+            <div class="flex-grow-1 d-flex align-items-center">
+              <div class="flex-shrink-0 me-3">
+                <i class="ri-calendar-event-line text-muted fs-lg"></i>
+              </div>
+
+            </div>
+          </div>
+          <div class="d-flex align-items-center mb-2">
+            <div class="flex-shrink-0 me-3">
+              <i class="ri-time-line text-muted fs-lg"></i>
+            </div>
+            <div class="flex-grow-1">
+
+              <h6 class="d-block fw-semibold mb-0">
+                <span id="event-timepicker-start"></span>
+                {{ editEvent?.start | date: 'h:mm a' }} - {{ editEvent?.end | date:'h:mm a' }}
+                <span id="event-timepicker-tag"></span>
+              </h6>
+
+              <h6 class="d-block fw-semibold mb-0">
+                <span id="event-timepicker-end"></span> - <span id="event-timepicker2-tag"></span>
+              </h6>
+
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center mb-2">
+            <div class="flex-shrink-0 me-3">
+              <i class="bi bi-camera-video text-muted fs-lg meeting-icon"></i>
+            </div>
+            <div class="flex-grow-1">
+              <h6 class="d-block fw-semibold mb-0">
+                <!-- <a id="event-location-tag" [href]='editEvent.extendedProps["purpose"]'>
+                  {{editEvent.extendedProps["purpose"] }}
+                </a> -->
+              </h6>
+            </div>
+          </div>
+
+          <div class="d-flex mb-3">
+            <div class="flex-shrink-0 me-3">
+              <i class="ri-discuss-line text-muted fs-lg"></i>
+            </div>
+            <div class="flex-grow-1">
+              <!-- <p class="d-block text-muted mb-0" id="event-description-tag">{{ editEvent.extendedProps['description'] }}</p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- end modal-content-->
+  </div> <!-- end modal dialog-->
+</div> <!-- end modal -->
+
+
+
+<!-- end modal-->

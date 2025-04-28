@@ -1,0 +1,28 @@
+div {
+  text-align: center;
+}
+.leaflet-control-geocoder{
+  display: flex;
+  background-color: blue !important;
+
+  .leaflet-control-geocoder-icon{
+    background-color:red
+  }
+
+}
+
+
+.leaflet-top .leaflet-right{
+  display:none !important;
+}
+
+button{
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+

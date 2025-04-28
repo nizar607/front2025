@@ -1,0 +1,254 @@
+<section class="auth-page-wrapper py-3 position-relative d-flex align-items-center justify-content-center min-vh-100">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-11">
+        <div class="card mb-0">
+          <div class="row g-0">
+            <div class="col-xxl-5">
+              <div class="card auth-card bg-secondary h-100 border-0 shadow-none d-none d-sm-block mb-0">
+                <div class="card-body py-5 d-flex justify-content-between flex-column h-100">
+                  <div class="text-center">
+                    <h3 class="text-white">Embark on Your Legal Journey with Us.</h3>
+                    <p class="text-white opacity-75 fs-base">Seamlessly manage your cases, tasks, timelines, and
+                      documents.</p>
+                  </div>
+
+                  <div
+                    class="auth-effect-main my-5 position-relative rounded-circle d-flex align-items-center justify-content-center mx-auto">
+                    <div
+                      class="effect-circle-1 position-relative mx-auto rounded-circle d-flex align-items-center justify-content-center">
+                      <div
+                        class="effect-circle-2 position-relative mx-auto rounded-circle d-flex align-items-center justify-content-center">
+                        <div
+                          class="effect-circle-3 mx-auto rounded-circle position-relative text-white fs-4xl d-flex align-items-center justify-content-center">
+                          Welcome to <span class="text-primary ms-1">CaseTrack</span>
+                        </div>
+                      </div>
+                    </div>
+                    <ul class="auth-user-list list-unstyled">
+                      <li>
+                        <div class="avatar-sm d-inline-block">
+                          <div class="avatar-title bg-white shadow-lg overflow-hidden rounded-circle">
+                            <img src="assets/images/users/avatar-1.jpg" alt="" class="img-fluid">
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="avatar-sm d-inline-block">
+                          <div class="avatar-title bg-white shadow-lg overflow-hidden rounded-circle">
+                            <img src="assets/images/users/48/avatar-2.jpg" alt="" class="img-fluid">
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="avatar-sm d-inline-block">
+                          <div class="avatar-title bg-white shadow-lg overflow-hidden rounded-circle">
+                            <img src="assets/images/users/avatar-3.jpg" alt="" class="img-fluid">
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="avatar-sm d-inline-block">
+                          <div class="avatar-title bg-white shadow-lg overflow-hidden rounded-circle">
+                            <img src="assets/images/users/avatar-4.jpg" alt="" class="img-fluid">
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="avatar-sm d-inline-block">
+                          <div class="avatar-title bg-white shadow-lg overflow-hidden rounded-circle">
+                            <img src="assets/images/users/avatar-5.jpg" alt="" class="img-fluid">
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="text-center">
+                    <p class="text-white opacity-75 mb-0 mt-3">
+                      &copy;
+                      {{year}} CaseTrack. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end col-->
+            <div class="col-xxl-6 mx-auto">
+              <div class="card mb-0 border-0 shadow-none mb-0">
+                <div class="card-body p-sm-5 m-lg-4">
+                  <div class="text-center mt-2">
+                    <h5 class="fs-3xl">Create your free account</h5>
+                    <p class="text-muted">Get your free Casetrack account now</p>
+                  </div>
+                  <div class="p-2 mt-5">
+                    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate
+                      action="index.html">
+
+                      <div class="mb-3">
+                        <label for="firstName" class="form-label">First name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="firstName" placeholder="Enter your first name"
+                          required formControlName="firstName"
+                          [ngClass]="{'border-danger': f['firstName'].errors && f['firstName'].dirty,'form-control': true}">
+                        <div class="invalid-feedback">
+                          Please enter your first name
+                        </div>
+                        @if (f['firstName'].errors && f['firstName'].dirty) {
+
+                        @if (f['firstName'].errors!['required']) {
+                        <span class="text-danger col-12">First name is required</span>
+                        }
+
+                        @if (f['firstName'].errors!['minlength']) {
+                        <span class="text-danger col-12">First name must contain at least 3
+                          characters</span>
+                        }
+                        }
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="lastName" class="form-label">Last name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Enter your last name"
+                          required formControlName="lastName"
+                          [ngClass]="{'border-danger': f['lastName'].errors && f['lastName'].dirty,'form-control': true}">
+                        <div class="invalid-feedback">
+                          Please enter your last name
+                        </div>
+
+                        @if (f['lastName'].errors && f['lastName'].dirty) {
+
+                        @if (f['lastName'].errors!['required']) {
+                        <span class="text-danger col-12">Last name is required</span>
+                        }
+
+                        @if (f['lastName'].errors!['minlength']) {
+                        <span class="text-danger col-12">Last name must contain at least 3
+                          characters</span>
+                        }
+                        }
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="useremail" class="form-label">Email <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="useremail" placeholder="Enter email address"
+                          required formControlName="email"
+                          [ngClass]="{'border-danger': f['email'].errors && f['email'].dirty,'form-control': true}">
+                        <div class="invalid-feedback">
+                          Please enter email
+                        </div>
+
+                        @if (f['email'].errors && f['email'].dirty) {
+
+                        @if (f['email'].errors!['required']) {
+                        <span class="text-danger col-12">Email is required</span>
+                        }
+
+                        @if (f['email'].errors!['email']) {
+                        <span class="text-danger col-12">wrong email format</span>
+                        }
+                        }
+                      </div>
+
+
+                      <div class="mb-3">
+                        <label class="form-label" for="password-input">Password <span
+                            class="text-danger">*</span></label>
+                        <div class="position-relative auth-pass-inputgroup">
+                          <input [type]="fieldTextType ? 'text' : 'password'" class="form-control password-input pe-5"
+                            placeholder="Enter password" id="password-input" required formControlName="password"
+                            [ngClass]="{'border-danger': f['password'].errors && f['password'].dirty,'form-control': true}">
+                          <button
+                            class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                            type="button" id="password-addon"><i class="ri-eye-fill align-middle"
+                              [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}"
+                              (click)="toggleFieldTextType()"></i></button>
+                        </div>
+
+                        @if (f['password'].errors && f['password'].dirty) {
+
+                        @if (f['password'].errors!['required']) {
+                        <span class="text-danger col-12">Password is required</span> <br>
+                        }
+
+                        @if (f['password'].errors!['minlength']) {
+                        <span class="text-danger col-12">Password must be at least 6 characters long</span> <br>
+                        }
+
+
+                        @if (f['password'].errors!['pattern']) {
+                        <span class="text-danger col-12">Password must contain at least one number and one letter</span>
+                        }
+                        }
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label" for="confirm-password-input">Confirm Password <span
+                            class="text-danger">*</span></label>
+                        <div class="position-relative auth-pass-inputgroup">
+                          <input [type]="fieldTextType ? 'text' : 'password'" class="form-control password-input pe-5"
+                            placeholder="Confirm password" id="confirm-password-input" required formControlName="password"
+                            required formControlName="confirmPassword"
+                            [ngClass]="{'border-danger': f['confirmPassword'].errors && f['confirmPassword'].dirty,'form-control': true}">
+                          <button
+                            class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                            type="button" id="password-addonn"><i class="ri-eye-fill align-middle"
+                              [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}"
+                              (click)="toggleFieldTextType()"></i></button>
+                        </div>
+
+
+                        @if (f['confirmPassword'].dirty && f['confirmPassword'].errors) {
+
+                        @if (f['confirmPassword'].errors!['required']) {
+                        <span class="text-danger">Confirm password is required</span>
+                        }
+
+                        @if (f['confirmPassword'].errors!['mustMatch']) {
+                        <span class="text-danger">Passwords must match</span>
+                        }
+                        }
+
+                      </div>
+
+                      <div class="mb-4">
+                        <p class="mb-0 fs-xs text-muted fst-italic">By registering you agree to the CaseTrack <a
+                            routerLink="/pages/term-conditions"
+                            class="text-primary text-decoration-underline fst-normal fw-medium">Terms of Use</a></p>
+                      </div>
+
+                      <div class="mt-4">
+                        <button class="btn btn-primary w-100" type="submit">Sign Up</button>
+                      </div>
+
+                      <div class="mt-4 text-center">
+                        <div class="signin-other-title position-relative">
+                          <h5 class="fs-sm mb-4 title text-muted">Create account with</h5>
+                        </div>
+
+                        <!-- <div>
+                          <button type="button" class="btn btn-subtle-primary btn-icon "><i class="ri-facebook-fill fs-lg"></i></button>
+                          <button type="button" class="btn btn-subtle-danger btn-icon "><i class="ri-google-fill fs-lg"></i></button>
+                          <button type="button" class="btn btn-subtle-dark btn-icon "><i class="ri-github-fill fs-lg"></i></button>
+                          <button type="button" class="btn btn-subtle-info btn-icon "><i class="ri-twitter-fill fs-lg"></i></button>
+                        </div> -->
+                      </div>
+                    </form>
+                  </div>
+                  <div class="mt-4 text-center">
+                    <p class="mb-0">Already have an account ? <a routerLink="/auth/login"
+                        class="fw-semibold text-primary text-decoration-underline"> Signin </a> </p>
+                  </div>
+                </div><!-- end card body -->
+              </div><!-- end card -->
+            </div>
+            <!--end col-->
+          </div>
+          <!--end row-->
+        </div>
+      </div>
+      <!--end col-->
+    </div>
+    <!--end row-->
+  </div>
+  <!--end container-->
+</section>

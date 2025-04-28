@@ -1,0 +1,823 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="List View" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+
+<div class="row" id="ticketsList">
+
+  @if (currentUser.roles[0] === 'ROLE_ADMIN' ||
+  (currentUser.roles[0] === 'ROLE_AGENT' && accesses.includes('CASE_FETCH'))
+  ) {
+
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="row align-items-center g-2">
+          <div class="col-lg-3 me-auto">
+            <h6 class="card-title mb-0">Cases List</h6>
+
+          </div><!--end col-->
+
+          <div class="col-lg-2 col-sm-4">
+            <div class="search-box">
+              <input type="text" class="form-control search" [(ngModel)]="term" (keyup)="filterdata()"
+                placeholder="Search for tickets, date, client or something...">
+              <i class="ri-search-line search-icon"></i>
+              <i class="ri-search-line search-icon"></i>
+            </div>
+
+          </div><!--end col-->
+
+          <div class="col-sm-auto">
+            <div class="hstack gap-2">
+
+              @if (currentUser.roles[0] === 'ROLE_ADMIN') {
+              <button class="btn btn-subtle-danger d-none" id="remove-actions" (click)="deleteRecordModal.show()"><i
+                  class="ri-delete-bin-2-line"></i></button>
+              }@else{
+              @if(accesses.includes('CASE_DELETE')) {
+              <button class="btn btn-subtle-danger d-none" id="remove-actions" (click)="deleteRecordModal.show()"><i
+                  class="ri-delete-bin-2-line"></i></button>
+              }
+              }
+              @if (currentUser.roles[0] === 'ROLE_ADMIN') {
+              <a href="javascript:void(0);" (click)="addCourse.show()" class="btn btn-secondary">
+                <i class="bi bi-plus-circle align-baseline me-1"></i>
+                Add Case
+              </a>
+
+              }@else{
+              @if(accesses.includes('CASE_CREATE')) {
+              <a href="javascript:void(0);" (click)="addCourse.show()" class="btn btn-secondary">
+                <i class="bi bi-plus-circle align-baseline me-1"></i>
+                Add Case
+              </a>
+              }
+              }
+            </div>
+          </div><!--end col-->
+        </div><!--end row-->
+      </div>
+      <div class="card-body mt-3">
+        <div class="table-responsive table-card">
+          <table class="table table-centered align-middle table-custom-effect table-nowrap mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkAll" [(ngModel)]="masterSelected"
+                      (change)="checkUncheckAll($event)">
+                    <label class="form-check-label" for="checkAll"></label>
+                  </div>
+                </th>
+                <th scope="col" class="sort cursor-pointer" ticketsortable="id" (click)="onSort('id')">
+                  Case Number
+                </th>
+                <th scope="col" class="sort cursor-pointer" ticketsortable="assignedto" (click)="onSort('assignedto')">
+                  Assigned To
+                </th>
+                <th scope="col" class="sort cursor-pointer" ticketsortable="ticketTitle"
+                  (click)="onSort('ticketTitle')">
+                  Case Title
+                </th>
+                <th scope="col" class="sort cursor-pointer" ticketsortable="createDate" (click)="onSort('createDate')">
+                  Create Date
+                </th>
+                <th scope="col" class="sort cursor-pointer" ticketsortable="dueDate" (click)="onSort('dueDate')">
+                  Case Type
+                </th>
+                <th scope="col" class="sort cursor-pointer" ticketsortable="priority" (click)="onSort('priority')">
+                  Status
+                </th>
+
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody class="list form-check-all">
+              @for (data of casesList; track $index) {
+              <tr id="l_{{$index}}">
+                <td>
+                  <div class="form-check">
+                    <!-- <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}"
+                              [(ngModel)]="data.states" (change)="onCheckboxChange($event)">
+                              -->
+                    <label class="form-check-label"></label>
+                  </div>
+                </td>
+                <td class="tickets_id">
+                  <a routerLink="/tickets/overview" class="fw-medium link-primary">#CN{{ data.number }}</a>
+                </td>
+                <td class="assign">
+                  <div class="avatar-group flex-nowrap">
+                    @for (profile of data.agents; track $index) {
+                    <a routerLink="/tickets/overview" class="avatar-group-item" tooltip="profile.assigneeName">
+                      <img src="http://localhost:8080/api/agent/download/{{profile.id}}" alt=""
+                        class="avatar-xxs rounded-circle">
+                    </a>
+                    }
+                  </div>
+                </td>
+
+                <td class="ticket_title">{{ data.title }}</td>
+                <td class="due_date">{{ data.createdAt | date }}</td>
+                <td class="create_date">{{ data.type }}</td>
+
+
+                <td class="status">
+                  <span class="badge"
+                    [ngClass]="{'bg-primary-subtle text-primary':data.status === 'OPENED','bg-danger-subtle text-danger':data.status === 'CLOSED'}">
+                    {{ data.status }}
+                  </span>
+                </td>
+                <td>
+                  <ul class="d-flex gap-2 list-unstyled mb-0">
+                    <li>
+                      <a (click)="navigateToDetails(data)" class="btn btn-subtle-primary btn-icon btn-sm "><i
+                          class="ph-eye"></i></a>
+                    </li>
+                    <li>
+                      @if (currentUser.roles[0] === 'ROLE_ADMIN') {
+                      <a href="javascript:void(0);" (click)="setSelectedCase(data)"
+                        class="btn btn-subtle-secondary btn-icon btn-sm edit-item-btn"><i class="ph-pencil"></i></a>
+                      }@else{
+                      @if(accesses.includes('CASE_UPDATE')) {
+                      <a href="javascript:void(0);" (click)="setSelectedCase(data)"
+                        class="btn btn-subtle-secondary btn-icon btn-sm edit-item-btn"><i class="ph-pencil"></i></a>
+                      }
+                      }
+                    </li>
+                    <li>
+                      @if (currentUser.roles[0] === 'ROLE_ADMIN') {
+                      <a href="javascript:void(0);" (click)="removeItem(data.id)"
+                        class="btn btn-subtle-danger btn-icon btn-sm remove-item-btn"><i class="ph-trash"></i></a>
+                      }@else{
+                      @if(accesses.includes('CASE_DELETE')) {
+                      <a href="javascript:void(0);" (click)="removeItem(data.id)"
+                        class="btn btn-subtle-danger btn-icon btn-sm remove-item-btn"><i class="ph-trash"></i></a>
+                      }
+                      }
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+              }
+            </tbody><!-- end tbody -->
+          </table><!-- end table -->
+
+          <!-- <div id="elmLoader">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div> -->
+
+          <div class="noresult d-none">
+            <div class="text-center py-4">
+              <i class="ph-magnifying-glass fs-1 text-primary"></i>
+              <h5 class="mt-2">Sorry! No Result Found</h5>
+              <p class="text-muted mb-0">We've searched more than 6k+ tickets We did not find any tickets
+                for you search.</p>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center mt-4 pt-3" id="pagination-element">
+          <div class="col-sm">
+            <div class="text-muted text-center text-sm-start">
+              Showing <span class="fw-semibold">{{ casesList.length }}</span> of <span class="fw-semibold">{{
+                allCasesList.length }}</span> Results
+            </div>
+          </div><!--end col-->
+          <div class="col-sm-auto mt-3 mt-sm-0">
+            <pagination class="pagination-wrap hstack justify-content-center gap-2" [totalItems]="allCasesList!.length"
+              [itemsPerPage]="10" (pageChanged)="pageChanged($event)"></pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  } @else {
+    <div class="d-flex justify-content-center align-items-center h-100">
+      <div class="text-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/61/61457.png" alt="" class="img-fluid" style="max-width: 100px;">
+        <h4 class="mt-4">No Access</h4>
+        <p class="text-muted">You don't have access to this page</p>
+      </div>
+    </div>
+  }
+
+</div>
+
+
+<!-- Modal -->
+<div bsModal #addCourse="bs-modal" class="modal fade modal-lg" id="addCourse">
+  <div class="modal-dialog">
+    <div class="modal-content border-0">
+      <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="addCourseModalLabel">Add Case</h5>
+        <button type="button" class="btn-close" (click)="addCourse.hide()"></button>
+      </div>
+
+      <div class="tablelist-form">
+        <div class="modal-body">
+          <div class="card-body form-steps">
+            <form action="#">
+              <mat-horizontal-stepper [linear]="true" #stepper>
+                <!-- Step 1: Clients & Contacts -->
+                <mat-step>
+                  <ng-template matStepLabel>Clients & Contacts</ng-template>
+
+                  <div class="row mt-4">
+                    <button type="submit" class="btn btn-outline-primary rounded-pill col-auto mx-auto"
+                      id="create-contact-btn" (click)="addContact.show()">Create New Contact
+                    </button>
+                  </div>
+
+
+
+                  <div class="row mt-4 border border-2 rounded-2 border-light p-3">
+
+                    <div class="col-lg-12">
+                      <div class="mb-4 d-flex align-items-center">
+
+
+                        <div class="me-2">
+                          <h6 class="mb-0">Assign Clients and Contacts :</h6>
+
+                          @if (false) {
+                          <span class="text-danger">
+                            clients must not be empty
+                          </span>
+                          }
+
+                        </div>
+
+
+                        @if (assignedContacts) {
+                        <div class="avatar-group justify-content-center" id="assignee-member">
+                          @for (profile of assignedContacts; track $index) {
+                          <a routerLink="/tickets/overview" class="avatar-group-item mb-2"
+                            tooltip="{{profile.firstName}} {{profile.lastName}}">
+                            <img src="{{profile.image}}" alt="" class="rounded-circle avatar-xs">
+                          </a>
+                          }
+                        </div>
+                        }
+                      </div>
+
+
+                      <ngx-simplebar class="mx-n4 px-4 mb-3" style="max-height: 180px;">
+                        <div class="vstack gap-3 select-element">
+                          @for (data of contactsList; track $index) {
+                          <div class="d-flex align-items-center option-list">
+                            <div class="avatar-xs flex-shrink-0 me-3">
+                              <img src="{{data.image}}" alt="" class="img-fluid rounded-circle">
+                            </div>
+                            <div class="flex-grow-1">
+                              <h6 class="mb-0">
+                                <a href="javascript:void(0);" class="text-body d-block">{{ data.firstName }} {{
+                                  data.lastName }} ({{data.peopleGroup.name}})</a>
+                              </h6>
+                            </div>
+
+
+                            <div class="flex-shrink-0">
+                              <button type="button" class="btn btn-light btn-sm btn-action{{$index}}"
+                                (click)="assignContact($index)">
+                                @if (data.checked == '0') {
+                                Add
+                                } @else {
+                                Remove
+                                }
+                              </button>
+                            </div>
+                          </div>
+                          }
+                          <!-- end member item -->
+                        </div>
+                        <!-- end list -->
+                      </ngx-simplebar>
+                    </div>
+
+                  </div>
+
+                  <div class="d-flex align-items-start gap-3 mt-4">
+
+                    <button type="button" class="btn btn-primary btn-label text-white right ms-auto"
+                      (click)="stepper.next()">
+                      <i class="bi bi-arrow-right text-white label-icon align-middle fs-16 ms-2"></i>
+                      Go to case details
+                    </button>
+
+                  </div>
+
+
+                </mat-step>
+
+                <!-- Step 2: Case Details -->
+                <mat-step [stepControl]="caseForm">
+                  <form [formGroup]="caseForm" class="mt-4">
+                    <ng-template matStepLabel>Case Details</ng-template>
+                    <div class="flex flex-column h-12rem">
+                      <div
+                        class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <div class="row">
+                          <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input class="form-control" formControlName="title" placeholder="Enter Title" type="text"
+                              id="title">
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="number" class="form-label">Number</label>
+                            <input class="form-control" formControlName="number" placeholder="Enter Number" type="text"
+                              id="number">
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="type" class="form-label">Type</label>
+
+                            <ng-select id="type" [items]="[
+                            'Criminal',
+                            'Civil',
+                            'Family',
+                            'Labor',
+                            'Commercial',
+                            'Tax',
+                            'Bankruptcy',
+                            'Intellectual Property',
+                            'Administrative',
+                            'Environmental' 
+                            ]" [clearable]="true" bindLabel="name" formControlName="type"
+                              placeholder="Select Case type">
+                            </ng-select>
+
+
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" formControlName="description" placeholder="Enter Description"
+                              type="text" id="description" cols="30" rows="5"></textarea>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row flex pt-4 justify-content-between">
+                      <button mat-button matStepperPrevious class="col-auto">Back</button>
+                      <button type="button" matStepperNext
+                        class="col-auto btn btn-primary btn-label text-white right ms-auto">
+                        <i class="bi bi-arrow-right text-white label-icon align-middle fs-16 ms-2"></i>
+                        Go to Staff
+                      </button>
+                    </div>
+                  </form>
+                </mat-step>
+
+                <!-- Step 3: Staff -->
+                <mat-step>
+                  <form>
+                    <ng-template matStepLabel>Staff</ng-template>
+                    <div class="row mt-4">
+
+                      <div class="col-lg-12">
+                        <div class="mb-4 d-flex align-items-center">
+                          <div class="me-2">
+                            <h6 class="mb-0">Assign Agents :</h6>
+
+                          </div>
+
+                          @if (false) {
+                          <span class="text-danger">
+                            agents must not be empty
+                          </span>
+                          }
+                          @if (assignedAgents) {
+                          <div class="avatar-group justify-content-center" id="assigned-agents">
+                            @for (profile of assignedAgents; track $index) {
+                            <a routerLink="/tickets/overview" class="avatar-group-item mb-2"
+                              tooltip="{{profile.firstName}} {{profile.lastName}}">
+                              <!-- replace with a global variable toReplace -->
+                              <img src="http://localhost:8080/api/agent/download/{{profile.id}}" alt=""
+                                class="rounded-circle avatar-xs">
+                            </a>
+                            }
+                          </div>
+                          }
+                        </div>
+                        <ngx-simplebar class="mx-n4 px-4 mb-3" style="max-height: 180px;">
+                          <div class="vstack gap-3 select-element">
+                            @for (data of agentsList; track $index) {
+                            <div class="d-flex align-items-center option-list">
+                              <div class="avatar-xs flex-shrink-0 me-3">
+                                <img src="http://localhost:8080/api/agent/download/{{data.id}}" alt=""
+                                  class="img-fluid rounded-circle">
+                              </div>
+                              <div class="flex-grow-1">
+                                <h6 class="mb-0">
+                                  <a href="javascript:void(0);" class="text-body d-block">{{ data.firstName }} {{
+                                    data.lastName }}</a>
+                                </h6>
+                              </div>
+
+
+                              <div class="flex-shrink-0">
+                                <button type="button" class="btn btn-light btn-sm btn-action{{$index}}"
+                                  (click)="assignAgent($index)">
+                                  @if (data.checked == '0') {
+                                  Add
+                                  } @else {
+                                  Remove
+                                  }
+                                </button>
+                              </div>
+                            </div>
+                            }
+                            <!-- end member item -->
+                          </div>
+                          <!-- end list -->
+                        </ngx-simplebar>
+                      </div>
+
+                    </div>
+                    <div class="row flex pt-4 justify-content-between">
+                      <button mat-button matStepperPrevious class="col-auto">Back</button>
+                      <button type="button" matStepperNext
+                        class="col-auto btn btn-primary btn-label text-white right ms-auto">
+                        <i class="bi bi-arrow-right text-white label-icon align-middle fs-16 ms-2"></i>
+                        Go to Finish
+                      </button>
+                    </div>
+                  </form>
+                </mat-step>
+
+                <!-- Step 4: Finish -->
+                <mat-step>
+                  <ng-template matStepLabel>Finish</ng-template>
+                  <div>
+                    <div class="text-center">
+                      <div class="avatar-md mt-5 mb-4 mx-auto">
+                        <div class="avatar-title bg-light text-success display-4 rounded-circle">
+                          <i class="ri-checkbox-circle-fill"></i>
+                        </div>
+                      </div>
+                      <h5>Well Done!</h5>
+                      <p class="text-muted">You have Successfully Signed Up</p>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                      <button type="button" class="btn btn-primary btn-label text-white right ms-auto"
+                        (click)="saveCase()">
+                        <i class="bi bi-arrow-right text-white label-icon align-middle fs-16 ms-2"></i>
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </mat-step>
+
+              </mat-horizontal-stepper>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal-content -->
+  </div>
+</div><!--end add Property modal-->
+
+<!-- deleteRecordModal -->
+<div bsModal #deleteRecordModal="bs-modal" id="deleteRecordModal" class="modal fade zoomIn">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" id="deleteRecord-close" (click)="deleteRecordModal.hide()"></button>
+      </div>
+      <div class="modal-body p-md-5">
+        <div class="text-center">
+          <div class="text-danger">
+            <i class="bi bi-trash display-5"></i>
+          </div>
+          <div class="mt-4">
+            <h4 class="mb-2">Are you sure ?</h4>
+            <p class="text-muted mx-3 mb-0">Are you sure you want to remove this record ?</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 pt-2 mb-2">
+          <button type="button" class="btn w-sm btn-light btn-hover" (click)="deleteRecordModal.hide()">Close</button>
+          <button type="button" class="btn w-sm btn-danger btn-hover" id="delete-record" (click)="deleteData(deleteID)">
+            Yes, Delete It!
+          </button>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /deleteRecordModal -->
+
+
+<!-- create contact MODAL -->
+<div bsModal #addContact="bs-modal" class="modal fade modal-lg" id="addContact">
+  <div class="modal-dialog">
+    <div class="modal-content border-0">
+      <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="addContactModalLabel"> Create Contact </h5>
+        <button type="button" class="btn-close" (click)="addContact.hide()"></button>
+      </div>
+
+      <form (ngSubmit)="saveContact()" [formGroup]="ContactForm" class="tablelist-form" novalidate autocomplete="off">
+        <div class="modal-body">
+          <div id="alert-error-msg" class="d-none alert alert-danger py-2"></div>
+          <input type="hidden" id="id-field">
+          <div class="row">
+            <div>
+              <div class="row">
+
+                <label class="form-label" for="steparrow-gen-info-username-input">Name <span class="text-danger">
+                    *</span></label>
+                <div class="col-lg-4">
+                  <div class="mb-3">
+                    <input type="text" class="form-control" id="steparrow-gen-info-username-input2"
+                      [ngClass]="{'border-danger': formValue['firstName'].errors && formValue['firstName'].dirty,'form-control': true}"
+                      formControlName="firstName" placeholder="First Name">
+                    @if (formValue['firstName'].errors && formValue['firstName'].dirty) {
+
+                    @if (formValue['firstName'].errors!['required']) {
+                    <span class="text-danger col-12">First name is required</span>
+                    }
+
+                    @if (formValue['firstName'].errors!['minlength']) {
+                    <span class="text-danger col-12">First name must contain at least 3
+                      characters</span>
+                    }
+                    }
+                  </div>
+
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="mb-3">
+                    <input type="text" class="form-control" id="steparrow-gen-info-case-number-input" placeholder="M"
+                      [ngClass]="{'border-danger': formValue['middleName'].errors && formValue['middleName'].dirty,'form-control': true}"
+                      formControlName="middleName" placeholder="Middle Name">
+                    @if (formValue['middleName'].errors && formValue['middleName'].dirty) {
+
+                    @if (formValue['middleName'].errors!['required']) {
+                    <span class="text-danger col-12">Middle name is required</span>
+                    }
+                    }
+                  </div>
+
+                </div>
+
+                <div class="col-lg-5">
+                  <div class="mb-3">
+                    <input type="text" class="form-control" id="steparrow-gen-info-case-number-input"
+                      placeholder="Last Name"
+                      [ngClass]="{'border-danger': formValue['lastName'].errors && formValue['lastName'].dirty,'form-control': true}"
+                      formControlName="lastName">
+                    @if (formValue['lastName'].errors && formValue['lastName'].dirty) {
+
+                    @if (formValue['lastName'].errors!['required']) {
+                    <span class="text-danger col-12">Last name is required</span>
+                    }
+
+                    @if (formValue['lastName'].errors!['minlength']) {
+                    <span class="text-danger col-12">Last name must contain at least 3
+                      characters</span>
+                    }
+
+                    }
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="steparrow-gen-info-confirm-birthday-input">Birthday</label>
+
+                <input type="date" class="form-control" id="steparrow-gen-info-confirm-birthday-input" mwlFlatpickr
+                  [altInput]="true" altFormat="Y/m/d" dateFormat="Y/m/d"
+                  [ngClass]="{'border-danger': formValue['birthday'].errors && formValue['birthday'].dirty, 'form-control': true}"
+                  formControlName="birthday" placeholder="Enter birthday">
+
+                @if (formValue['birthday'].errors && formValue['birthday'].dirty) {
+                @if (formValue['birthday'].errors!['required']) {
+                <span class="text-danger col-12">Birthday is required</span>
+                }
+                }
+
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="steparrow-gen-info-username-input">Email <span class="text-danger">
+                    *</span></label>
+                <div class="mb-3">
+                  <input type="email" class="form-control" id="steparrow-gen-info-username-input"
+                    placeholder="example@email.com"
+                    [ngClass]="{'border-danger': formValue['email'].errors && formValue['email'].dirty,'form-control': true}"
+                    formControlName="email">
+                  @if (formValue['email'].errors && formValue['email'].dirty) {
+
+                  @if (formValue['email'].errors!['required']) {
+                  <span class="text-danger col-12">Email is required</span>
+                  }
+
+                  @if (formValue['email'].errors!['email']) {
+                  <span class="text-danger col-12">wrong email format</span>
+                  }
+
+                  }
+                </div>
+
+              </div>
+
+
+
+              <div class="mb-3">
+                <label class="form-label">People Group</label>Assign Clients :
+                <ng-select [items]="peopleGroupList" bindLabel="name" [clearable]="false"
+                  [ngClass]="{'border border-danger': formValue['peopleGroup'].errors && formValue['peopleGroup'].dirty}"
+                  formControlName="peopleGroup" placeholder="Select Group" placeholder="Group">
+                  <ng-template ng-optgroup-tmp let-item="item">
+                    {{ item.country || 'Unnamed group' }}
+                  </ng-template>
+                </ng-select>
+
+                @if (formValue['peopleGroup'].errors && formValue['peopleGroup'].dirty) {
+                @if (formValue['peopleGroup'].errors!['required']) {
+                <span class="text-danger col-12">please select a group</span>
+                }
+                }
+              </div>
+
+              <input type="hidden" id="rating-field">
+
+              <div class="mb-3">
+                <label class="form-label" for="steparrow-gen-info-phone-input">Phone number <span class="text-danger">
+                    *</span></label>
+                <div class="mb-3">
+                  <input type="number" class="form-control" id="steparrow-gen-info-phone-input"
+                    [ngClass]="{'border-danger': formValue['phoneNumber'].errors && formValue['phoneNumber'].dirty,'form-control': true}"
+                    formControlName="phoneNumber" id="contact-input" placeholder="(xxx)-xx-xxx-xxx">
+                  @if (formValue['phoneNumber'].errors && formValue['phoneNumber'].dirty) {
+
+                  @if (formValue['phoneNumber'].errors!['required']) {
+                  <span class="text-danger col-12">Phone number is required</span>
+                  }
+
+                  @if (formValue['phoneNumber'].errors!['pattern']) {
+                  <span class="text-danger col-12">Phone number must contain 8 numbers</span>
+                  }
+
+                  }
+                </div>
+
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="steparrow-gen-info-address-input">Address <span class="text-danger">
+                    *</span></label>
+                <div class="mb-3">
+                  <input type="text" class="form-control" id="steparrow-gen-info-address-input" placeholder="Address"
+                    [ngClass]="{'border-danger': formValue['address'].errors && formValue['address'].dirty,'form-control': true}"
+                    formControlName="address">
+                  @if (formValue['address'].errors && formValue['address'].dirty) {
+                  @if (formValue['address'].errors!['required']) {
+                  <span class="text-danger col-12">Address is required</span>
+                  }
+                  }
+
+                </div>
+
+
+              </div>
+
+              <div class="row">
+
+                <label class="form-label" for="steparrow-gen-info-username-input">City, State, Zip
+                  Code</label>
+                <div class="col-lg-5">
+                  <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="City"
+                      [ngClass]="{'border-danger': formValue['city'].errors && formValue['city'].dirty,'form-control': true}"
+                      formControlName="city">
+
+                    @if (formValue['city'].errors && formValue['city'].dirty) {
+                    @if (formValue['city'].errors!['required']) {
+                    <span class="text-danger col-12">City is required</span>
+                    }
+                    }
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="State"
+                      [ngClass]="{'border-danger': formValue['state'].errors && formValue['state'].dirty,'form-control': true}"
+                      formControlName="state">
+                  </div>
+                  @if (formValue['state'].errors && formValue['state'].dirty) {
+
+                  @if (formValue['state'].errors!['required']) {
+                  <span class="text-danger col-12">State is required</span>
+                  }
+                  }
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="mb-3">
+                    <input type="number" class="form-control" placeholder="Zip Code"
+                      [ngClass]="{'border-danger': formValue['zipCode'].errors && formValue['zipCode'].dirty,'form-control': true}"
+                      formControlName="zipCode">
+                  </div>
+
+                  @if (formValue['zipCode'].errors && formValue['zipCode'].dirty) {
+
+                  @if (formValue['zipCode'].errors!['required']) {
+                  <span class="text-danger col-12">Zip code is required</span>
+                  }
+                  }
+                </div>
+              </div>
+
+            </div>
+          </div><!--end row-->
+        </div>
+        <div class="modal-footer">
+          <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-ghost-danger" (click)="addContact.hide()"><i
+                class="bi bi-x-lg align-baseline me-1"></i> Close
+            </button>
+            <button type="submit" class="btn btn-primary" id="add-btn">Create Contact</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- modal-content -->
+  </div>
+</div><!--end modal-->
+
+
+<div bsModal #updateCase="bs-modal" class="modal fade modal-lg" id="updateCase">
+  <div class="modal-dialog">
+    <div class="modal-content border-0">
+      <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="addCaseModalLabel">Update Case</h5>
+        <button type="button" class="btn-close" (click)="updateCase.hide()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="caseForm">
+          <!-- Basic Case Information -->
+          <div class="mb-3">
+            <label for="title" class="form-label">Case Title</label>
+            <input type="text" id="title" class="form-control" formControlName="title" placeholder="Enter case title" />
+            <div class="invalid-feedback"
+              *ngIf="caseForm.get('title')?.errors?.['required'] && caseForm.get('title')?.touched">
+              Title is required
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="number" class="form-label">Case Number</label>
+            <input type="text" id="number" class="form-control" formControlName="number"
+              placeholder="Enter case number" />
+            <div class="invalid-feedback"
+              *ngIf="caseForm.get('number')?.errors?.['required'] && caseForm.get('number')?.touched">
+              Case number is required
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" class="form-control" formControlName="description" rows="3"
+              placeholder="Enter case description"></textarea>
+            <div class="invalid-feedback"
+              *ngIf="caseForm.get('description')?.errors?.['required'] && caseForm.get('description')?.touched">
+              Description is required
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="type" class="form-label">Case Type</label>
+              <ng-select id="type" [items]="caseTypes" bindLabel="name" bindValue="value" formControlName="type"
+                placeholder="Select Case Type">
+                <ng-template ng-option-tmp let-item="item">
+                  {{item.name}}
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-light" (click)="updateCase.hide()">Cancel</button>
+            <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+              <i class="bi bi-check-circle me-1"></i>
+              Update Case
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

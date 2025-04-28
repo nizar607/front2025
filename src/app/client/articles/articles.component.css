@@ -1,0 +1,51 @@
+.example-section {
+    margin: 12px 0;
+  }
+  
+  .example-margin {
+    margin: 0 12px;
+  }
+  
+  ul {
+    list-style-type: none;
+    margin-top: 4px;
+  }
+
+  /* Main container styles to ensure footer visibility */
+  .container {
+    min-height: 100vh;
+    padding-bottom: 250px; /* Add padding to prevent content from overlapping footer */
+    position: relative;
+  }
+  
+  #namanyay-search-btn {
+  background:#0099ff;
+  color:white;
+  font: 'trebuchet ms', trebuchet;
+  padding:10px 20px;
+  border-radius:0 5px 5px 0;
+  -moz-border-radius:0 5px 5px 0;
+  -webkit-border-radius:0 5px 5px 0;
+  -o-border-radius:0 5px 5px 0;
+  border:0 none;
+  font-weight:bold;
+  }
+   
+  #namanyay-search-box {
+  background: #eee;
+  padding:10px;
+   border-radius:5px 0 0 5px;
+  -moz-border-radius:5px 0 0 5px;
+  -webkit-border-radius:5px 0 0 5px;
+  -o-border-radius:5px 0 0 5px;
+  border:0 none;
+   }
+
+   .v-100{
+    height: 100vh;
+   }
+
+   .custom-slider{
+    width: 90%;
+   }
+  

@@ -1,0 +1,553 @@
+<!-- Start Breadcrumbs -->
+<div class="col-12">
+  <app-breadcrumbs title="Cases" [breadcrumbItems]="breadCrumbItems" icon="ri-briefcase-4-fill"></app-breadcrumbs>
+</div>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card" id="coursesList">
+      <div class="card-body">
+        <div class="row align-items-center g-2">
+          <div class="col-lg-3 me-auto">
+            <h6 class="card-title mb-0">Instructors List <span
+              class="badge bg-primary ms-1 align-baseline">1452</span></h6>
+          </div><!--end col-->
+          <div class="col-lg-2">
+            <div class="search-box">
+              <input type="text" class="form-control search"
+                     placeholder="Search for courses, price or something..."
+                     (keyup)="filterdata()">
+              <i class="ri-search-line search-icon"></i>
+            </div>
+          </div><!--end col-->
+          <div class="col-lg-auto">
+            <div class="hstack flex-wrap gap-2">
+              <button class="btn btn-subtle-danger d-none" id="remove-actions"
+                      (click)="deleteRecordModal.show()">
+                <i class="ri-delete-bin-2-line"></i>
+              </button>
+
+              <a href="javascript:void(0);" (click)="addCourse.show()" class="btn btn-secondary">
+                <i class="bi bi-plus-circle align-baseline me-1"></i>
+                Add Case
+              </a>
+              <div>
+                <button type="button" class="btn btn-info me-1" (click)="openEnd()"><i
+                  class="bi bi-funnel align-baseline me-1"></i> Filter
+                </button>
+                <a routerLink="/learning/grid" class="btn btn-subtle-primary btn-icon me-1"><i
+                  class="bi bi-grid"></i></a>
+                <a routerLink="/learning/list" class="btn btn-subtle-primary active btn-icon"><i
+                  class="bi bi-list-task"></i></a>
+              </div>
+            </div>
+          </div><!--end col-->
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive table-card">
+          <table class="table table-centered align-middle table-custom-effect table-nowrap mb-0">
+            <thead class="text-muted">
+            <tr>
+              <th>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="option" id="checkAll"
+                         [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
+                  <label class="form-check-label" for="checkAll"></label>
+                </div>
+              </th>
+              <th scope="col" class="sort cursor-pointer" (click)="onSort('case')">CASE</th>
+              <th scope="col" class="sort cursor-pointer" (click)="onSort('number')">
+                NUMBER
+              </th>
+              <th scope="col" class="sort cursor-pointer" (click)="onSort('caseStage')">CASE STAGE
+              </th>
+              <th scope="col" class="sort cursor-pointer" (click)="onSort('nextEvent')">NEXT MEETING
+              </th>
+              <th scope="col" class="sort cursor-pointer" (click)="onSort('firmMembers')">AGENTS
+              </th>
+              <th scope="col" class="sort cursor-pointer" (click)="onSort('students')">STATUS UPDATE
+              </th>
+              <th scope="col" class="sort cursor-pointer" (click)="onSort('fees')">Fees</th>
+              <th scope="col" class="sort cursor-pointer" (click)="onSort('rating')">Rating</th>
+              <th scope="col" class="sort cursor-pointer" (click)="onSort('status')">ADDED</th>
+              <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody class="list form-check-all">
+              @for (data of courses; track $index) {
+                <tr id="p_{{data._id}}">
+                  <td>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="chk_child" name="checkAll"
+                             value="{{data._id}}" [(ngModel)]="data.state"
+                             (change)="onCheckboxChange($event)">
+                      <label class="form-check-label"></label>
+                    </div>
+                  </td>
+                  <td class="id d-none"><a href="javascript:void(0)"
+                                           class="fw-medium link-primary">#TBS00{{ data.id }}</a></td>
+                  <td class="category"><a routerLink="/learning/grid"
+                                          class="text-reset">{{ data.category }}</a></td>
+                  <td class="course_Name">
+                    <div class="d-flex gap-2 align-items-center">
+                      <div class="flex-shrink-0">
+                        <img src="{{data.img}}" alt="" class="avatar-xxs">
+                      </div>
+                      <div class="flex-grow-1">
+                        <a routerLink="/learning/overview" class="text-reset">{{ data.name }}</a>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="instructor">{{ data.instructor }}</td>
+                  <td class="lessons">{{ data.lessons }}</td>
+                  <td class="duration">{{ data.duration }}</td>
+                  <td class="students">{{ data.students }}</td>
+                  <td class="fees"><span class="fw-medium">${{ data.fees }}</span></td>
+                  <td class="rating"><i class="bi bi-star-fill text-warning align-baseline me-1"></i>
+                    <span class="rate-value"> {{ data.rating }}</span>
+                  </td>
+                  <td class="status"><span class="badge"
+                                           [ngClass]="{'bg-info-subtle text-info': data.status === 'Open', 'bg-danger-subtle text-danger': data.status === 'Close'}">{{ data.status }}</span>
+                  </td>
+                  <td>
+                    <ul class="d-flex gap-2 list-unstyled mb-0">
+                      <li>
+                        <a routerLink="/learning/overview"
+                           class="btn btn-subtle-primary btn-icon btn-sm "><i
+                          class="ph-eye"></i></a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0);" (click)="editList($index)"
+                           class="btn btn-subtle-secondary btn-icon btn-sm edit-item-btn"><i
+                          class="ph-pencil"></i></a>
+                      </li>
+                      <li>
+                        <a href="javascript:void(0);" (click)="removeItem(data.id)"
+                           class="btn btn-subtle-danger btn-icon btn-sm remove-item-btn"><i
+                          class="ph-trash"></i></a>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              }
+            </tbody><!-- end tbody -->
+          </table><!-- end table -->
+          <div class="noresult" style="display: none;">
+            <div class="text-center py-4">
+              <i class="ph-magnifying-glass fs-1 text-primary"></i>
+              <h5 class="mt-2">Sorry! No Result Found</h5>
+              <p class="text-muted mb-0">We've searched more than 150+ Courses We did not find any Courses
+                for you search.</p>
+            </div>
+          </div>
+        </div>
+        <div id="elmLoader">
+          <div class="spinner-border text-primary avatar-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        <div class="row align-items-center mt-4 pt-2" id="pagination-element">
+          <div class="col-sm">
+            <div class="text-muted text-center text-sm-start">
+              Showing <span class="fw-semibold">{{ courses?.length }}</span> of <span
+              class="fw-semibold">{{ courseList?.length }}</span> Results
+            </div>
+          </div><!--end col-->
+          <div class="col-sm-auto mt-3 mt-sm-0">
+            <pagination class="pagination-wrap hstack gap-2 justify-content-center"
+                        [totalItems]="courseList?.length" [itemsPerPage]="10" (pageChanged)="pageChanged($event)">
+            </pagination>
+          </div><!--end col-->
+        </div><!--end row-->
+      </div>
+    </div><!--end card-->
+  </div><!--end col-->
+</div><!--end row-->
+
+<!-- Modal -->
+<div bsModal #addCourse="bs-modal" class="modal fade modal-lg" id="addCourse">
+  <div class="modal-dialog">
+    <div class="modal-content border-0">
+      <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="addCourseModalLabel">Add Case</h5>
+        <button type="button" class="btn-close" (click)="addCourse.hide()"></button>
+      </div>
+
+      <form (ngSubmit)="saveProduct()" [formGroup]="listForm" class="tablelist-form" novalidate
+            autocomplete="off">
+        <div class="modal-body">
+          <div class="card-body form-steps">
+            <form action="#">
+
+              <ng-stepper #cdkStepper [linear]="true" (selectionChange)="change($event)"
+                          class="step-arrow-nav wizard">
+                <cdk-step [optional]="true">
+                  <ng-template cdkStepLabel class="wizard-nav">
+                    <button class="nav-link done" id="steparrow-gen-info-tab" data-bs-toggle="pill"
+                            type="button">Clients & Contacts
+                    </button>
+                  </ng-template>
+                  @if (cdkStepper.selectedIndex === 0) {
+                    <div>
+                      <div class="mb-3">
+                        <label for="formFile" class="form-label">Upload Image</label>
+                        <input class="form-control" type="file" id="formFile">
+                      </div>
+                      <div>
+                        <label class="form-label"
+                               for="des-info-description-input">Description</label>
+                        <textarea class="form-control" placeholder="Enter Description"
+                                  id="des-info-description-input" rows="3"></textarea>
+                      </div>
+                    </div>
+                  }
+                  <!-- wizard-tab -->
+                  <div class="d-flex align-items-start gap-3 mt-4">
+                    <button type="button" class="btn btn-primary btn-label text-white right ms-auto nexttab
+                                                nexttab" data-nexttab="steparrow-description-info-tab"
+                            cdkStepperNext><i
+                      class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go to
+                      case details
+                    </button>
+                  </div>
+                </cdk-step>
+
+                <cdk-step [optional]="true">
+                  <ng-template cdkStepLabel>
+                    <button class="nav-link done" id="steparrow-description-info-tab"
+                            type="button">Case Details
+                    </button>
+                  </ng-template>
+                  @if (cdkStepper.selectedIndex === 1) {
+                    <div>
+                      <div class="row">
+                        <!-- <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label"
+                                    for="steparrow-gen-info-email-input">Email</label>
+                                <input type="text" class="form-control"
+                                    id="steparrow-gen-info-email-input" placeholder="Enter Email">
+                            </div>
+                        </div> -->
+                        <div class="col-lg-7">
+                          <div class="mb-3">
+                            <label class="form-label"
+                                   for="steparrow-gen-info-username-input">Case name</label>
+                            <input type="text" class="form-control"
+                                   id="steparrow-gen-info-username-input"
+                                   placeholder="Enter User Name">
+                          </div>
+                        </div>
+
+                        <div class="col-lg-5">
+                          <div class="mb-3">
+                            <label class="form-label"
+                                   for="steparrow-gen-info-case-number-input">Case number
+                            </label>
+                            <input type="text" class="form-control"
+                                   id="steparrow-gen-info-case-number-input"
+                                   placeholder="Enter User Name">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Case
+                          Type</label>
+                        <ng-select [items]="Default" bindLabel="name" [clearable]="false">
+                          <ng-template ng-optgroup-tmp let-item="item">
+                            {{ item.country || 'Unnamed group' }}
+                          </ng-template>
+                        </ng-select>
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Case
+                          stage</label>
+                        <ng-select [items]="Default" bindLabel="name" [clearable]="false">
+                          <ng-template ng-optgroup-tmp let-item="item">
+                            {{ item.country || 'Unnamed group' }}
+                          </ng-template>
+                        </ng-select>
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label"
+                               for="steparrow-gen-info-confirm-password-input">Date opened</label>
+
+                        <input type="text" class="form-control" mwlFlatpickr [altInput]="true"
+                               [defaultValue]="currentDate" altFormat="d/m/Y" dateFormat="d/m/Y">
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" aria-label="With textarea" placeholder="Enter description"
+                                  rows="2"></textarea>
+                      </div>
+
+                    </div>
+                  }
+                  <div class="d-flex align-items-start gap-3 mt-4">
+                    <button type="button" class="btn btn-light btn-label previestab"
+                            data-previous="steparrow-gen-info-tab" cdkStepperPrevious><i
+                      class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back to clients & contacts
+                    </button>
+                    <button type="button" class="btn btn-primary btn-label right ms-auto nexttab
+                                                    nexttab" data-nexttab="pills-experience-tab" cdkStepperNext><i
+                      class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Continue to Staff
+                    </button>
+                  </div>
+                </cdk-step>
+
+                <cdk-step [optional]="true">
+                  <ng-template cdkStepLabel class="wizard-nav">
+                    <button class="nav-link done" id="steparrow-gen-info-tab" data-bs-toggle="pill"
+                            type="button">Staff
+                    </button>
+                  </ng-template>
+                  @if (cdkStepper.selectedIndex === 2) {
+                    <div>
+                      <div class="mb-3">
+                        <label for="formFile" class="form-label">Upload Image</label>
+                        <input class="form-control" type="file" id="formFile">
+                      </div>
+                      <div>
+                        <label class="form-label"
+                               for="des-info-description-input">Description</label>
+                        <textarea class="form-control" placeholder="Enter Description"
+                                  id="des-info-description-input" rows="3"></textarea>
+                      </div>
+                    </div>
+                  }
+                  <!-- wizard-tab -->
+                  <div class="d-flex align-items-start gap-3 mt-4">
+                    <button type="button" class="btn btn-light btn-label previestab"
+                            data-previous="steparrow-gen-info-tab" cdkStepperPrevious><i
+                      class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back to case details
+                    </button>
+
+                    <button type="button" class="btn btn-primary btn-label right ms-auto nexttab
+                                                nexttab" data-nexttab="steparrow-description-info-tab"
+                            cdkStepperNext><i
+                      class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go to
+                      case details
+                    </button>
+                  </div>
+                </cdk-step>
+
+                <cdk-step [optional]="false">
+                  <ng-template cdkStepLabel>
+                    <button class="nav-link" type="button">Finish</button>
+                  </ng-template>
+                  @if (cdkStepper.selectedIndex === 3) {
+                    <div>
+                      <div class="text-center">
+                        <div class="avatar-md mt-5 mb-4 mx-auto">
+                          <div
+                            class="avatar-title bg-light text-success display-4 rounded-circle">
+                            <i class="ri-checkbox-circle-fill"></i>
+                          </div>
+                        </div>
+                        <h5>Well Done !</h5>
+                        <p class="text-muted">You have Successfully Signed Up</p>
+                      </div>
+                    </div>
+                  }
+                </cdk-step>
+
+              </ng-stepper>
+              <!-- </div> -->
+            </form>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- modal-content -->
+  </div>
+</div><!--end add Property modal-->
+
+
+<!-- deleteRecordModal -->
+<div bsModal #deleteRecordModal="bs-modal" id="deleteRecordModal" class="modal fade zoomIn">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" id="deleteRecord-close"
+                (click)="deleteRecordModal.hide()"></button>
+      </div>
+      <div class="modal-body p-md-5">
+        <div class="text-center">
+          <div class="text-danger">
+            <i class="bi bi-trash display-5"></i>
+          </div>
+          <div class="mt-4">
+            <h4 class="mb-2">Are you sure ?</h4>
+            <p class="text-muted mx-3 mb-0">Are you sure you want to remove this record ?</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 pt-2 mb-2">
+          <button type="button" class="btn w-sm btn-light btn-hover"
+                  (click)="deleteRecordModal.hide()">Close
+          </button>
+          <button type="button" class="btn w-sm btn-danger btn-hover" id="delete-record"
+                  (click)="deleteData(deleteID)">Yes, Delete It!
+          </button>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /deleteRecordModal -->
+
+<div class="custom-offcanvas" id="courseFilters">
+  <div class="offcanvas-header border-bottom p-3">
+    <h5 class="offcanvas-title" id="courseFiltersLabel">Course Filters</h5>
+    <button type="button" class="btn-close" (click)="closeoffcanvas()"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form action="#!">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label
+              class="select-category-filter form-label fs-md mb-3 text-decoration-underline">Price</label>
+            <div id="product-price-range" data-slider-color="secondary"></div>
+            <ngx-slider [(value)]="pricevalue" [(highValue)]="maxVal" [options]="priceoption"
+                        (valueChange)="valueChange($event,true)"
+                        (highValueChange)="valueChange($event,false)"></ngx-slider>
+            <div class="formCost d-flex gap-2 align-items-center mt-4">
+              <input class="form-control" type="text" id="minCost" value="{{minVal}}">
+              <span class="fw-semibold text-muted">to</span> <input class="form-control" type="text"
+                                                                    id="maxCost" value="{{maxVal}}">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label class="select-category-filter form-label fs-md mb-3 text-decoration-underline">Courses
+              category</label>
+            <div class="vstack gap-2">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="courses-category-all">
+                <label class="form-check-label" for="courses-category-all">
+                  Select All
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="courses-category-filter2">
+                <label class="form-check-label" for="courses-category-filter2">
+                  Data Science
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="courses-category-filter3">
+                <label class="form-check-label" for="courses-category-filter3">
+                  IT & Software
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="courses-category-filter4">
+                <label class="form-check-label" for="courses-category-filter4">
+                  Engineering
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="courses-category-filter5">
+                <label class="form-check-label" for="courses-category-filter5">
+                  Web Development
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="courses-category-filter6">
+                <label class="form-check-label" for="courses-category-filter6">
+                  Finance & Banking
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="courses-category-filter7">
+                <label class="form-check-label" for="courses-category-filter7">
+                  Management
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label
+              class="select-category-filter form-label fs-md mb-3 text-decoration-underline">Ratings</label>
+            <div class="vstack gap-2">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="rating-all">
+                <label class="form-check-label" for="rating-all">
+                  Select All
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="rating-filter1">
+                <label class="form-check-label text-warning" for="rating-filter1">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="rating-filter2">
+                <label class="form-check-label text-warning" for="rating-filter2">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill text-muted"></i>
+                  <span class="ms-1 text-muted">4 & Up</span>
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="rating-filter3">
+                <label class="form-check-label text-warning" for="rating-filter3">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill text-muted"></i>
+                  <i class="bi bi-star-fill text-muted"></i>
+                  <span class="ms-1 text-muted">3 & Up</span>
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="rating-filter4">
+                <label class="form-check-label text-warning" for="rating-filter4">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill text-muted"></i>
+                  <i class="bi bi-star-fill text-muted"></i>
+                  <i class="bi bi-star-fill text-muted"></i>
+                  <span class="ms-1 text-muted">2 & Up</span>
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="rating-filter5">
+                <label class="form-check-label text-warning" for="rating-filter5">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill text-muted"></i>
+                  <i class="bi bi-star-fill text-muted"></i>
+                  <i class="bi bi-star-fill text-muted"></i>
+                  <i class="bi bi-star-fill text-muted"></i>
+                  <span class="ms-1 text-muted">1 & Up</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="offcanvas-header htsack gap-2 border-top p-3">
+    <button class="btn btn-subtle-danger w-100"><i class="bi bi-x-lg align-baseline me-1"></i> Reset</button>
+    <button class="btn btn-secondary w-100"><i class="bi bi-funnel align-baseline me-1"></i> Filters</button>
+  </div>
+</div>
+
+<div class="offcanvas-backdrop fade backdrop3" id="backdrop" (click)="closeoffcanvas()"></div>

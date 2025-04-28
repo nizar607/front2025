@@ -1,0 +1,77 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card" id="contactList">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Latest Orders</h4>
+                <div class="flex-shrink-0">
+                    <div dropdown class="dropdown card-header-dropdown sortble-dropdown">
+                        <a dropdownToggle class="text-reset dropdown-btn" href="javascript:void(0);">
+                            <span class="fw-semibold text-uppercase fs-xs">Sort by:
+                            </span><span class="text-muted dropdown-title">{{sortValue}}</span> <i class="mdi mdi-chevron-down ms-1"></i>
+                        </a>
+                        <div *bsDropdownMenu class="dropdown-menu dropdown-menu-end">
+                            <button class="dropdown-item sort" (click)="sortBy('date','Order Date')">Order Date</button>
+                            <button class="dropdown-item sort" (click)="sortBy('orderId','Order ID')">Order ID</button>
+                            <button class="dropdown-item sort" (click)="sortBy('amount','Amount')">Amount</button>
+                            <button class="dropdown-item sort" (click)="sortBy('status','Status')">Status</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                        <thead class="text-muted table-light">
+                            <tr>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('date')">Order Date</th>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('orderId')">Order ID</th>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('shop')">Shop</th>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('customer')">Customers</th>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('product')">Products</th>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('amount')">Amount</th>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('status')">Status</th>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('rating')">Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            @for (data of stockList; track $index) {
+                            <tr>
+                                <td class="order_date">
+                                    {{data.date}}
+                                </td>
+                                <td class="order_id">
+                                    <a routerLink="/ecommerce/order-overview" class="fw-medium link-primary">{{data.orderId}}</a>
+                                </td>
+                                <td class="shop">
+                                    <img src="{{data.shop}}" alt="" class="avatar-xxs rounded-circle">
+                                </td>
+                                <td class="customer">
+                                    {{data.customer}}
+                                </td>
+                                <td class="products">{{data.product}}</td>
+                                <td class="amount">
+                                    <span class="fw-medium">{{data.amount}}</span>
+                                </td>
+                                <td class="status">
+                                    <span class="badge" [ngClass]="{'bg-secondary-subtle text-secondary': data.status === 'New',
+                                    'bg-warning-subtle text-warning': data.status === 'Pending',
+                                    'bg-danger-subtle text-danger': data.status === 'Out of Delivered',
+                                    'bg-primary-subtle text-primary': data.status === 'Shipping',
+                                    'bg-success-subtle text-success': data.status === 'Delivered'}">{{data.status}}</span>
+                                </td>   
+                            </tr><!-- end tr -->
+                        }
+                        </tbody><!-- end tbody -->
+                    </table><!-- end table -->
+                    <div class="noresult" style="display: none">
+                        <div class="text-center">
+                            <h5 class="mt-2">Sorry! No Result Found</h5>
+                            <p class="text-muted mb-0">We've searched more than 150+ transactions We did not find any
+                                transactions for you search.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end col-->
+</div><!--end row-->

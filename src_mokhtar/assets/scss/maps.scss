@@ -1,0 +1,87 @@
+.leaflet-control-geocoder {
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.leaflet-control-geocoder-form {
+  display: flex;
+  align-items: center;
+  gap: 8px; // Space between button and input
+}
+
+.leaflet-control-geocoder-icon {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &::before {
+    content: "\f002"; // Font Awesome search icon
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+  }
+}
+
+.leaflet-control-geocoder-form input {
+  flex: 1; // Make the input field take up the remaining space
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  font-size: 16px;
+}
+
+.leaflet-control-geocoder-form-no-error {
+  font-size: 14px;
+  color: #dc3545;
+}
+
+.leaflet-control-geocoder-alternatives {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+
+  width: 100% !important;
+  background-color: #f8f9fa !important;
+
+
+  li {
+    padding: 10px;
+    border-bottom: 1px solid #ced4da;
+    width: 100%;
+    cursor: pointer;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: #f8f9fa;
+      color:red;
+    }
+
+    a {
+      display: block;
+      width: 100%;
+      text-decoration: none;
+      color: inherit;
+
+      span {
+        display: block;
+        width: 200px !important;
+      }
+    }
+  }
+}

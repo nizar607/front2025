@@ -1,0 +1,322 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Court List" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+@if (currentUser.roles[0] === 'ROLE_ADMIN' || (currentUser.roles[0] === 'ROLE_AGENT' &&
+accesses.includes('COURT_FETCH')) ) {
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row align-items-center gy-3">
+          <div class="col-lg-3 col-md-6 order-last order-md-first me-auto">
+            <div class="search-box">
+              <input type="text" class="form-control" autocomplete="off" id="searchResultList"
+                placeholder="Search for court, address or something..." [(ngModel)]="searchTerm"
+                (ngModelChange)="performSearch()">
+              <i class=" ri-search-line search-icon"></i>
+            </div>
+          </div><!--end col-->
+          <div class="col-xl-2 col-lg-3 col-12">
+            <div>
+              <select class="form-select" id="status-input" (change)="selectstatus()">
+                <option value="" selected>Select type</option>
+                <option value="FIRST_INSTANCE_COURT">First Instance Court</option>
+                <option value="DISTRICT_COURT">Disctrict Court</option>
+                <option value="APPEAL_COURT">Appeal Court</option>
+                <option value="SUPREME_COURT">Supreme Court</option>
+              </select>
+            </div>
+          </div><!--end col-->
+          <div class="col-auto text-end">
+            <button class="btn btn-secondary" (click)="addCourtModal()"><i
+                class="bi bi-person-plus align-baseline me-1"></i> Add Court
+            </button>
+          </div><!--end col-->
+        </div><!--end row-->
+      </div>
+    </div>
+  </div><!--end row-->
+</div><!--end col-->
+
+<div class="row row-cols-xxl-5 row-cols-md-2 row-cols-1" id="court-list">
+
+  @for (data of courts; track $index) {
+  <div class="col">
+    <div class="card ribbon-box ribbon-fill">
+      <div class="card-body">
+
+        <div class="d-flex justify-content-end">
+          <div class="flex-shrink-0">
+            <div dropdown class="dropdown">
+              <a dropdownToggle class="btn btn-ghost-secondary btn-icon btn-sm" href="javascript:void(0);"
+                role="button">
+              <i class="bi bi-three-dots"></i> </a>
+              <ul *bsDropdownMenu class="dropdown-menu dropdown-menu-end">
+
+                <li>
+                  @if (currentUser.roles[0] === 'ROLE_ADMIN') {
+                  <a class="dropdown-item edit-list" (click)="editCourtModal(data)" href="javascript:void(0);">
+                    <i class="bi bi-pencil-square align-baseline me-1"></i>
+                    Edit
+                  </a>
+                  } @else {
+                  @if(currentUser.roles[0] === 'ROLE_AGENT' && accesses.includes('COURT_UPDATE')) {
+
+                  <a class="dropdown-item edit-list" (click)="editCourtModal(data)" href="javascript:void(0);">
+                    <i class="bi bi-pencil-square align-baseline me-1"></i>
+                    Edit
+                  </a>
+                  }
+                  }
+                </li>
+                <li>
+                  @if (currentUser.roles[0] === 'ROLE_ADMIN') {
+                  <a class="dropdown-item remove-list" href="javascript:void(0);" (click)="removeItem(data.id)">
+                    <i class="bi bi-trash3 align-baseline me-1"></i>
+                    Delete
+                  </a>
+                  } @else {
+                  @if(currentUser.roles[0] === 'ROLE_AGENT' && accesses.includes('COURT_DELETE')) {
+
+                  <a class="dropdown-item remove-list" href="javascript:void(0);" (click)="removeItem(data.id)">
+                    <i class="bi bi-trash3 align-baseline me-1"></i>
+                    Delete
+                  </a>
+                  }
+                  }
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="position-relative d-inline-block">
+            <img src="assets/images/court2.webp" alt="avatar-6.jpg" class="img-fluid rounded mx-auto d-inline-block">
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge border border-2 border-white rounded-circle p-1"
+              [ngClass]="{'bg-success': data.name == 'Active','bg-danger':data.name == 'Unactive'}">
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          </div>
+
+
+          <div class="row">
+            <p class="col-12 fs-md text-secondary-emphasis text-center">
+              <span class="h6">Case Name : </span> {{ data.name }}
+            </p>
+
+          </div>
+
+          <div class="row">
+
+            <p class="col-12 fs-md text-secondary-emphasis text-center">
+              <span class="h6">Added By: </span> {{ data.createdBy?.firstName }} {{ data.createdBy?.lastName }}
+            </p>
+
+          </div>
+          <div class="row">
+            <span class="col-12 fs-md text-secondary-emphasis mb-4 text-center">
+              <span class="h6">Court Type : </span> {{ formatType(data.type) | titlecase }}
+            </span>
+          </div>
+
+
+
+
+
+
+
+          <div class="hstack gap-2 mt-3">
+            <button class="btn btn-subtle-primary w-100" (click)="viewOnMapModal(data)">
+              <i class="bi bi-geo-alt align-baseline me-1"></i>
+              View On Map
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+  
+  <div id="elmLoader">
+    <div class="spinner-border text-primary avatar-xs" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="row align-items-center justify-content-between text-center text-sm-start mb-3" id="pagination-element">
+  <div class="col-sm">
+    <div class="text-muted">
+      Showing <span class="fw-semibold">{{ courts.length }}</span> of <span class="fw-semibold">{{ courtlist?.length
+        }}</span> Results
+    </div>
+  </div><!--end col-->
+  <div class="col-sm-auto mt-3 mt-sm-0">
+    <pagination class="pagination-wrap justify-content-center hstack gap-2" [totalItems]="courtlist?.length"
+      [itemsPerPage]="10" (pageChanged)="pageChanged($event)"></pagination>
+  </div>
+</div>
+<div id="noresult" style="display: none;">
+  <div class="text-center py-4">
+    <div class="avatar-md mx-auto mb-4">
+      <div class="avatar-title bg-light text-primary rounded-circle fs-4xl">
+        <i class="bi bi-search"></i>
+      </div>
+    </div>
+    <h5 class="mt-2">Sorry! No Result Found</h5>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div bsModal #addCourt="bs-modal" class="modal modal-lg fade" id="addCourt" (onShown)="triggerChildAction()">
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCourtModalLabel">{{ formUtils.action }} Court</h5>
+        <button type="button" class="btn-close" (click)="addCourt.hide()"></button>
+      </div>
+
+      <div class="modal-body">
+        @if (formUtils.action == 'add' || formUtils.action == 'edit') {
+        <form (ngSubmit)="saveCourt()" [formGroup]="courtForm" class="tablelist-form" novalidate autocomplete="off">
+          <div id="alert-error-msg" class="d-none alert alert-danger py-2"></div>
+
+          <div class="mb-3">
+            <label for="court-first-name-input" class="form-label">
+              Court Name<span class="text-danger">*</span>
+            </label>
+            <input type="text" id="court-first-name-input"
+              [ngClass]="{'border-danger': formValue['name'].errors && formValue['name'].dirty,'form-control': true}"
+              formControlName="name" class="form-control" placeholder="Enter court name" required>
+
+            @if (formValue['name'].errors && formValue['name'].dirty) {
+
+            @if (formValue['name'].errors!['required']) {
+            <span class="text-danger col-12">Court name is required</span>
+            }
+
+            @if (formValue['name'].errors!['minlength']) {
+            <span class="text-danger col-12">First name must contain at least 3 characters</span>
+            }
+
+            }
+
+          </div>
+
+
+          <div class="mb-3">
+            <label for="court-type-input" class="form-label">Court Type<span class="text-danger">*</span></label>
+            <ng-select [ngClass]="{'border border-danger': formValue['type'].errors && formValue['type'].dirty}"
+              [items]="[
+                  {name:'First Instance Court',value:'FIRST_INSTANCE_COURT'},
+                  {name:'Disctrict Court',value:'DISTRICT_COURT'},
+                  {name:'Appeal Court',value:'APPEAL_COURT'},
+                  {name:'Supreme Court',value:'SUPREME_COURT'}
+              ]" [multiple]="false" [closeOnSelect]="true" id="court-type-input" formControlName="type"
+              placeholder="Select types" bindValue="value" bindLabel="name"></ng-select>
+
+            @if (formValue['type'].errors && formValue['type'].dirty) {
+
+            @if (formValue['type'].errors!['required']) {
+            <span class="text-danger col-12">Type cannot be empty</span>
+            }
+
+            }
+          </div>
+
+
+        </form>
+        }
+
+        <div class="row position-relative">
+
+          <div class="col-4 position-absolute search-map" style="top:23px; z-index:999; right:0;">
+
+            <input class="form-control" [(ngModel)]="searchInputResult" (search)="onSearch($event)" />
+            <ul class="list-group custom-list-group">
+              @for (item of searchResultsFromChild; track $index) {
+              <li class="list-group-item custom-list-group-item">
+                <a (click)="onSelectChange(item)">{{ item.name }}</a>
+              </li>
+              }
+            </ul>
+
+
+            @if (formValue['type'].errors && formValue['type'].dirty) {
+
+            @if (formValue['type'].errors!['required']) {
+            <span class="text-danger col-12">Type cannot be empty</span>
+            }
+
+            }
+          </div>
+
+          <app-leaflet [searchValue]="searchInputResult" [selectedMapData]="selectedMapData"
+            class="position-relative col-12" />
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-ghost-danger" (click)="addCourt.hide()"><i
+              class="bi bi-x-lg align-baseline me-1"></i> Close
+          </button>
+          <button type="submit" class="btn btn-primary" id="add-btn" (click)="saveCourt()">{{ formUtils.action }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+    <!-- modal-content -->
+  </div>
+
+</div>
+<!-- deleteRecordModal -->
+
+<div bsModal #deleteRecordModal="bs-modal" id="deleteRecordModal" class="modal fade zoomIn" tabindex="-1"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" id="deleteRecord-close" (click)="deleteRecordModal.hide()"></button>
+      </div>
+      <div class="modal-body p-md-5">
+        <div class="text-center">
+          <div class="text-danger">
+            <i class="bi bi-trash display-5"></i>
+          </div>
+          <div class="mt-4">
+            <h4 class="mb-2">Are you sure ?</h4>
+            <p class="text-muted fs-md mx-3 mb-0">Are you sure you want to remove this record ?</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 pt-2 mb-2">
+          <button type="button" class="btn w-sm btn-light btn-hover" (click)="deleteRecordModal.hide()">Close</button>
+          <button type="button" class="btn w-sm btn-danger btn-hover" id="delete-record" (click)="confirmDelete()">
+            Yes,
+            Delete It!
+          </button>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /deleteRecordModal -->
+
+}
+@else {
+<div class="d-flex justify-content-center align-items-center h-100">
+  <div class="text-center">
+    <img src="https://cdn-icons-png.flaticon.com/512/61/61457.png" alt="" class="img-fluid" style="max-width: 100px;">
+    <h4 class="mt-4">No Access</h4>
+    <p class="text-muted">You don't have access to this page</p>
+  </div>
+</div>
+}

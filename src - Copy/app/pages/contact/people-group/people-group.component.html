@@ -1,0 +1,116 @@
+<div class="col-xl-12">
+    <div class="card">
+
+        <div class="card-header">
+            <div class="row d-flex justify-content-around pe-3 pt-1">
+                <h3 class="mb-0 flex-grow-1 col-auto">People Groups </h3>
+                <!--<button type="button" class="btn btn-primary add-btn col-auto">
+                    <i class="bi bi-plus-circle align-baseline me-1"></i>
+                    Add Product</button> -->
+                <a href="javascript:void(0);" (click)="openAddModal()"
+                    class="btn btn-primary add-btn col-auto"><i class="bi bi-plus-circle align-baseline me-1"></i> Add
+                    People Group</a>
+
+            </div>
+        </div>
+
+        <div class="card-body">
+            <p class="text-muted col-xl-9 custom-p">Use <code class="custom-code">groups</code> to specify the general
+                group the contact belongs to that does not vary by case.
+                These groups can be helpful for marketing purposes. <code class="custom-code">Examples:</code> Client,
+                Judge</p>
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle table-nowrap mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">GROUP</th>
+                            <th scope="col">CONTACTS</th>
+                            <th scope="col">CREATED BY</th>
+                            <!--<th scope="col">Status</th>-->
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of peopleGroupList; track $index) {
+                        <tr>
+                            <td class="fw-medium">0{{ $index + 1 }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.contactCount }}</td>
+                            <td>{{ item.userFirstName }} {{ item.userLastName }}</td>
+                            <!--<td><span class="badge bg-success-subtle text-success">Active</span></td>-->
+                            <td>
+                                <div class="hstack gap-3 fs-base">
+                                    <a href="javascript:void(0);" class="link-primary"><i
+                                        (click)="openEditModal(item)" class="ri-pencil-fill"></i></a>
+                                    <a href="javascript:void(0);" (click)="removeItem(item.id)" class="link-danger"><i
+                                            class="ri-delete-bin-5-line"></i></a>
+
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div><!-- end card-body -->
+
+        <div bsModal #addPeopleGroup="bs-modal" class="modal fade" id="addPeopleGroup">
+            <div class="modal-dialog">
+                <div class="modal-content border-0">
+                    <div class="modal-header bg-light p-3">
+                        <h5 class="modal-title" id="addCourseModalLabel">{{action}} People Group</h5>
+                        <button type="button" class="btn-close"
+                            (click)="addPeopleGroup.hide()"></button>
+                    </div>
+
+                    <div class="tablelist-form" novalidate autocomplete="off">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="peopleGroupName" class="form-label">Group Name</label>
+                                <input type="text" class="form-control" id="peopleGroupName" name="peopleGroupName"
+                                    placeholder="Enter Group Name" [(ngModel)]="name" required>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" (click)="addPeopleGroup.hide()">Close</button>
+                        <button type="button" class="btn btn-primary" (click)="submit()">Save changes</button>
+                    </div>
+                </div>
+                <!-- modal-content -->
+            </div>
+        </div><!--end add Property modal-->
+
+
+        <!-- deleteRecordModal -->
+        <div bsModal #deleteRecordModal="bs-modal" id="deleteRecordModal" class="modal fade zoomIn">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" id="deleteRecord-close"
+                            (click)="deleteRecordModal.hide()"></button>
+                    </div>
+                    <div class="modal-body p-md-5">
+                        <div class="text-center">
+                            <div class="text-danger">
+                                <i class="bi bi-trash display-5"></i>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="mb-2">Are you sure ?</h4>
+                                <p class="text-muted mx-3 mb-0">Are you sure you want to remove this record ?</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 justify-content-center mt-4 pt-2 mb-2">
+                            <button type="button" class="btn w-sm btn-light btn-hover"
+                                (click)="deleteRecordModal.hide()">Close</button>
+                            <button type="button" class="btn w-sm btn-danger btn-hover" id="delete-record"
+                              (click)="deleteData(deleteID)">Delete</button>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /deleteRecordModal -->
+    </div><!-- end col -->
