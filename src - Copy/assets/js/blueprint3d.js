@@ -3404,7 +3404,7 @@ var BP3D;
                 }
                 var inter = intersections;
                 if (inter.length > 0) {
-                    return inter[0];
+                    return inter[0];                    
                 }
                 else {
                     return null;
@@ -3493,6 +3493,10 @@ var BP3D;
         };
     })(Three = BP3D.Three || (BP3D.Three = {}));
 })(BP3D || (BP3D = {}));
+
+
+
+
 /// <reference path="../../lib/three.d.ts" />
 /// <reference path="../core/utils.ts" />
 var BP3D;
@@ -3578,6 +3582,10 @@ var BP3D;
         };
     })(Three = BP3D.Three || (BP3D.Three = {}));
 })(BP3D || (BP3D = {}));
+
+
+
+
 /// <reference path="../../lib/jQuery.d.ts" />
 /// <reference path="../../lib/three.d.ts" />
 /// <reference path="../core/utils.ts" />
@@ -3600,11 +3608,13 @@ var BP3D;
             var sideColor = 0xcccccc;
             var baseColor = 0xdddddd;
             this.visible = false;
+            
             this.remove = function () {
                 edge.redrawCallbacks.remove(redraw);
                 controls.cameraMovedCallbacks.remove(updateVisibility);
                 removeFromScene();
             };
+
             function init() {
                 edge.redrawCallbacks.add(redraw);
                 controls.cameraMovedCallbacks.add(updateVisibility);
@@ -3612,6 +3622,7 @@ var BP3D;
                 updatePlanes();
                 addToScene();
             }
+
             function redraw() {
                 removeFromScene();
                 updateTexture();
@@ -3825,6 +3836,9 @@ var BP3D;
         };
     })(Three = BP3D.Three || (BP3D.Three = {}));
 })(BP3D || (BP3D = {}));
+
+
+
 /// <reference path="../../lib/three.d.ts" />
 /// <reference path="floor.ts" />
 /// <reference path="edge.ts" />
@@ -3865,6 +3879,8 @@ var BP3D;
         };
     })(Three = BP3D.Three || (BP3D.Three = {}));
 })(BP3D || (BP3D = {}));
+
+
 /// <reference path="../../lib/three.d.ts" />
 var BP3D;
 (function (BP3D) {
@@ -3924,6 +3940,10 @@ var BP3D;
         };
     })(Three = BP3D.Three || (BP3D.Three = {}));
 })(BP3D || (BP3D = {}));
+
+
+
+
 /// <reference path="../../lib/three.d.ts" />
 var BP3D;
 (function (BP3D) {
@@ -3994,6 +4014,9 @@ Contributors:
  * @author WestLangley / http://github.com/WestLangley
  * @author erich666 / http://erichaines.com
  */
+
+
+
 /// <reference path="../../lib/jQuery.d.ts" />
 /// <reference path="../../lib/three.d.ts" />
 var BP3D;

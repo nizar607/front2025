@@ -1,0 +1,350 @@
+<div class="container py-5 product-details-container">
+    <div class="row pt-5">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+                <li class="breadcrumb-item"><a routerLink="/articles">Products</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+            </ol>
+        </nav>
+
+        <!-- Product Gallery -->
+        <div class="col-md-6 mb-4">
+            <div class="product-gallery">
+                <div class="main-image-container">
+                    <img [src]="product.image ? 'http://localhost:8080/api/files/'+product.image : productImages[currentImageIndex]"
+                        class="img-fluid main-product-image" alt="{{ product.name }}">
+
+                    <!-- Navigation arrows -->
+                    <button class="gallery-nav prev" (click)="prevImage()">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button class="gallery-nav next" (click)="nextImage()">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Thumbnail images -->
+                <div class="thumbnail-container mt-3 d-flex">
+                    <div *ngFor="let image of productImages; let i = index" class="thumbnail"
+                        [class.active]="i === currentImageIndex" (click)="setImage(i)">
+                        <img [src]="image" class="img-fluid" alt="Thumbnail">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6 position-relative">
+            <div class="product-info">
+                <h1 class="product-title mb-3">{{ product.name || 'Product Name' }}</h1>
+
+                <!-- Rating summary -->
+                <div class="rating-summary d-flex align-items-center mb-3">
+                    <div class="stars">
+                        <i *ngFor="let star of getStarsArray(5)" class="bi"
+                            [ngClass]="{'bi-star-fill': star <= 4, 'bi-star': star > 4}"></i>
+                    </div>
+                    <span class="rating-count ms-2">({{ reviews.length }} reviews)</span>
+                </div>
+
+                <!-- Price -->
+                <div class="product-price mb-4">
+                    <h2 class="text-primary fw-bold">Price: {{ product.price || '0.00' }}$</h2>
+                </div>
+
+                <p class="text-success fw-bold position-absolute top-0 end-0"> <i class="bi bi-check-circle-fill"></i>
+                    In Stock</p>
+
+                <!-- Description -->
+                <div class="product-description mb-4">
+                    <p>
+                        <strong class="fw-bold">Description:</strong>
+                        {{ product.description || 'No description available' }}
+                    </p>
+                </div>
+
+                <div class="row">
+
+                    <!-- Quantity selector -->
+                    <div class="quantity-selector row d-flex align-items-center mb-4 col-4">
+                        <label for="quantity" class="me-3">Quantity: </label>
+                        <div class="input-group row">
+
+                            <button class="btn btn-outline-secondary col-1" type="button" (click)="decrementQuantity()">
+                                <i class="bi bi-dash"></i>
+                            </button>
+
+                            <input type="text" class="form-control text-center input-quantity" id="quantity"
+                                [value]="quantity" readonly>
+
+                            <button class="btn btn-outline-secondary col-1" type="button" (click)="incrementQuantity()">
+                                <i class="bi bi-plus"></i>
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Action buttons -->
+                <div class="action-buttons d-flex gap-3 mb-4">
+                    <button class="btn btn-primary btn-lg flex-grow-1" (click)="addToCart()">
+                        <i class="bi bi-cart-plus-fill me-2"></i> Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Details Tabs -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                <li class="nav-item" role="specifications">
+                    <button class="nav-link active" id="specifications-tab" data-bs-toggle="tab"
+                        data-bs-target="#specifications" type="button" role="tab" aria-controls="specifications"
+                        aria-selected="true">Specifications</button>
+                </li>
+                
+
+            </ul>
+            <div class="tab-content p-4 border border-top-0 rounded-bottom" id="productTabsContent">
+
+
+
+                <!-- Specifications Tab -->
+                <div class="tab-pane fade show active" id="specifications" role="tabpanel" aria-labelledby="specifications-tab">
+                    <h4>Technical Specifications</h4>
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Dimensions</th>
+                                <td>W: 80cm × H: 120cm × D: 60cm</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Weight</th>
+                                <td>15 kg</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Material</th>
+                                <td>Wood, Metal</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Color Options</th>
+                                <td>Natural, Black, White</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Assembly Required</th>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Warranty</th>
+                                <td>2 Years</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="section-title mb-4">Related Products</h3>
+            <div class="row">
+                <div class="col-md-3 mb-4 ms-3" *ngFor="let relatedProduct of relatedProducts">
+                    <div class="card h-100 product-card">
+                        <img [src]="relatedProduct.image ? 'http://localhost:8080/api/files/'+relatedProduct.image : 'https://fastly.picsum.photos/id/26/300/300.jpg?hmac=E1-2QJCQxWIvxpZjJFXzCBQnUMFtmh6jti8VJTiiMcU'"
+                            class="card-img-top" alt="{{ relatedProduct.name }}">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ relatedProduct.name }}</h5>
+                            <div class="stars mb-2">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <p class="card-text flex-grow-1">{{ relatedProduct.description | slice:0:60 }}{{
+                                relatedProduct.description?.length > 60 ? '...' : '' }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <h6 class="text-primary mb-0">${{ relatedProduct.price }}</h6>
+                                <a [routerLink]="['/client/product', relatedProduct.id]"
+                                    class="btn btn-sm btn-outline-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="reviews-container">
+        <h4>Customer Reviews</h4>
+
+        <!-- Review Summary -->
+        <div class="review-summary mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-3 text-center">
+                    <div class="overall-rating">
+                        <h1 class="display-4 fw-bold">4.2</h1>
+                        <div class="stars mb-2">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-half"></i>
+                        </div>
+                        <p class="text-muted">Based on {{ reviews.length }} reviews</p>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="rating-bars">
+                        <div class="rating-bar d-flex align-items-center mb-2">
+                            <span class="me-2">5</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 65%"
+                                    aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">65%</span>
+                        </div>
+                        <div class="rating-bar d-flex align-items-center mb-2">
+                            <span class="me-2">4</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 20%"
+                                    aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">20%</span>
+                        </div>
+                        <div class="rating-bar d-flex align-items-center mb-2">
+                            <span class="me-2">3</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 10%"
+                                    aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">10%</span>
+                        </div>
+                        <div class="rating-bar d-flex align-items-center mb-2">
+                            <span class="me-2">2</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 3%"
+                                    aria-valuenow="3" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">3%</span>
+                        </div>
+                        <div class="rating-bar d-flex align-items-center">
+                            <span class="me-2">1</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 2%"
+                                    aria-valuenow="2" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">2%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Write a Review -->
+        <div class="write-review mb-5">
+            <h5>Write a Review</h5>
+            <form (ngSubmit)="submitReview()">
+                <div class="mb-3">
+                    <label for="rating" class="form-label">Your Rating</label>
+                    <div class="rating-select">
+                        <div class="btn-group" role="group" aria-label="Rating">
+                            <input type="radio" class="btn-check" name="rating" id="rating1"
+                                [(ngModel)]="newReview.rating" [value]="1">
+                            <label class="btn btn-outline-warning" for="rating1"><i class="bi bi-star-fill"></i></label>
+
+                            <input type="radio" class="btn-check" name="rating" id="rating2"
+                                [(ngModel)]="newReview.rating" [value]="2">
+                            <label class="btn btn-outline-warning" for="rating2"><i class="bi bi-star-fill"></i></label>
+
+                            <input type="radio" class="btn-check" name="rating" id="rating3"
+                                [(ngModel)]="newReview.rating" [value]="3">
+                            <label class="btn btn-outline-warning" for="rating3"><i class="bi bi-star-fill"></i></label>
+
+                            <input type="radio" class="btn-check" name="rating" id="rating4"
+                                [(ngModel)]="newReview.rating" [value]="4">
+                            <label class="btn btn-outline-warning" for="rating4"><i class="bi bi-star-fill"></i></label>
+
+                            <input type="radio" class="btn-check" name="rating" id="rating5"
+                                [(ngModel)]="newReview.rating" [value]="5" checked>
+                            <label class="btn btn-outline-warning" for="rating5"><i class="bi bi-star-fill"></i></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="reviewComment" class="form-label">Your Review</label>
+                    <textarea class="form-control" id="reviewComment" rows="4" [(ngModel)]="newReview.comment"
+                        name="comment" placeholder="Share your experience with this product..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </form>
+        </div>
+
+        <!-- Review List -->
+        <div class="review-list">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5>{{ reviews.length }} Reviews</h5>
+                <select class="form-select" style="width: auto;">
+                    <option selected>Most Recent</option>
+                    <option>Highest Rating</option>
+                    <option>Lowest Rating</option>
+                </select>
+            </div>
+
+            <!-- Individual Reviews -->
+            <div class="review-item mb-4 p-4 border rounded" *ngFor="let review of reviews">
+                <div class="d-flex">
+                    <div class="review-avatar me-3">
+                        <img [src]="review.avatar" class="rounded-circle" width="60" height="60" alt="User Avatar">
+                    </div>
+                    <div class="review-content w-100">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">{{ review.user }}</h6>
+                            <span class="text-muted small">{{ review.date }}</span>
+                        </div>
+                        <div class="stars mb-2">
+                            <i *ngFor="let star of getStarsArray(5)" class="bi"
+                                [ngClass]="{'bi-star-fill': star <= review.rating, 'bi-star': star > review.rating}"></i>
+                        </div>
+                        <p class="review-text">{{ review.comment }}</p>
+                        <div class="review-actions mt-3">
+                            <button class="btn btn-sm btn-outline-secondary me-2">
+                                <i class="bi bi-hand-thumbs-up me-1"></i> Helpful
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-flag me-1"></i> Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Review pagination" *ngIf="reviews.length > 5">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</div>

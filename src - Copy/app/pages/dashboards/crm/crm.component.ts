@@ -4,8 +4,7 @@ import { DecimalPipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { getChartColorsArray, shuffleArray } from 'src/app/shared/commonFunction';
 import { Store } from '@ngrx/store';
-import { fetchdealData, fetchleadData, fetchtableData, fetchtaksData } from 'src/app/store/CRM/crm.actions';
-import { selectabledata, selectdealData, selectleadData, selecttaskdata } from 'src/app/store/CRM/crm-selector';
+
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 
 @Component({
@@ -45,24 +44,27 @@ export class CrmComponent {
     ];
 
     // store
-    this.store.dispatch(fetchtableData());
-    this.store.select(selectabledata).subscribe((data) => {
-      this.statedata = data;
-    });
-    this.store.dispatch(fetchleadData());
-    this.store.select(selectleadData).subscribe((data) => {
-      this.contact = data;
-      this.leadlist = data;
-      this.contact = this.leadlist.slice(0, 5)
-    });
-    this.store.dispatch(fetchdealData());
-    this.store.select(selectdealData).subscribe((data) => {
-      this.dealList = data;
-    });
-    this.store.dispatch(fetchtaksData());
-    this.store.select(selecttaskdata).subscribe((data) => {
-      this.taskList = data;
-    });
+    // this.store.dispatch(fetchtableData());
+    // this.store.select(selectabledata).subscribe((data) => {
+    //   this.statedata = data;
+    // });
+
+    // this.store.dispatch(fetchleadData());
+    // this.store.select(selectleadData).subscribe((data) => {
+    //   this.contact = data;
+    //   this.leadlist = data;
+    //   this.contact = this.leadlist.slice(0, 5)
+    // });
+
+    // this.store.dispatch(fetchdealData());
+    // this.store.select(selectdealData).subscribe((data) => {
+    //   this.dealList = data;
+    // });
+
+    // this.store.dispatch(fetchtaksData());
+    // this.store.select(selecttaskdata).subscribe((data) => {
+    //   this.taskList = data;
+    // });
 
 
     // Chart Color Data Get Function

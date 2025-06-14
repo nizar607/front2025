@@ -13,11 +13,12 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { CoreModule } from 'src/app/core/core.module';
 
 
 @NgModule({
   declarations: [
-    GridComponent,
+    GridComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +34,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ReactiveFormsModule,
     TooltipModule.forRoot(),
     DropzoneModule,
-    ImageCropperComponent
+    ImageCropperComponent,
+    CoreModule
   ]
 })
 export class ArticleModule { }

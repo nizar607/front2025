@@ -18,10 +18,13 @@ import {
   updatearticleDataSuccess,
   uploadImage,
   uploadImageSuccess,
-  uploadImageFailure
+  uploadImageFailure,
+  searcharticleSuccess,
+  searcharticleData,
+  searcharticleFailure
 } from "./article.action";
-import { fetchsalesFailure } from "../Ecommerce/ecommerce.actions";
 import { ArticleModel } from "./article.model";
+import { CategoryEffects } from "../Category/category.effects";
 
 
 @Injectable()
@@ -35,6 +38,20 @@ export class ArticleEffects {
           map((articledata) => fetcharticleSuccess({ fetchedArticleData: articledata })),
           catchError((error) =>
             of(fetcharticleFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  searchArticles$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(searcharticleData),
+      mergeMap(({ searchInput, minPrice, maxPrice, categories }) =>
+        this.articleService.search(searchInput, minPrice, maxPrice, categories).pipe(
+          map((articledata) => searcharticleSuccess({ fetchedArticleData: articledata })),
+          catchError((error) =>
+            of(searcharticleFailure({ error }))
           )
         )
       )

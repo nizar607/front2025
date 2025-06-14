@@ -27,7 +27,7 @@
                         </div>
                     </div><!--end col-->
                     <div class="col-auto text-end">
-                        <button class="btn btn-secondary" (click)="addArticle()"><i
+                        <button *appHasPermission="'ARTICLE_CREATE'" class="btn btn-secondary" (click)="addArticle()"><i
                                 class="bi bi-person-plus align-baseline me-1"></i> Add Article
                         </button>
                     </div><!--end col-->
@@ -54,14 +54,14 @@
                                 role="button"> <i class="bi bi-three-dots"></i> </a>
                             <ul *bsDropdownMenu class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a class="dropdown-item edit-list" (click)="editModal(article)"
+                                    <a *appHasPermission="'ARTICLE_UPDATE'" class="dropdown-item edit-list" (click)="editModal(article)"
                                         href="javascript:void(0);">
                                         <i class="bi bi-pencil-square align-baseline me-1"></i>
                                         Edit
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item remove-list" href="javascript:void(0);"
+                                    <a *appHasPermission="'ARTICLE_DELETE'" class="dropdown-item remove-list" href="javascript:void(0);"
                                         (click)="deleteArticle(article.id)">
                                         <i class="bi bi-trash3 align-baseline me-1"></i>
                                         Delete
@@ -340,8 +340,8 @@
                     <button type="button" class="btn btn-ghost-danger" (click)="addModal.hide()"><i
                             class="bi bi-x-lg align-baseline me-1"></i> Close
                     </button>
-                    <button type="submit" class="btn btn-primary" id="add-btn" (click)="saveArticle()">{{
-                        formUtils.action }}
+                    <button type="submit" class="btn btn-primary" id="add-btn" (click)="saveArticle()">
+                        {{ formUtils.action }}
                     </button>
                 </div>
             </div>

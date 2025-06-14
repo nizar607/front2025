@@ -1,9 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, Validators, UntypedFormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { fetchattachmentData, fetchbookmarkData, fetchcallsData, fetchchannnelData, fetchchatData, fetchcontactData, fetchmessagesData } from 'src/app/store/chat/chat.action';
 import { Store } from '@ngrx/store';
-import { selectData, selectattachmentData, selectbookmarkData, selectcallData, selectcallslistData, selectchannelData, selectcontactData } from 'src/app/store/chat/chat.selector';
 import { cloneDeep } from 'lodash';
 
 @Component({
@@ -87,36 +85,36 @@ export class ChatComponent {
     private _fetchData() {
 
         // Fetch Data
-        setTimeout(() => {
-            this.store.dispatch(fetchmessagesData());
-            this.store.select(selectData).subscribe((data) => {
-                this.messageData = cloneDeep(data);
-            })
-        }, 1200)
-        this.store.dispatch(fetchchatData());
-        this.store.select(selectcallslistData).subscribe((data) => {
-            this.chatData = data;
-        })
-        this.store.dispatch(fetchchannnelData());
-        this.store.select(selectchannelData).subscribe((data) => {
-            this.channeldata = data;
-        })
-        this.store.dispatch(fetchcontactData());
-        this.store.select(selectcontactData).subscribe((data) => {
-            this.contactData = data;
-        })
-        this.store.dispatch(fetchattachmentData());
-        this.store.select(selectattachmentData).subscribe((data) => {
-            this.attachementsData = data;
-        })
-        this.store.dispatch(fetchcallsData());
-        this.store.select(selectcallData).subscribe((data) => {
-            this.callsData = data;
-        })
-        this.store.dispatch(fetchbookmarkData());
-        this.store.select(selectbookmarkData).subscribe((data) => {
-            this.bookmarkData = data;
-        })
+        // setTimeout(() => {
+        //     this.store.dispatch(fetchmessagesData());
+        //     this.store.select(selectData).subscribe((data) => {
+        //         this.messageData = cloneDeep(data);
+        //     })
+        // }, 1200)
+        // this.store.dispatch(fetchchatData());
+        // this.store.select(selectcallslistData).subscribe((data) => {
+        //     this.chatData = data;
+        // })
+        // this.store.dispatch(fetchchannnelData());
+        // this.store.select(selectchannelData).subscribe((data) => {
+        //     this.channeldata = data;
+        // })
+        // this.store.dispatch(fetchcontactData());
+        // this.store.select(selectcontactData).subscribe((data) => {
+        //     this.contactData = data;
+        // })
+        // this.store.dispatch(fetchattachmentData());
+        // this.store.select(selectattachmentData).subscribe((data) => {
+        //     this.attachementsData = data;
+        // })
+        // this.store.dispatch(fetchcallsData());
+        // this.store.select(selectcallData).subscribe((data) => {
+        //     this.callsData = data;
+        // })
+        // this.store.dispatch(fetchbookmarkData());
+        // this.store.select(selectbookmarkData).subscribe((data) => {
+        //     this.bookmarkData = data;
+        // })
 
     }
 

@@ -10,7 +10,7 @@ export const fetchcategoryFailure = createAction('[Data] Fetch category Data Fai
 // Add Data
 export const addcategoryData = createAction(
   '[Data] Add categoryData',
-  props<{ newData: FormData }>()
+  props<{ newData: any }>()
 );
 
 export const uploadImage = createAction(
@@ -46,7 +46,7 @@ export const updatecategoryData = createAction(
 
 export const updatecategoryDataSuccess = createAction(
   '[Data] Update categoryData Success',
-  props<{ updatedData: any }>()
+  props<{ updatedData: CategoryModel }>()
 );
 export const updatecategoryDataFailure = createAction(
   '[Data] Update categoryData Failure',

@@ -10,6 +10,9 @@ import { CustomerReducer, CustomerState } from "./Customer/customer.reducer";
 import { AgentReducer, AgentState } from "./Agent/agent.reducer";
 import { ArticleReducer, ArticleState } from './Article/article.reducer';
 import { CategoryReducer, CategoryState } from './Category/category.reducer';
+import { ReviewReducer, ReviewState } from "./Review/review.reducer";
+import { FavoriteReducer, FavoriteState } from "./Favorite/favorite.reducer";
+import { CartReducer, CartState } from "./Cart/cart.reducer";
 
 export interface RootReducerState {
   CategoryList: CategoryState;
@@ -19,6 +22,9 @@ export interface RootReducerState {
   Invoice: InvoiceState;
   CustomerList: CustomerState;
   ArticleList: ArticleState;
+  ReviewList: ReviewState;
+  FavoriteList: FavoriteState;
+  cart: CartState;
 }
 
 export const rootReducer: ActionReducerMap<RootReducerState> = {
@@ -29,6 +35,9 @@ export const rootReducer: ActionReducerMap<RootReducerState> = {
   CustomerList: CustomerReducer,
   ArticleList: ArticleReducer,
   CategoryList: CategoryReducer,
+  ReviewList: ReviewReducer,
+  FavoriteList: FavoriteReducer,
+  cart: CartReducer,
 }
 
 

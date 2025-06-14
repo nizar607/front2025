@@ -1,0 +1,62 @@
+<div dropdown class="dropdown">
+  <button dropdownToggle type="button" class="btn header-item position-relative" id="notification-dropdown">
+    <i class="bi bi-bell fs-4"></i>
+    <span *ngIf="unreadCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger mt-3">
+      {{ unreadCount > 9 ? '9+' : unreadCount }}
+      <span class="visually-hidden">unread notifications</span>
+    </span>
+  </button>
+  <div *bsDropdownMenu class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="notification-dropdown">
+    <div class="p-3">
+      <div class="row align-items-center">
+        <div class="col">
+          <h6 class="m-0">Notifications</h6>
+        </div>
+        <div class="col-auto">
+          <a href="javascript:void(0);" class="small me-2" (click)="markAllAsRead()">Mark all as read</a>
+          <button class="btn btn-sm btn-primary" (click)="viewAllNotifications()">
+            <i class="bi bi-list-ul me-1"></i>View List
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="notification-list" style="max-height: 300px; overflow-y: auto;">
+      <div *ngIf="filteredNotifications.length === 0" class="text-center p-3">
+        <p class="mb-0">No notifications</p>
+      </div>
+      <a *ngFor="let notification of filteredNotifications; trackBy: trackByNotificationId" 
+         href="javascript:void(0);" 
+         class="dropdown-item text-reset notification-item"
+         [class.bg-light]="!notification.read"
+         (click)="markAsRead(notification.id)">
+        <div class="d-flex">
+          <div class="flex-shrink-0 me-3">
+            <div [class]="'avatar-xs rounded-circle bg-' + getNotificationColor(notification.type).replace('text-', '') + ' d-flex align-items-center justify-content-center'">
+              <i [class]="'bi ' + getNotificationIcon(notification.type) + ' text-white'"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1">
+            <h6 class="mb-1">{{ notification.message }}</h6>
+            <div class="font-size-12 text-muted">
+              <p class="mb-0"><i class="bi bi-clock-history"></i> {{ getTimeAgo(notification.timestamp) }}</p>
+            </div>
+            <span [class]="getNotificationBadgeClass(notification.type)">{{ notification.type }}</span>
+          </div>
+          <div class="flex-shrink-0">
+            <button class="btn btn-sm btn-outline-danger" 
+                    (click)="deleteNotification(notification.id, $event)"
+                    title="Delete notification">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+      </a>
+    </div>
+    
+
+  </div>
+</div>
+
+

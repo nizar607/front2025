@@ -3,8 +3,7 @@ import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { Store } from '@ngrx/store';
-import { addcourcelistData, deletecourcelistData, fetchcourcelistdata, updatecourcelistData } from 'src/app/store/Learning-cources/cources.action';
-import { selectData } from 'src/app/store/Learning-cources/cources.selector';
+
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { cloneDeep } from 'lodash';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
@@ -161,21 +160,21 @@ export class ManageUsersComponent {
   * Save product
   */
   saveProduct() {
-    if (this.listForm.valid) {
-      if (this.listForm.get('id')?.value) {
-        const updatedData = this.listForm.value;
-        this.store.dispatch(updatecourcelistData({ updatedData }));
-      }
-      else {
-        const newData = this.listForm.value
-        this.store.dispatch(addcourcelistData({ newData }));
-      }
-      setTimeout(() => {
-        this.listForm.reset();
-      }, 2000);
-      this.uploadedFiles = [];
-      this.addCourse?.hide()
-    }
+    // if (this.listForm.valid) {
+    //   if (this.listForm.get('id')?.value) {
+    //     const updatedData = this.listForm.value;
+    //     this.store.dispatch(updatecourcelistData({ updatedData }));
+    //   }
+    //   else {
+    //     const newData = this.listForm.value
+    //     this.store.dispatch(addcourcelistData({ newData }));
+    //   }
+    //   setTimeout(() => {
+    //     this.listForm.reset();
+    //   }, 2000);
+    //   this.uploadedFiles = [];
+    //   this.addCourse?.hide()
+    // }
   }
 
   checkedValGet: any[] = [];
@@ -216,13 +215,13 @@ export class ManageUsersComponent {
 
   // confirm delete
   deleteData(id: any) {
-    this.deleteRecordModal?.hide();
-    if (id) {
-      this.store.dispatch(deletecourcelistData({ id: this.deleteID.toString() }));
-    }
-    this.store.dispatch(deletecourcelistData({ id: this.checkedValGet.toString() }));
-    this.deleteRecordModal?.hide();
-    this.masterSelected = false
+    // this.deleteRecordModal?.hide();
+    // if (id) {
+    //   this.store.dispatch(deletecourcelistData({ id: this.deleteID.toString() }));
+    // }
+    // this.store.dispatch(deletecourcelistData({ id: this.checkedValGet.toString() }));
+    // this.deleteRecordModal?.hide();
+    // this.masterSelected = false
   }
   // filterdata
   filterdata() {

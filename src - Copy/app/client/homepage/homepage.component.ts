@@ -9,6 +9,7 @@ import gsap from 'gsap';
 export class HomepageComponent implements OnInit {
 
   ngOnInit() {
+    
 
     gsap.set("svg", { visibility: "visible" });
     gsap.to("#headStripe", {

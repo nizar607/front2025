@@ -1,0 +1,171 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+        <h4 class="mb-sm-0 font-size-18">Notifications</h4>
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
+            <li class="breadcrumb-item active">Notifications</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row align-items-center">
+            <div class="col">
+              <h4 class="card-title mb-0">All Notifications</h4>
+            </div>
+            <div class="col-auto">
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-primary btn-sm" 
+                        (click)="refreshNotifications()" 
+                        [disabled]="isLoading">
+                  <i class="bi bi-arrow-clockwise" [class.spin]="isLoading"></i>
+                  Refresh
+                </button>
+                <button class="btn btn-success btn-sm" 
+                        (click)="markAllAsRead()"
+                        [disabled]="isLoading">
+                  <i class="bi bi-check-all"></i>
+                  Mark All Read
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <!-- Filter Tabs -->
+          <div class="mb-4">
+            <ul class="nav nav-pills nav-justified">
+              <li class="nav-item" *ngFor="let type of notificationTypes">
+                <a class="nav-link" 
+                   [class.active]="selectedFilter === type.value"
+                   href="javascript:void(0);"
+                   (click)="onFilterChange(type.value)">
+                  {{ type.label }}
+                  <span class="badge bg-light text-dark ms-1">
+                    {{ getNotificationTypeCount(type.value) }}
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Loading State -->
+          <div *ngIf="isLoading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Loading notifications...</p>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="!isLoading && filteredNotifications.length === 0" class="text-center py-5">
+            <i class="bi bi-bell-slash display-4 text-muted"></i>
+            <h5 class="mt-3">No notifications found</h5>
+            <p class="text-muted">You don't have any notifications of this type yet.</p>
+          </div>
+
+          <!-- Notifications List -->
+          <div *ngIf="!isLoading && filteredNotifications.length > 0">
+            <div class="notification-item border rounded p-3 mb-3" 
+                 *ngFor="let notification of paginatedNotifications; trackBy: trackByNotificationId"
+                 [class.bg-light]="!notification.read">
+              <div class="d-flex align-items-start">
+                <!-- Notification Icon -->
+                <div class="flex-shrink-0 me-3">
+                  <div [class]="getNotificationBgClass(notification.type)">
+                    <i [class]="'bi ' + getNotificationIcon(notification.type) + ' text-white fs-5'"></i>
+                  </div>
+                </div>
+
+                <!-- Notification Content -->
+                <div class="flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h6 class="mb-1 fw-semibold" [class.text-muted]="notification.read">
+                      {{ notification.message }}
+                    </h6>
+                    <span [class]="getNotificationBadgeClass(notification.type)">
+                      {{ notification.type }}
+                    </span>
+                  </div>
+                  
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-muted small">
+                      <i class="bi bi-clock-history me-1"></i>
+                      {{ getTimeAgo(notification.timestamp) }}
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                      <button *ngIf="!notification.read" 
+                              class="btn btn-sm btn-outline-success"
+                              (click)="markAsRead(notification.id)"
+                              title="Mark as read"
+                              [disabled]="isLoading">
+                        <i class="bi bi-check"></i>
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger"
+                              (click)="deleteNotification(notification.id)"
+                              title="Delete notification"
+                              [disabled]="isLoading">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pagination -->
+            <div *ngIf="totalPages > 1" class="d-flex justify-content-between align-items-center mt-4">
+              <div class="text-muted">
+                Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
+                {{ Math.min(currentPage * itemsPerPage, totalItems) }} of {{ totalItems }} notifications
+              </div>
+              
+              <nav aria-label="Notifications pagination">
+                <ul class="pagination pagination-sm mb-0">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" 
+                       href="javascript:void(0);" 
+                       (click)="onPageChange(currentPage - 1)"
+                       [attr.aria-disabled]="currentPage === 1">
+                      <i class="bi bi-chevron-left"></i>
+                    </a>
+                  </li>
+                  
+                  <li class="page-item" 
+                      *ngFor="let page of getPaginationArray()" 
+                      [class.active]="page === currentPage">
+                    <a class="page-link" 
+                       href="javascript:void(0);" 
+                       (click)="onPageChange(page)"
+                       [attr.aria-current]="page === currentPage ? 'page' : null">
+                      {{ page }}
+                    </a>
+                  </li>
+                  
+                  <li class="page-item" [class.disabled]="currentPage === totalPages">
+                    <a class="page-link" 
+                       href="javascript:void(0);" 
+                       (click)="onPageChange(currentPage + 1)"
+                       [attr.aria-disabled]="currentPage === totalPages">
+                      <i class="bi bi-chevron-right"></i>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

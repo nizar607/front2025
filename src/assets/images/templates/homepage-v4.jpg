@@ -1,0 +1,33 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="modernGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f6f3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ede7e0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#modernGrad)"/>
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="400" height="60" fill="#ffffff" opacity="0.9"/>
+  <rect x="20" y="20" width="80" height="20" fill="#2c2c2c" rx="2"/>
+  <rect x="320" y="15" width="60" height="30" fill="#d4af37" rx="15"/>
+  
+  <!-- Hero Section -->
+  <rect x="50" y="80" width="300" height="40" fill="#2c2c2c" rx="4"/>
+  <rect x="50" y="130" width="200" height="15" fill="#666666" rx="2"/>
+  <rect x="50" y="150" width="150" height="15" fill="#666666" rx="2"/>
+  <rect x="50" y="180" width="120" height="35" fill="#d4af37" rx="17"/>
+  
+  <!-- Content Cards -->
+  <rect x="30" y="230" width="100" height="60" fill="#ffffff" rx="8" stroke="#e0e0e0"/>
+  <rect x="150" y="230" width="100" height="60" fill="#ffffff" rx="8" stroke="#e0e0e0"/>
+  <rect x="270" y="230" width="100" height="60" fill="#ffffff" rx="8" stroke="#e0e0e0"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="350" cy="100" r="30" fill="#d4af37" opacity="0.1"/>
+  <circle cx="380" cy="130" r="15" fill="#2c2c2c" opacity="0.05"/>
+  
+  <text x="200" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#2c2c2c" font-weight="bold">Modern & Elegant</text>
+</svg>

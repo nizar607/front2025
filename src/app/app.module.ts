@@ -41,6 +41,9 @@ import { CustomerEffects } from './store/Customer/customer.effects';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CategoryEffects } from './store/Category/category.effects';
 import { ArticleEffects } from './store/Article/article.effects';
+import { ReviewEffects } from './store/Review/review.effects';
+import { FavoriteEffects } from './store/Favorite/favorite.effects';
+import { CartEffects } from './store/Cart/cart.effects';
 
 
 export function createTranslateLoader(http: HttpClient): any {
@@ -79,7 +82,10 @@ if (environment.defaultauth === 'firebase') {
       AuthenticationEffects,
       CustomerEffects,
       ArticleEffects,
-      CategoryEffects
+      CategoryEffects,
+      ReviewEffects,
+      FavoriteEffects,
+      CartEffects
 ]),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     HttpClientModule,

@@ -1,0 +1,104 @@
+<div class="container py-5">
+    <div class="row pt-5 text-center">
+        <div id="searchthis" class="col-12 d-flex justify-content-center align-items-center py-4" style="gap: 10px;">
+            <div style="position: relative; width: 40%;">
+                <i class="bi bi-search"
+                    style="position: absolute; top: 50%; left: 12px; transform: translateY(-50%); color: #aaa;"></i>
+                <input id="namanyay-search-box" [(ngModel)]="searchInput" name="q" type="text" placeholder="Search" class="form-control ps-5" />
+            </div>
+            <button id="namanyay-search-btn" class="btn btn-primary" (click)="searchArticles()">
+                Search
+            </button>
+        </div>
+    </div>
+
+    <div class="row pt-1">
+
+        <!-- Filter Sidebar -->
+        <div class="col-md-3 mb-4">
+            <div class="filter-sidebar">
+                <h5 class="filter-title">Filters</h5>
+                
+                <!-- Price Filter -->
+                <div class="mb-4">
+                    <h6 class="mb-3">Price Range</h6>
+                    <div class="price-display">
+                        ${{minSlider}} – ${{maxSlider}}
+                    </div>
+                    <mat-slider class="custom-slider" [min]="0" [max]="10000">
+                        <input [value]="minSlider" matSliderStartThumb [(ngModel)]="minSlider">
+                        <input [value]="maxSlider" matSliderEndThumb [(ngModel)]="maxSlider">
+                    </mat-slider>
+                </div>
+                
+                <!-- Categories Filter -->
+                <div class="mb-3">
+                    <h6 class="mb-3">Categories</h6>
+                    <div class="d-flex align-items-center mb-2">
+                        <mat-checkbox [(ngModel)]="allComplete" 
+                            (change)="setAll($event.checked)" 
+                            [indeterminate]="someComplete()" 
+                            color="primary">
+                            <span class="fw-medium">All Categories</span>
+                        </mat-checkbox>
+                    </div>
+                    <ul class="list-unstyled ms-2 mt-2">
+                        @for (category of checkBox.subtasks; track category) {
+                        <li class="category-item">
+                            <mat-checkbox [(ngModel)]="category.completed" 
+                                color="primary"
+                                (ngModelChange)="updateAllComplete()">
+                                {{category.name}}
+                            </mat-checkbox>
+                        </li>
+                        }
+                    </ul>
+                </div>
+                
+                <!-- Apply Filters Button -->
+                <button class="btn btn-primary w-100 mt-3" (click)="searchArticles()">
+                    <i class="bi bi-funnel-fill me-2"></i> Apply Filters
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-8 ms-3">
+
+            @for(article of articles; track article; let i = $index){
+            <div class="row article" (click)="viewArticleDetials(article.id)">
+                <div class="card mb-3 shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-3">
+                            <img [src]="article.image ? 'http://localhost:8080/api/files/'+article.image : 'https://fastly.picsum.photos/id/677/350/200.jpg?hmac=n3-Up8asdopiFMxG7LU8g_kRnqT7rYmbb6Z2qBJJSyQ'"
+                                class="img-fluid rounded-start" alt="article">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">{{article.name}}</h5>
+                                <p class="card-text small text-muted">
+                                    {{article.description}}
+                                </p>
+                                <p class="card-text text-success small">1K+ bought in past month</p>
+                                <h4 class="text-primary fw-bold">PRICE : ${{article.price}}</h4>
+                                <div class="d-flex gap-2 mt-3">
+                                    <button
+                                        class="btn btn-warning rounded-pill d-flex align-items-center justify-content-center gap-2">
+                                        <i class="bi bi-cart-plus-fill"></i> Add to Cart
+                                    </button>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+
+        </div>
+
+    </div>
+
+
+
+</div>

@@ -62,7 +62,7 @@ export class GridComponent implements OnInit {
 
   searchResults: any;
   searchTerm!: string;
-  searchCategoryTerm!: string ;
+  searchCategoryTerm!: string;
   itemsPerPage = 10;
 
 
@@ -78,6 +78,7 @@ export class GridComponent implements OnInit {
 
 
   fetchArticleList() {
+
     this.store.dispatch(fetcharticleData());
     this.store.select(selectarticleData).subscribe((data) => {
       this.articleList = data;
@@ -100,8 +101,8 @@ export class GridComponent implements OnInit {
   ngOnInit(): void {
     this.searchCategoryTerm = "none";
     this.fetchArticleList();
-
     this.fetchCategoryList();
+
 
 
 
@@ -387,7 +388,7 @@ export class GridComponent implements OnInit {
   }
 
   searchByCategory(): void {
-    if(this.searchCategoryTerm == "none"){
+    if (this.searchCategoryTerm == "none") {
       this.articles = this.articleList.slice(0, 10);
       return;
     }
@@ -400,10 +401,11 @@ export class GridComponent implements OnInit {
   }
 
   updateNoResultDisplay() {
+    console.log("here no display update")
     const noResultElement = document.getElementById('noresult') as HTMLElement;
     const paginationElement = document.getElementById('pagination-element') as HTMLElement;
 
-    if (this.searchResults && this.articles.length == 0) {
+    if (this.articles.length == 0) {
       noResultElement.style.display = 'block';
       paginationElement.classList.add('d-none');
     } else {

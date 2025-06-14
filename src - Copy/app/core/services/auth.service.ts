@@ -21,6 +21,7 @@ import {
 // Firebase
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {NGXLogger} from "ngx-logger";
+import { PermissionService } from './permission/permission.service';
 
 
 const AUTH_API = GlobalComponent.AUTH_API;
@@ -40,7 +41,7 @@ export class AuthenticationService {
     private http: HttpClient,
     private store: Store,
     private afAuth: AngularFireAuth,
-    private logger: NGXLogger
+    private logger: NGXLogger,
   ) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
   }
@@ -84,6 +85,7 @@ export class AuthenticationService {
       map((response: any) => {
         const user = response;
         this.logger.log("user here ", user);
+        this.logger.warn("accesses  to be set", user.data.accesses);
         this.store.dispatch(loginSuccess({user}));
         return user;
       }),
@@ -101,6 +103,8 @@ export class AuthenticationService {
 
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
+    // Clear permissions from localStorage when logging out
+    localStorage.removeItem('user_permissions');
     this.currentUserSubject.next(null!);
     this.store.dispatch(logoutSuccess());
 

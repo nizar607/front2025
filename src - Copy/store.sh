@@ -18,29 +18,29 @@ mkdir -p "./app/store/${name_proper}"
 
 mkdir -p "./app/core/services/${name_lower}"
 # Copy and update the service file with dot naming
-cp "./app/core/services/article/article.service.ts" "./app/core/services/${name_lower}/${name_lower}.service.ts"
-sed -i "s/article/${name_lower}/g" "./app/core/services/${name_lower}/${name_lower}.service.ts"
+cp "./app/core/services/agent/agent.service.ts" "./app/core/services/${name_lower}/${name_lower}.service.ts"
+sed -i "s/agent/${name_lower}/g" "./app/core/services/${name_lower}/${name_lower}.service.ts"
 
-sed -i "s/article/${name_lower}/g" "./app/core/services/${name_proper}/${name_lower}.service.ts"
-sed -i "s/Article/${name_proper}/g" "./app/core/services/${name_proper}/${name_lower}.service.ts"
+sed -i "s/agent/${name_lower}/g" "./app/core/services/${name_proper}/${name_lower}.service.ts"
+sed -i "s/Agent/${name_proper}/g" "./app/core/services/${name_proper}/${name_lower}.service.ts"
 
 # Copy and update the selector file with dash naming
-cp "./app/store/Article/article-selector.ts" "./app/store/${name_proper}/${name_lower}-selector.ts"
-sed -i "s/article/${name_lower}/g" "./app/store/${name_proper}/${name_lower}-selector.ts"
-sed -i "s/Article/${name_proper}/g" "./app/store/${name_proper}/${name_lower}-selector.ts"
+cp "./app/store/Agent/agent-selector.ts" "./app/store/${name_proper}/${name_lower}-selector.ts"
+sed -i "s/agent/${name_lower}/g" "./app/store/${name_proper}/${name_lower}-selector.ts"
+sed -i "s/Agent/${name_proper}/g" "./app/store/${name_proper}/${name_lower}-selector.ts"
 
-cp "./app/store/Article/article-selector.ts" "./app/store/${name_proper}/${name_lower}-selector.ts"
-sed -i "s/article/${name_lower}/g" "./app/store/${name_proper}/${name_lower}-selector.ts"
-sed -i "s/Article/${name_proper}/g" "./app/store/${name_proper}/${name_lower}-selector.ts"
+cp "./app/store/Agent/agent-selector.ts" "./app/store/${name_proper}/${name_lower}-selector.ts"
+sed -i "s/agent/${name_lower}/g" "./app/store/${name_proper}/${name_lower}-selector.ts"
+sed -i "s/Agent/${name_proper}/g" "./app/store/${name_proper}/${name_lower}-selector.ts"
 
 # Copy and update the other files with dot naming
 for file in action effects reducer; do
     # Copy the file with new dot naming convention
-    cp "./app/store/Article/article.${file}.ts" "./app/store/${name_proper}/${name_lower}.${file}.ts"
+    cp "./app/store/Agent/agent.${file}.ts" "./app/store/${name_proper}/${name_lower}.${file}.ts"
     
-    # Replace "article" with lowercase name and "Article" with proper case name in the file content
-    sed -i "s/article/${name_lower}/g" "./app/store/${name_proper}/${name_lower}.${file}.ts"
-    sed -i "s/Article/${name_proper}/g" "./app/store/${name_proper}/${name_lower}.${file}.ts"
+    # Replace "agent" with lowercase name and "Agent" with proper case name in the file content
+    sed -i "s/agent/${name_lower}/g" "./app/store/${name_proper}/${name_lower}.${file}.ts"
+    sed -i "s/Agent/${name_proper}/g" "./app/store/${name_proper}/${name_lower}.${file}.ts"
 done
 
 

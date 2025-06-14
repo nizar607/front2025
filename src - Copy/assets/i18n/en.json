@@ -14,14 +14,6 @@
       }
     },
 
-    "CONTACTS": {
-      "TEXT": "Contacts",
-      "LIST": {
-        "CONTACTS": "Contacts",
-        "PEOPLEGROUPS": "People Groups"
-      }
-    },
-
     "APPS": {
       "TEXT": "Apps",
       "LIST": {
@@ -29,6 +21,7 @@
         "CASES": "Case",
         "TASKS": "Tasks",
         "ARTICLES": "Articles",
+        "CATEGORIES": "Categories",
         "INVOICES": "Invoices",
         "DOCUMENTS": "Documents",
         "AGENTS": "Agents",

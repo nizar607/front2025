@@ -1,0 +1,96 @@
+.notification-list {
+  .notification-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #f8f9fa !important;
+      text-decoration: none;
+    }
+
+    &.bg-light {
+      background-color: #f8f9fa;
+    }
+
+    .avatar-xs {
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+  }
+}
+
+// Filter buttons styling
+.btn-group {
+  .btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+// Loading animation
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// WebSocket status indicator
+.text-success {
+  color: #28a745 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+// Notification badge positioning
+.position-relative {
+  .badge {
+    font-size: 0.6rem;
+    min-width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Dropdown menu styling
+.dropdown-menu {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  
+  &.dropdown-menu-lg {
+    min-width: 320px;
+    max-width: 400px;
+  }
+}
+
+// Custom button styling for notification actions
+.btn-outline-danger {
+  &.btn-sm {
+    padding: 0.125rem 0.25rem;
+    font-size: 0.75rem;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .dropdown-menu.dropdown-menu-lg {
+    min-width: 280px;
+    max-width: 90vw;
+  }
+  
+  .notification-list {
+    max-height: 250px !important;
+  }
+}

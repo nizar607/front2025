@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXE - Premium Furniture Collection</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #2c2c2c;
+            background: #fefefe;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            background: rgba(254, 254, 254, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(44, 44, 44, 0.08);
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c2c2c;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-menu a {
+            color: #666;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #d4af37;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #2c2c2c;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            stroke: #666;
+        }
+
+        .nav-icon:hover {
+            stroke: #2c2c2c;
+            transform: scale(1.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            background: linear-gradient(135deg, #f8f6f3 0%, #ede7e0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+            opacity: 0.15;
+            z-index: 1;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-content {
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            color: #2c2c2c;
+            letter-spacing: -2px;
+        }
+
+        .hero-content h1 .accent {
+            color: #d4af37;
+            font-style: italic;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            max-width: 90%;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            padding: 1.2rem 2.5rem;
+            background: #2c2c2c;
+            color: white;
+            text-decoration: none;
+            border-radius: 0;
+            font-weight: 500;
+            transition: all 0.4s ease;
+            gap: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary:hover {
+            background: #d4af37;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-secondary {
+            color: #2c2c2c;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            color: #d4af37;
+        }
+
+        .hero-image {
+            position: relative;
+            animation: slideInRight 1s ease-out;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Experience Section */
+        .experience {
+            padding: 8rem 5%;
+            background: white;
+        }
+
+        .experience-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 200px);
+            gap: 2rem;
+            height: 800px;
+        }
+
+        .experience-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .experience-card.large {
+            grid-column: span 2;
+            grid-row: span 2;
+            display: flex;
+        }
+
+        .experience-card.medium {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+
+        .experience-card.small {
+            grid-column: span 1;
+            grid-row: span 1;
+            position: relative;
+        }
+
+        .experience-card.wide {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .experience-card.tall {
+            grid-column: span 1;
+            grid-row: span 3;
+        }
+
+        .card-content {
+            padding: 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-content.vertical {
+            justify-content: flex-start;
+            gap: 1.5rem;
+        }
+
+        .card-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            color: #d4af37;
+            line-height: 1;
+        }
+
+        .card-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #2c2c2c;
+            margin-bottom: 1rem;
+        }
+
+        .card-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-link {
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .card-link:hover {
+            color: #2c2c2c;
+        }
+
+        .card-image {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .card-overlay h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            height: 100%;
+            align-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #d4af37;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .warranty-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .warranty-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #666;
+        }
+
+        .warranty-item svg {
+            color: #d4af37;
+        }
+
+        /* Showcase Gallery */
+        .showcase-gallery {
+            padding: 8rem 5%;
+            background: #f8f6f3;
+        }
+
+        .gallery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+
+        .header-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #2c2c2c;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-content p {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .gallery-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: 2px solid #e0e0e0;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn.active,
+        .nav-btn:hover {
+            background: #d4af37;
+            border-color: #d4af37;
+            color: white;
+        }
+
+        .gallery-masonry {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 250px;
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-item.large {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .gallery-item.medium {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+
+        .gallery-item.small {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .gallery-item.wide {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .gallery-item.tall {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover .item-image img {
+            transform: scale(1.1);
+        }
+
+        .item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .gallery-item:hover .item-overlay {
+            opacity: 1;
+        }
+
+        .item-info {
+            text-align: center;
+            color: white;
+        }
+
+        .item-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-price {
+            font-size: 1.2rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .item-description {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .quick-view {
+            padding: 0.8rem 1.5rem;
+            background: white;
+            color: #2c2c2c;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-view:hover {
+            background: #d4af37;
+            color: white;
+        }
+
+        .item-content {
+            display: flex;
+            height: 100%;
+            background: white;
+        }
+
+        .content-text {
+            flex: 2;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .content-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #2c2c2c;
+            margin-bottom: 1rem;
+        }
+
+        .content-text p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-link {
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .content-image {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .content-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Newsletter */
+        .newsletter {
+            padding: 6rem 5%;
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            color: white;
+        }
+
+        .newsletter-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .newsletter p {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1.2rem 1.5rem;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            border-radius: 0;
+        }
+
+        .newsletter-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .newsletter-btn {
+            padding: 1.2rem 2rem;
+            background: #d4af37;
+            color: white;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .newsletter-btn:hover {
+            background: #b8941f;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 4rem 5% 2rem;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #d4af37;
+        }
+
+        .footer-section p {
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #d4af37;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: #333;
+            border-radius: 50%;
+            color: #ccc;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: #d4af37;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #999;
+        }
+
+        /* Animations */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                text-align: center;
+            }
+            
+            .experience-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+                height: auto;
+            }
+            
+            .experience-card.large,
+            .experience-card.medium,
+            .experience-card.small,
+            .experience-card.wide,
+            .experience-card.tall {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+            
+            .gallery-masonry {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .gallery-item.large,
+            .gallery-item.wide {
+                grid-column: span 2;
+            }
+            
+            .gallery-header {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+            
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            
+            .experience-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-masonry {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-item.large,
+            .gallery-item.medium,
+            .gallery-item.small,
+            .gallery-item.wide,
+            .gallery-item.tall {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">LUXE</a>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#collections">Collections</a></li>
+                <li><a href="#featured">Featured</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                </svg>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Luxury <span class="accent">Redefined</span><br>For Modern Homes</h1>
+                <p>Experience the pinnacle of contemporary design with our exclusive collection of handcrafted furniture. Each piece tells a story of exceptional craftsmanship and timeless elegance.</p>
+                <div class="hero-buttons">
+                    <a href="#collections" class="btn-primary">
+                        Explore Collection
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                    <a href="#featured" class="btn-secondary">View Featured</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Luxury Living Room">
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="experience" id="collections">
+        <div class="experience-container">
+            <div class="experience-grid">
+                <div class="experience-card large fade-in">
+                    <div class="card-content">
+                        <span class="card-number">01</span>
+                        <h3>Bespoke Design</h3>
+                        <p>Every piece is meticulously crafted to your exact specifications, ensuring a perfect fit for your unique space and lifestyle.</p>
+                        <a href="#" class="card-link">Learn More →</a>
+                    </div>
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Bespoke Design">
+                    </div>
+                </div>
+                
+                <div class="experience-card medium fade-in">
+                    <div class="card-content">
+                        <span class="card-number">02</span>
+                        <h3>Artisan Craftsmanship</h3>
+                        <p>Master craftspeople with decades of experience bring traditional techniques to contemporary designs.</p>
+                        <a href="#" class="card-link">Explore →</a>
+                    </div>
+                </div>
+                
+                <div class="experience-card small fade-in">
+                    <div class="card-overlay">
+                        <h4>Premium Materials</h4>
+                        <p>Sustainably sourced</p>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Premium Materials">
+                </div>
+                
+                <div class="experience-card wide fade-in">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">35+</span>
+                            <span class="stat-label">Years Excellence</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Unique Designs</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">10k+</span>
+                            <span class="stat-label">Happy Clients</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="experience-card tall fade-in">
+                    <div class="card-content vertical">
+                        <span class="card-number">03</span>
+                        <h3>Lifetime Warranty</h3>
+                        <p>We stand behind our craftsmanship with comprehensive lifetime warranty on all structural components.</p>
+                        <div class="warranty-icons">
+                            <div class="warranty-item">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>Quality Assured</span>
+                            </div>
+                            <div class="warranty-item">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                                <span>Secure Investment</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Showcase Gallery -->
+    <section class="showcase-gallery" id="featured">
+        <div class="gallery-container">
+            <div class="gallery-header fade-in">
+                <div class="header-content">
+                    <h2>Signature Collection</h2>
+                    <p>Discover pieces that redefine luxury living</p>
+                </div>
+                <div class="gallery-nav">
+                    <button class="nav-btn active" data-category="all">All</button>
+                    <button class="nav-btn" data-category="living">Living</button>
+                    <button class="nav-btn" data-category="dining">Dining</button>
+                    <button class="nav-btn" data-category="bedroom">Bedroom</button>
+                </div>
+            </div>
+            
+            <div class="gallery-masonry">
+                <div class="gallery-item large living fade-in" data-category="living">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Venetian Sectional">
+                        <div class="item-overlay">
+                            <div class="item-info">
+                                <h3>Venetian Sectional</h3>
+                                <p class="item-price">$4,299</p>
+                                <button class="quick-view">Quick View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item medium dining fade-in" data-category="dining">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1581539250439-c96689b516dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Heritage Dining">
+                        <div class="item-overlay">
+                            <div class="item-info">
+                                <h3>Heritage Dining Set</h3>
+                                <p class="item-price">$3,199</p>
+                                <button class="quick-view">Quick View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item small bedroom fade-in" data-category="bedroom">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Metropolitan Suite">
+                        <div class="item-overlay">
+                            <div class="item-info">
+                                <h3>Metropolitan Suite</h3>
+                                <p class="item-price">$2,899</p>
+                                <button class="quick-view">Quick View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item wide living fade-in" data-category="living">
+                    <div class="item-content">
+                        <div class="content-text">
+                            <h3>Artisan Spotlight</h3>
+                            <p>Meet our master craftspeople who bring decades of expertise to every piece. Each item tells a story of passion, precision, and uncompromising quality.</p>
+                            <a href="#" class="content-link">Meet the Team →</a>
+                        </div>
+                        <div class="content-image">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Craftsperson">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item tall dining fade-in" data-category="dining">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Dining Experience">
+                        <div class="item-overlay">
+                            <div class="item-info">
+                                <h3>Dining Experience</h3>
+                                <p class="item-description">Transform every meal into a memorable occasion</p>
+                                <button class="quick-view">Explore Collection</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item medium bedroom fade-in" data-category="bedroom">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Bedroom Sanctuary">
+                        <div class="item-overlay">
+                            <div class="item-info">
+                                <h3>Sanctuary Collection</h3>
+                                <p class="item-price">From $1,899</p>
+                                <button class="quick-view">Quick View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="newsletter-container">
+            <h2>Stay Connected</h2>
+            <p>Be the first to discover our latest collections, exclusive designs, and special offers crafted just for you.</p>
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+                <button type="submit" class="newsletter-btn">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>LUXE</h3>
+                <p>Redefining luxury furniture with exceptional craftsmanship, innovative design, and uncompromising quality since 1985.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Instagram">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987 6.62 0 11.987-5.367 11.987-11.987C24.014 5.367 18.637.001 12.017.001zM8.449 16.988c-1.297 0-2.448-.49-3.323-1.297C4.198 14.895 3.708 13.744 3.708 12.447s.49-2.448 1.297-3.323c.875-.807 2.026-1.297 3.323-1.297s2.448.49 3.323 1.297c.807.875 1.297 2.026 1.297 3.323s-.49 2.448-1.297 3.323c-.875.807-2.026 1.297-3.323 1.297zm7.718 0c-1.297 0-2.448-.49-3.323-1.297-.807-.875-1.297-2.026-1.297-3.323s.49-2.448 1.297-3.323c.875-.807 2.026-1.297 3.323-1.297s2.448.49 3.323 1.297c.807.875 1.297 2.026 1.297 3.323s-.49 2.448-1.297 3.323c-.875.807-2.026 1.297-3.323 1.297z"/>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Twitter">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Collections</h3>
+                <ul>
+                    <li><a href="#">Living Room</a></li>
+                    <li><a href="#">Bedroom</a></li>
+                    <li><a href="#">Dining Room</a></li>
+                    <li><a href="#">Office</a></li>
+                    <li><a href="#">Outdoor</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#">Interior Design</a></li>
+                    <li><a href="#">Custom Furniture</a></li>
+                    <li><a href="#">White Glove Delivery</a></li>
+                    <li><a href="#">Trade Program</a></li>
+                    <li><a href="#">Warranty</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Size Guide</a></li>
+                    <li><a href="#">Care Instructions</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 LUXE Furniture. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(254, 254, 254, 0.98)';
+                navbar.style.boxShadow = '0 2px 25px rgba(0,0,0,0.15)';
+            } else {
+                navbar.style.background = 'rgba(254, 254, 254, 0.95)';
+                navbar.style.boxShadow = 'none';
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Newsletter form submission
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const button = this.querySelector('.newsletter-btn');
+            const input = this.querySelector('.newsletter-input');
+            
+            button.textContent = 'Subscribed!';
+            button.style.background = '#27ae60';
+            input.value = '';
+            
+            setTimeout(() => {
+                button.textContent = 'Subscribe';
+                button.style.background = '#d4af37';
+            }, 3000);
+        });
+
+        // Gallery filtering
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                const category = this.getAttribute('data-category');
+                const items = document.querySelectorAll('.gallery-item');
+                
+                items.forEach(item => {
+                    if (category === 'all' || item.classList.contains(category)) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+        
+        // Quick view functionality
+        document.querySelectorAll('.quick-view').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const itemName = this.closest('.item-info').querySelector('h3').textContent;
+                alert(`Quick view for ${itemName} - This would open a modal in a real application`);
+            });
+        });
+    </script>
+</body>
+</html>

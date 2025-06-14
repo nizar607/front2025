@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { fetchlistingGridData } from 'src/app/store/App-realestate/apprealestate.action';
-import { selectData } from 'src/app/store/App-realestate/apprealestate-selector';
+
 
 @Component({
   selector: 'app-overview',
@@ -41,15 +40,7 @@ export class OverviewComponent {
     this._agentOverviewCharts('["--tb-primary", "--tb-light", "--tb-secondary"]');
 
     // Fetch Data
-    setTimeout(() => {
-      this.store.dispatch(fetchlistingGridData());
-      this.store.select(selectData).subscribe((data) => {
-        this.products = data;
-        this.productslist = data;
-        this.products = this.productslist.slice(0, 8)
-      });
-      document.getElementById('elmLoader')?.classList.add('d-none')
-    }, 1000)
+
   }
 
   // Change Tab Content

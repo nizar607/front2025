@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, Validators, UntypedFormGroup, FormControl, FormGroup } from '@angular/forms';
-import { selectData } from "../../../store/Case/case.selector";
-import { fetchCaseData } from "../../../store/Case/case.action";
+
 import { createEventId } from './data';
 // Sweet Alert
 import Swal from 'sweetalert2';
@@ -15,13 +14,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ActivatedRoute } from "@angular/router";
 import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
-import { addmeetingData, deletemeetingData } from "../../../store/Meeting/meeting.action";
-import { selectData as selectMeetingData, selectNewMeetingData } from "../../../store/Meeting/meeting.selector";
 import { HttpClient } from "@angular/common/http";
-import { fetchcourtData } from 'src/app/store/Court/court.action';
-import { selectcourtData } from 'src/app/store/Court/court-selector';
-import { addHearingData } from 'src/app/store/Hearing/hearing.action';
-import { selectNewHearingData } from 'src/app/store/Hearing/hearing.selector';
 import { co } from '@fullcalendar/core/internal-common';
 
 @Component({
@@ -79,10 +72,6 @@ export class CalendarComponent {
     });
     console.log("events ", this.events);
 
-    this.store.dispatch(fetchcourtData());
-    this.store.select(selectcourtData).subscribe((data) => {
-      this.courts = data;
-    });
 
     /***
      * Calender Set
@@ -109,10 +98,7 @@ export class CalendarComponent {
     };
 
     //fetch cases
-    this.store.dispatch(fetchCaseData());
-    this.store.select(selectData).subscribe((data) => {
-      this.cases = data;
-    });
+
 
     // Validation
     this.formData = this.formBuilder.group({
@@ -313,27 +299,6 @@ export class CalendarComponent {
           }
           console.log("newMeetingRequest ", newMeetingRequest);
 
-          this.store.dispatch(addmeetingData({ newData: newMeetingRequest }));
-
-          this.store.select(selectNewMeetingData).subscribe((savedMeeting) => {
-            if (savedMeeting) {
-              console.error("savedMeeting ", savedMeeting);
-              // Assuming savedMeeting contains the new ID from MongoDB
-              calendarApi.addEvent({
-                id: savedMeeting.id,
-                title: savedMeeting.title,
-                start: savedMeeting.start,
-                end: savedMeeting.end,
-                className: "bg-primary-subtle",
-                extendedProps: {
-                  purpose: savedMeeting.purpose,
-                },
-                description: savedMeeting.description,
-              });
-
-
-            }
-          });
 
 
         } else if (this.formData.value.type == 'hearing') {
@@ -349,29 +314,6 @@ export class CalendarComponent {
             phaseId: this.formData.value.selectedPhase.id
           }
           console.log("newHearingRequest ", newHearingRequest);
-
-          this.store.dispatch(addHearingData({ newData: newHearingRequest }));
-
-          this.store.select(selectNewHearingData).subscribe((savedHearing) => {
-            if (savedHearing) {
-              console.error("savedMeeting ", savedHearing);
-              // Assuming savedMeeting contains the new ID from MongoDB
-              calendarApi.addEvent({
-                id: savedHearing.id,
-                title: savedHearing.title,
-                start: savedHearing.start,
-                end: savedHearing.end,
-                className: "bg-primary-subtle",
-                extendedProps: {
-                  purpose: savedHearing.purpose,
-                },
-                description: savedHearing.description,
-              });
-
-
-          }
-          });
-
         } else if (this.formData.value.type == 'task') {
 
         }
@@ -446,7 +388,6 @@ export class CalendarComponent {
    */
   deleteEventData() {
     this.editEvent.remove();
-    this.store.dispatch(deletemeetingData({ id: this.editEvent._def.publicId }));
     this.formData.reset();
     this.detaisEventModal?.hide();
   }

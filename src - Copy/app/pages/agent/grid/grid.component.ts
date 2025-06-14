@@ -57,10 +57,10 @@ export class GridComponent implements OnInit {
     'MEETING_CREATE',
     'MEETING_DELETE',
 
-    'CASE_FETCH',
-    'CASE_UPDATE',
-    'CASE_CREATE',
-    'CASE_DELETE',
+    'ARTICLE_FETCH',
+    'ARTICLE_UPDATE',
+    'ARTICLE_CREATE',
+    'ARTICLE_DELETE',
 
     'DOCUMENT_FETCH',
     'DOCUMENT_UPDATE',

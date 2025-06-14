@@ -9,12 +9,6 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import am5geodata_worldLow from "@amcharts/amcharts5-geodata/worldLow";
 import { shuffleArray } from 'src/app/shared/commonFunction';
 import { Store } from '@ngrx/store';
-import { selectabledata } from 'src/app/store/CRM/crm-selector';
-import { fetchtableData } from 'src/app/store/CRM/crm.actions';
-import { fetchStatData } from 'src/app/store/Analytics/analytics.actions';
-import { selectData } from 'src/app/store/Analytics/analytics-selector';
-import { fetchfeedbackdataData, fetchrentproprtydataData, fetchsalepropertydataData } from 'src/app/store/RealEstate/realEstate.action';
-import { selectfeedData, selectrentData, selectsaleData } from 'src/app/store/RealEstate/realEstate-selector';
 import { widget, widget2 } from './data';
 
 @Component({
@@ -59,27 +53,27 @@ export class WidgetsComponent {
     this.statlist = widget
     this.widget2data = widget2
     // store
-    this.store.dispatch(fetchtableData());
-    this.store.select(selectabledata).subscribe((data) => {
-      this.statedata = data;
-    });
+    // this.store.dispatch(fetchtableData());
+    // this.store.select(selectabledata).subscribe((data) => {
+    //   this.statedata = data;
+    // });
 
-    this.store.dispatch(fetchStatData());
-    this.store.select(selectData).subscribe((data) => {
-      this.browsers = data;
-    });
-    this.store.dispatch(fetchsalepropertydataData());
-    this.store.select(selectsaleData).subscribe((data) => {
-      this.salepropertyData = data;
-    });
-    this.store.dispatch(fetchrentproprtydataData());
-    this.store.select(selectrentData).subscribe((data) => {
-      this.rentpropertyData = data;
-    });
-    this.store.dispatch(fetchfeedbackdataData());
-    this.store.select(selectfeedData).subscribe((data) => {
-      this.feedbackData = data;
-    });
+    // this.store.dispatch(fetchStatData());
+    // this.store.select(selectData).subscribe((data) => {
+    //   this.browsers = data;
+    // });
+    // this.store.dispatch(fetchsalepropertydataData());
+    // this.store.select(selectsaleData).subscribe((data) => {
+    //   this.salepropertyData = data;
+    // });
+    // this.store.dispatch(fetchrentproprtydataData());
+    // this.store.select(selectrentData).subscribe((data) => {
+    //   this.rentpropertyData = data;
+    // });
+    // this.store.dispatch(fetchfeedbackdataData());
+    // this.store.select(selectfeedData).subscribe((data) => {
+    //   this.feedbackData = data;
+    // });
 
     // Chart Color Data Get Function
     this._realizedChart('["--tb-primary", "--tb-secondary", "--tb-danger"]');

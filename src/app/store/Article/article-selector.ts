@@ -22,3 +22,21 @@ export const selectDataError = createSelector(
 );
 
 
+export const selectSingleArticleData = createSelector(
+    selectDataState,
+    (state: ArticleState) => state.article
+);
+
+
+export const selectSingleArticleDataLoading = createSelector(
+    selectDataState,
+    (state: ArticleState) => state.loading
+);
+
+
+export const selectSingleArticleDataError = createSelector(
+    selectDataState,
+    (state: ArticleState) => state.error
+);
+
+

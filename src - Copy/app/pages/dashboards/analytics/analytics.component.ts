@@ -9,8 +9,6 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import am5geodata_worldLow from "@amcharts/amcharts5-geodata/worldLow";
 // store
 import { Store } from '@ngrx/store';
-import { fetchStatData, fetchtopPageData } from 'src/app/store/Analytics/analytics.actions';
-import { selectData, selecttopData } from 'src/app/store/Analytics/analytics-selector';
 import { statData } from './data';
 
 @Component({
@@ -56,14 +54,14 @@ export class AnalyticsComponent {
 
     this.statlist = statData
     // store
-    this.store.dispatch(fetchStatData());
-    this.store.select(selectData).subscribe((data) => {
-      this.browsers = data;
-    });
-    this.store.dispatch(fetchtopPageData());
-    this.store.select(selecttopData).subscribe((data) => {
-      this.pagesData = data;
-    });
+    // this.store.dispatch(fetchStatData());
+    // this.store.select(selectData).subscribe((data) => {
+    //   this.browsers = data;
+    // });
+    // this.store.dispatch(fetchtopPageData());
+    // this.store.select(selecttopData).subscribe((data) => {
+    //   this.pagesData = data;
+    // });
 
     // Chart Color Data Get Function
     this._pageoverviewChart('["--tb-light", "--tb-primary", "--tb-secondary"]');

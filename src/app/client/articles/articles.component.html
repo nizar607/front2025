@@ -1,143 +1,111 @@
-<div class="container py-5">
-    <div class="row pt-5 text-center">
-        <div id="searchthis" class="col-12 d-flex justify-content-center align-items-center" style="gap: 10px;">
-            <div style="position: relative; width: 40%;">
-                <i class="bi bi-search"
-                    style="position: absolute; top: 50%; left: 12px; transform: translateY(-50%); color: #aaa;"></i>
-                <input id="namanyay-search-box" name="q" type="text" placeholder="Search"
-                    class="form-control ps-5 rounded-pill" />
+<!-- Main Content -->
+<div class="main-content">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">Search</h3>
+            <div class="search-container">
+                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" class="search-input" [(ngModel)]="searchInput" id="search-input"
+                    placeholder="Search furniture..." oninput="searchProducts()">
             </div>
-            <button id="namanyay-search-btn" class="btn btn-primary rounded-pill">
-                Search
-            </button>
         </div>
-    </div>
 
-    <div class="row pt-1">
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">Categories</h3>
+            <div class="filter-group">
+                <label class="filter-label">
+                    <!-- <input type="checkbox" class="filter-checkbox" [(ngModel)]="allComplete" (change)="setAll($event?.target?.checked)"> -->
+                    All Categories
+                </label>
+            </div>
+            @for (category of checkBox.subtasks; track category) {
+            <div class="filter-group">
+                <label class="filter-label">
+                    <input type="checkbox" class="filter-checkbox" [(ngModel)]="category.completed"
+                        (ngModelChange)="updateAllComplete()">
+                    {{category.name}}
+                </label>
+            </div>
+            }
+        </div>
 
-        <div class="col-md-3 bg-white shadow-sm p-3 rounded v-100">
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">Price Range</h3>
+            <div class="price-range-container">
+                <div class="price-range">
+                    <div class="price-input-wrapper">
+                        <div class="price-label">Min Price</div>
+                        <input type="number" class="price-input" [(ngModel)]="minSlider" placeholder="Min">
 
-            <div class="row">
-                <div class="col-12">
-                    Price: ${{minSlider}} – ${{maxSlider}}+
+                    </div>
+                    <div class="price-input-wrapper">
+                        <div class="price-label">Max Price</div>
+                        <input type="number" class="price-input" [(ngModel)]="maxSlider" placeholder="Max">
+                    </div>
                 </div>
-          
-                <mat-slider class="col-12 custom-slider" min="0" max="10000">
-                    <input value="0" matSliderStartThumb [(ngModel)]="minSlider">
-                    <input value="10000" matSliderEndThumb [(ngModel)]="maxSlider">
-                </mat-slider>
-
+                <div class="price-range-display" id="price-range-display">
+                    All prices
+                </div>
             </div>
-
-            <section class="example-section">
-
-
-
-                <span class="example-list-section">
-                    <ul class="list-unstyled ms-3">
-                        @for (subtask of task.subtasks; track subtask) {
-                        <li>
-                            <mat-checkbox [(ngModel)]="subtask.completed" [color]="subtask.color"
-                                (ngModelChange)="updateAllComplete()">
-                                {{subtask.name}}
-                            </mat-checkbox>
-                        </li>
-                        }
-                    </ul>
-                </span>
-            </section>
-            <hr>
         </div>
 
-        <div class="col-md-9">
 
-            <div class="row">
-                <div class="card mb-3 shadow-sm">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="https://m.media-amazon.com/images/I/71UnL+fUeWL._AC_UY218_.jpg"
-                                class="img-fluid rounded-start" alt="article">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold">SteelSeries Apex 3 TKL RGB Gaming Keyboard</h5>
-                                <p class="card-text small text-muted">
-                                    Tenkeyless Compact Form Factor · 8-Zone RGB Illumination · IP32 Water & Dust
-                                    Resistant ·
-                                    Whisper Quiet Gaming Switches
-                                </p>
-                                <p class="card-text text-success small">1K+ bought in past month</p>
-                                <h4 class="text-primary fw-bold">PRICE : $34.99</h4>
-                                <button
-                                    class="btn btn-warning rounded-pill mt-3 d-flex align-items-center justify-content-center gap-2">
-                                    <i class="bi bi-cart-plus-fill"></i> Add to Cart
-                                </button>
 
-                            </div>
-                        </div>
+        <button class="filter-btn" (click)="searchArticles()">Apply Filters</button>
+    </aside>
+
+    <!-- Products Area -->
+    <main class="products-area">
+        <div class="products-header">
+            <h1 class="page-title">Furniture Collection</h1>
+            <select class="sort-select" (change)="sortProducts($event)">
+                <option value="default">Sort by</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name">Name: A to Z</option>
+            </select>
+        </div>
+
+        <div class="products-grid">
+            @for(article of articles; track article; let i = $index){
+            <div class="product-card" (click)="viewArticleDetials(article.id)">
+                <div class="product-image-container">
+                    <img [src]="article.image ? 'http://localhost:8080/api/files/'+article.image : 'https://fastly.picsum.photos/id/677/350/200.jpg?hmac=n3-Up8asdopiFMxG7LU8g_kRnqT7rYmbb6Z2qBJJSyQ'"
+                        class="product-image" [alt]="article.name">
+
+                    @if(isNewArticle(article.createdAt)) {
+                    <div class="product-badge">new</div>
+                    }
+                </div>
+                <div class="product-info">
+                    <div class="product-category">{{article.categoryName || 'Article'}}</div>
+                    <h3 class="product-name">{{article.name}}</h3>
+                    <div class="product-price">${{article.price}}</div>
+                    <div class="product-actions">
+                        <button class="add-to-cart-btn" (click)="addToCart(article, $event)">
+                            Add to Cart
+                        </button>
+                        <button [ngClass]="{ 
+                            'wishlist-btn': !article.favorite, 
+                            'wishlist-btn-selected': article.favorite, 
+                            'bg-dark': article.favorite,
+                            'text-white': article.favorite
+                          }" (click)="addToWishlist(article, $event)">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </button>
+
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="card mb-3 shadow-sm">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="https://m.media-amazon.com/images/I/71UnL+fUeWL._AC_UY218_.jpg"
-                                class="img-fluid rounded-start" alt="article">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold">SteelSeries Apex 3 TKL RGB Gaming Keyboard</h5>
-                                <p class="card-text small text-muted">
-                                    Tenkeyless Compact Form Factor · 8-Zone RGB Illumination · IP32 Water & Dust
-                                    Resistant ·
-                                    Whisper Quiet Gaming Switches
-                                </p>
-                                <p class="card-text text-success small">1K+ bought in past month</p>
-                                <h4 class="text-primary fw-bold">PRICE : $34.99</h4>
-                                <button
-                                    class="btn btn-warning rounded-pill mt-3 d-flex align-items-center justify-content-center gap-2">
-                                    <i class="bi bi-cart-plus-fill"></i> Add to Cart
-                                </button>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="card mb-3 shadow-sm">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="https://m.media-amazon.com/images/I/71UnL+fUeWL._AC_UY218_.jpg"
-                                class="img-fluid rounded-start" alt="article">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold">SteelSeries Apex 3 TKL RGB Gaming Keyboard</h5>
-                                <p class="card-text small text-muted">
-                                    Tenkeyless Compact Form Factor · 8-Zone RGB Illumination · IP32 Water & Dust
-                                    Resistant ·
-                                    Whisper Quiet Gaming Switches
-                                </p>
-                                <p class="card-text text-success small">1K+ bought in past month</p>
-                                <h4 class="text-primary fw-bold">PRICE : $34.99</h4>
-                                <button
-                                    class="btn btn-warning rounded-pill mt-3 d-flex align-items-center justify-content-center gap-2">
-                                    <i class="bi bi-cart-plus-fill"></i> Add to Cart
-                                </button>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
+            }
         </div>
-
-    </div>
-
-
-
+    </main>
 </div>

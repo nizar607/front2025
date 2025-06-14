@@ -36,7 +36,7 @@ export class AuthenticationEffects {
             if (user.status == 'success') {
               localStorage.setItem('currentUser', JSON.stringify(user.data));
               localStorage.setItem('token', user.token);
-              this.router.navigate(['/backoffice']);
+              this.router.navigate(['/analytics']);
             }
             return loginSuccess({ user });
           }),

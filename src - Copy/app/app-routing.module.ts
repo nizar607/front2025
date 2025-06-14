@@ -10,7 +10,6 @@ const routes: Routes = [
   // { path: '', redirectTo: '/test', pathMatch: 'full' },
   // { path: '', redirectTo: '/backoffice', pathMatch: 'full' },
   { path: 'client', loadChildren: () => import('./client/client.module').then(m => m.ClientModule) },
-  { path: 'testing', loadChildren: () => import('./room-3d/room-3d.module').then(m => m.Room3DModule) },
   { path: '', component: LayoutComponent, loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule), canActivate: [AuthGuard] },
   { path: 'auth', component: AuthlayoutComponent, loadChildren: () => import('./account/account.module').then(m => m.AccountModule) },
   { path: 'pages', component: AuthlayoutComponent, loadChildren: () => import('./extraspages/extraspages.module').then(m => m.ExtraspagesModule) },

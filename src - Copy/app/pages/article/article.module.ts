@@ -9,17 +9,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { SimplebarAngularModule } from 'simplebar-angular';
-import { ListComponent } from '../stock/list/list.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { CoreModule } from 'src/app/core/core.module';
 
 
 @NgModule({
   declarations: [
-    GridComponent,
-    ListComponent,
+    GridComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +34,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ReactiveFormsModule,
     TooltipModule.forRoot(),
     DropzoneModule,
-    ImageCropperComponent
+    ImageCropperComponent,
+    CoreModule
   ]
 })
 export class ArticleModule { }

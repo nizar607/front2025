@@ -1,0 +1,42 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="minimalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8f8f8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#minimalGrad)"/>
+  
+  <!-- Minimal Header -->
+  <line x1="0" y1="50" x2="400" y2="50" stroke="#e0e0e0" stroke-width="1"/>
+  <rect x="30" y="20" width="40" height="10" fill="#2c2c2c" rx="1"/>
+  <rect x="330" y="15" width="50" height="20" fill="#2c2c2c" rx="10"/>
+  
+  <!-- Bold Typography Hero -->
+  <rect x="50" y="80" width="300" height="50" fill="#2c2c2c" rx="2"/>
+  <rect x="50" y="140" width="180" height="8" fill="#666666" rx="1"/>
+  <rect x="50" y="155" width="120" height="8" fill="#666666" rx="1"/>
+  
+  <!-- Minimalist Button -->
+  <rect x="50" y="180" width="80" height="30" fill="none" stroke="#2c2c2c" stroke-width="2" rx="15"/>
+  
+  <!-- Clean Content Layout -->
+  <rect x="50" y="230" width="120" height="50" fill="#f8f8f8" stroke="#e0e0e0" rx="4"/>
+  <rect x="190" y="230" width="120" height="50" fill="#f8f8f8" stroke="#e0e0e0" rx="4"/>
+  
+  <!-- Geometric accent -->
+  <rect x="320" y="80" width="60" height="60" fill="#2c2c2c" rx="30"/>
+  <rect x="340" y="100" width="20" height="20" fill="#ffffff" rx="10"/>
+  
+  <!-- Minimal decorative lines -->
+  <line x1="50" y1="220" x2="350" y2="220" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="280" y1="160" x2="350" y2="160" stroke="#d4af37" stroke-width="2"/>
+  
+  <!-- Typography emphasis -->
+  <rect x="280" y="180" width="80" height="15" fill="#2c2c2c" rx="2"/>
+  <rect x="280" y="200" width="60" height="8" fill="#666666" rx="1"/>
+  
+  <text x="200" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#2c2c2c" font-weight="bold">Minimalist & Bold</text>
+</svg>

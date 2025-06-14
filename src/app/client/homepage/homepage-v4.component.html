@@ -1,0 +1,192 @@
+
+<main class="main-content">
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="hero-container">
+        <div class="hero-content fade-in">
+            <span class="hero-badge">New Collection 2024</span>
+            <h1 class="hero-title">
+                Modern Living
+                <span class="highlight">Redefined</span>
+            </h1>
+            <p class="hero-subtitle">
+                Experience the perfect fusion of contemporary design and timeless craftsmanship. 
+                Our furniture transforms spaces into extraordinary living experiences.
+            </p>
+            <div class="hero-actions">
+                <a (click)="navigateToArticles()" class="btn-primary">Explore Collection</a>
+                <a (click)="navigateTo3D()" class="btn-secondary">
+                    Learn More
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features" id="features">
+    <div class="features-container">
+        <div class="features-header fade-in">
+            <h2>Why Choose Nova</h2>
+            <p>We combine innovative design with exceptional craftsmanship to create furniture that stands the test of time</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"/>
+                    </svg>
+                </div>
+                <h3>Innovative Design</h3>
+                <p>Our award-winning design team creates unique pieces that seamlessly blend contemporary aesthetics with functional excellence, ensuring each item transforms your space.</p>
+                <a (click)="onFeatureLinkClick('designs')" class="feature-link">
+                    Explore Designs
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3>Premium Quality</h3>
+                <p>Crafted with the finest materials and time-tested construction techniques, our furniture is built to last generations while maintaining its beauty and functionality.</p>
+                <a (click)="onFeatureLinkClick('quality')" class="feature-link">
+                    Quality Promise
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                </div>
+                <h3>Sustainable Future</h3>
+                <p>We're committed to environmental responsibility through sustainable sourcing, eco-friendly manufacturing, and carbon-neutral shipping for a better tomorrow.</p>
+                <a (click)="onFeatureLinkClick('sustainability')" class="feature-link">
+                    Our Mission
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section class="products" id="products">
+    <div class="products-container">
+        <div class="products-header fade-in">
+            <h2>Featured Products</h2>
+            <div class="products-nav">
+                <button class="product-nav-btn active" data-category="all">All</button>
+                <button class="product-nav-btn" data-category="living">Living Room</button>
+                <button class="product-nav-btn" data-category="bedroom">Bedroom</button>
+                <button class="product-nav-btn" data-category="dining">Dining</button>
+            </div>
+        </div>
+        <div class="products-grid">
+            <div class="product-card fade-in living" data-category="living">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Modern Sofa">
+                    <div class="product-badge">Best Seller</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Living Room</div>
+                    <h3 class="product-name">Luxe Sectional Sofa</h3>
+                    <div class="product-price">$2,499</div>
+                    <button class="product-btn">Add to Cart</button>
+                </div>
+            </div>
+            
+            <div class="product-card fade-in bedroom" data-category="bedroom">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Platform Bed">
+                    <div class="product-badge">New</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Bedroom</div>
+                    <h3 class="product-name">Minimalist Platform Bed</h3>
+                    <div class="product-price">$1,899</div>
+                    <button class="product-btn">Add to Cart</button>
+                </div>
+            </div>
+            
+            <div class="product-card fade-in dining" data-category="dining">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1581539250439-c96689b516dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dining Table">
+                    <div class="product-badge">Limited</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Dining</div>
+                    <h3 class="product-name">Oak Dining Table</h3>
+                    <div class="product-price">$1,599</div>
+                    <button class="product-btn">Add to Cart</button>
+                </div>
+            </div>
+            
+            <div class="product-card fade-in living" data-category="living">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Coffee Table">
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Living Room</div>
+                    <h3 class="product-name">Glass Coffee Table</h3>
+                    <div class="product-price">$899</div>
+                    <button class="product-btn">Add to Cart</button>
+                </div>
+            </div>
+            
+            <div class="product-card fade-in bedroom" data-category="bedroom">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nightstand">
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Bedroom</div>
+                    <h3 class="product-name">Modern Nightstand</h3>
+                    <div class="product-price">$449</div>
+                    <button class="product-btn">Add to Cart</button>
+                </div>
+            </div>
+            
+            <div class="product-card fade-in dining" data-category="dining">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dining Chairs">
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Dining</div>
+                    <h3 class="product-name">Designer Dining Chairs</h3>
+                    <div class="product-price">$299</div>
+                    <button class="product-btn">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Newsletter -->
+<section class="newsletter">
+    <div class="newsletter-container fade-in">
+        <h2>Stay Updated</h2>
+        <p>Get the latest updates on new collections, exclusive offers, and design inspiration delivered to your inbox.</p>
+        <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+            <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+    </div>
+</section>
+
+</main>
+

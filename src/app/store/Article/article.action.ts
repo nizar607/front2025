@@ -4,8 +4,25 @@ import { ArticleModel } from './article.model';
 
 // fetch article data
 export const fetcharticleData = createAction('[Data] Fetch article Table Data');
+export const fetchfavoriteArticlesByUserData = createAction('[Data] Fetch favorite article by user Data');
 export const fetcharticleSuccess = createAction('[Data] Fetch article Data Success', props<{ fetchedArticleData: any[] }>());
 export const fetcharticleFailure = createAction('[Data] Fetch article Data Failure', props<{ error: string }>());
+
+//fetch article by id
+export const fetchSingleArticleData = createAction('[Data] Fetch single article by id Data', props<{ id: number }>());
+export const fetchSingleArticleSuccess = createAction('[Data] Fetch single article by id Data Success', props<{ fetchedSingleArticleData: any }>());
+export const fetchSingleArticleFailure = createAction('[Data] Fetch single article by id Data Failure', props<{ error: string }>());
+
+// search article data
+export const searcharticleData = createAction('[Data] Search article Table Data', props<{ searchInput: string, minPrice: number, maxPrice: number, categories: number[] }>());
+export const searcharticleSuccess = createAction('[Data] Search article Data Success', props<{ fetchedArticleData: any[] }>());
+export const searcharticleFailure = createAction('[Data] Search article Data Failure', props<{ error: string }>());
+
+
+// search article by categorie
+// export const searcharticleByCategoryData = createAction('[Data] Fetch article Table Data', props<{ searchValue: string }>());
+// export const searcharticleByCategorySuccess = createAction('[Data] Fetch article Data Success', props<{ fetchedArticleData: any[] }>());
+// export const searcharticleByCategoryFailure = createAction('[Data] Fetch article Data Failure', props<{ error: string }>());
 
 // Add Data
 export const addarticleData = createAction(
@@ -62,7 +79,36 @@ export const deletearticleSuccess = createAction(
   '[Data] Delete articleData Success',
   props<{ id: string }>()
 );
+
+export const deletefavoriteByArticleData = createAction(
+  '[Data] Delete favoriteData by article',
+  props<{ id: string }>()
+);
+
+export const deleteFavoriteArticleSuccess = createAction(
+  '[Data] Delete favorite article Success',
+  props<{ id: string }>()
+);
+
+export const deleteFavoriteArticleFailure = createAction(
+  '[Data] Delete favorite article Failure',
+  props<{ error: string }>()
+);
+
 export const deletearticleFailure = createAction(
   '[Data] Delete articleData Failure',
+  props<{ error: string }>()
+);
+
+export const addfavoriteByArticleData = createAction(
+  '[Data] Add favoriteData',
+  props<{ newData: any }>()
+);
+export const addfavoriteByArticleDataSuccess = createAction(
+  '[Data] Add favoriteData Success',
+  props<{ newData: any }>()
+);
+export const addfavoriteByArticleDataFailure = createAction(
+  '[Data] Add favoriteData Failure',
   props<{ error: string }>()
 );

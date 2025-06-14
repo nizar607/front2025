@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+// { path: 'articles/create', component: CreateArticleComponent, canActivate: [PermissionGuard], data: { permission: 'create-article' } }
+
 const routes: Routes = [
   {
     path: '', loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule)
@@ -22,6 +24,9 @@ const routes: Routes = [
   },
   {
     path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+  },
+  {
+    path: 'notifications', loadChildren: () => import('./notifications/notifications.module').then(m => m.NotificationsModule)
   },
 
 ];

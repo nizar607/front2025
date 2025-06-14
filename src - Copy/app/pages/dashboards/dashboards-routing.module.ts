@@ -5,8 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { CrmComponent } from './crm/crm.component';
 import { IndexComponent } from './index/index.component';
-import { LearningComponent } from './learning/learning.component';
-import { RealEstateComponent } from './real-estate/real-estate.component';
+
 
 
 const routes: Routes = [
@@ -22,14 +21,7 @@ const routes: Routes = [
     path: "crm",
     component: CrmComponent
   },
-  {
-    path: "learning",
-    component: LearningComponent
-  },
-  {
-    path: "real-estate",
-    component: RealEstateComponent
-  },
+
 ];
 
 @NgModule({

@@ -33,6 +33,7 @@ import { TwoColumnComponent } from './two-column/two-column.component';
 import { TwoColumnSidebarComponent } from './two-column-sidebar/two-column-sidebar.component';
 import { HorizontalComponent } from './horizontal/horizontal.component';
 import { HorizontalTopbarComponent } from './horizontal-topbar/horizontal-topbar.component';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { HorizontalTopbarComponent } from './horizontal-topbar/horizontal-topbar
     TwoColumnSidebarComponent,
     HorizontalComponent,
     HorizontalTopbarComponent,
+    NotificationComponent
   ],
   imports: [
     CommonModule,

@@ -19,6 +19,7 @@ export class CategoryService {
   }
 
   addData(newData: FormData): Observable<any[]> {
+    console.log("new category", newData);
     return this.http.post<any>(API_URL, newData);
   }
 
@@ -27,6 +28,6 @@ export class CategoryService {
 }
 
   deleteData(id: string): Observable<any[]> {
-    return this.http.delete<any[]>(`${API_URL}${id}`);
+    return this.http.delete<any[]>(`${API_URL}/${id}`);
   }
 }

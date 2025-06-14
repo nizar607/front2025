@@ -6,19 +6,18 @@ import {
   addarticleData,
   deletearticleData,
   fetcharticleData,
+  updatearticleData,
 } from 'src/app/store/Article/article.action';
 import { selectarticleData } from 'src/app/store/Article/article-selector';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
-import { LeafletComponent } from "../../maps/leaflet/leaflet.component";
-import { selectMapData, selectSelectedMapData } from "../../../store/Map/map-selector";
 import { document } from "ngx-bootstrap/utils";
 import { HttpClient } from '@angular/common/http';
 import { ArticleService } from 'src/app/core/services/article/article.service';
-import { fetchcategoryData } from 'src/app/store/Learning/learning.action';
-import { selectcategoryData } from 'src/app/store/Learning/learning-selector';
 import { CategoryService } from 'src/app/core/services/category/category.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ImageCroppedEvent, LoadedImage } from 'ngx-image-cropper';
+import { fetchcategoryData } from 'src/app/store/Category/category.action';
+import { selectcategoryData } from 'src/app/store/Category/category-selector';
 
 
 @Component({
@@ -60,6 +59,13 @@ export class GridComponent implements OnInit {
   file!: File;
   previewUrl: SafeUrl | null = null;
 
+
+  searchResults: any;
+  searchTerm!: string;
+  searchCategoryTerm!: string;
+  itemsPerPage = 10;
+
+
   constructor(
     private formBuilder: UntypedFormBuilder,
     public store: Store,
@@ -72,34 +78,33 @@ export class GridComponent implements OnInit {
 
 
   fetchArticleList() {
+
     this.store.dispatch(fetcharticleData());
     this.store.select(selectarticleData).subscribe((data) => {
       this.articleList = data;
       console.log("data ", data);
-      this.articles = this.articleList.slice(0, 10);
+      this.articles = this.articleList.slice(0, this.itemsPerPage);
       console.log("articleList ", this.articleList);
     });
   }
 
-  ngOnInit(): void {
-
-    this.fetchArticleList();
-
-    this.categoryService.fetchData().subscribe((data) => {
+  fetchCategoryList() {
+    this.store.dispatch(fetchcategoryData());
+    this.store.select(selectcategoryData).subscribe((data) => {
       this.categoryList = data.map((item: any) => { return { name: item.name, value: item.id } });
-      console.log("categoryList ", data);
+      document.getElementById('elmLoader')?.classList.add('d-none');
+      console.log("data ", data);
     });
+  }
 
-    // this.store.dispatch(fetchcategoryData());
 
-    // this.store.select(selectcategoryData).subscribe((data) => {
-    //   this.categoryList = data;
-    //   console.log("categoryList  fetched", data);
-    // });
+  ngOnInit(): void {
+    this.searchCategoryTerm = "none";
+    this.fetchArticleList();
+    this.fetchCategoryList();
 
-    // this.store.select(selectSelectedMapData).subscribe((data) => {
-    //   this.mapData = data;
-    // });
+
+
 
     this.breadCrumbItems = [
       { label: 'Articles', active: true },
@@ -112,7 +117,7 @@ export class GridComponent implements OnInit {
       price: [10, [Validators.required, Validators.min(0)]],
       quantity: [10, [Validators.required, Validators.min(0)]],
       description: ['article1 description', [Validators.required, Validators.minLength(3)]],
-      category: ['', [Validators.required]],
+      category: ['1', [Validators.required]],
       image: [null, [Validators.required]],
     });
 
@@ -163,7 +168,7 @@ export class GridComponent implements OnInit {
 
   editArticle(article: any) {
     this.formUtils.articleData = article;
-    console.log("article ", article);
+    console.log("edit article ", article);
     this.formUtils.action = 'edit';
 
     this.addModal?.show();
@@ -171,39 +176,113 @@ export class GridComponent implements OnInit {
     this.articleForm.patchValue({ ...article });
   }
 
+
+  /* ************** CRUD ***************** */
+
+
+  /* ************** HELPER ***************** */
+  validateFormWithoutImage(): boolean {
+    // Check all required fields except image
+    return !this.articleForm.get('name')?.invalid &&
+      !this.articleForm.get('description')?.invalid &&
+      !this.articleForm.get('price')?.invalid &&
+      !this.articleForm.get('quantity')?.invalid &&
+      !this.articleForm.get('category')?.invalid;
+  }
+
+  /* ************** HELPER ***************** */
+
+  /* ************** ADD ***************** */
   saveArticle() {
     var formData = new FormData();
+    const isImageUnchanged = this.formUtils.action === 'edit' && !this.articleForm.get('image')?.dirty;
 
-    if (this.articleForm.valid) {
-      console.log("valid");
-      formData = new FormData();
-      const imageFile = this.articleForm.get('image')?.value;
-      formData.append('id', this.articleForm.get('id')?.value);
-      formData.append('file', imageFile);
-      formData.append('name', this.articleForm.get('name')?.value);
-      formData.append('description', this.articleForm.get('description')?.value);
-      formData.append('price', this.articleForm.get('price')?.value);
-      formData.append('quantity', this.articleForm.get('quantity')?.value);
-      formData.append('category', this.articleForm.get('category')?.value);
+    if (this.formUtils.action === 'edit') {
 
-      const article = this.articleForm.value;
-      if (this.formUtils.action === 'edit') {
-        console.log("article edit ", article);
-        this.articleService.updateData(article.id, article).subscribe((data) => {
-          console.log("data ", data);
-          this.fetchArticleList();
-        });
-      } else if (this.formUtils.action === 'add') {
-        console.log("add");
-        console.log("article add ", formData.forEach((value, key) =>
-          console.log(key, value)));
-        this.store.dispatch(addarticleData({ newData: formData }));
+      if (this.articleForm.valid) {
+        console.log("edit with image")
+        formData = new FormData();
+        const imageFile = this.articleForm.get('image')?.value;
+        formData.append('id', this.articleForm.get('id')?.value);
+        formData.append('file', imageFile);
+        formData.append('name', this.articleForm.get('name')?.value);
+        formData.append('description', this.articleForm.get('description')?.value);
+        formData.append('price', this.articleForm.get('price')?.value);
+        formData.append('quantity', this.articleForm.get('quantity')?.value);
+        formData.append('category', this.articleForm.get('category')?.value);
+
+        console.log("edit ", this.editData);
+        this.store.dispatch(updatearticleData({ id: this.editData.id, updatedData: formData }));
+      }
+      else if ((this.validateFormWithoutImage() && isImageUnchanged)) {
+        formData = new FormData();
+        const imageFile: any = null;
+        formData.append('id', this.articleForm.get('id')?.value);
+        formData.append('file', imageFile);
+        formData.append('name', this.articleForm.get('name')?.value);
+        formData.append('description', this.articleForm.get('description')?.value);
+        formData.append('price', this.articleForm.get('price')?.value);
+        formData.append('quantity', this.articleForm.get('quantity')?.value);
+        formData.append('category', this.articleForm.get('category')?.value);
+
+        console.log("edit without image");
+        const id = this.editData.id;
+        this.store.dispatch(updatearticleData({ id, updatedData: formData }));
+      }
+
+    } else {
+      if (this.formUtils.action === 'add') {
+        if (this.articleForm.valid) {
+          formData = new FormData();
+          const imageFile = this.articleForm.get('image')?.value;
+          formData.append('id', this.articleForm.get('id')?.value);
+          formData.append('file', imageFile);
+          formData.append('name', this.articleForm.get('name')?.value);
+          formData.append('description', this.articleForm.get('description')?.value);
+          formData.append('price', this.articleForm.get('price')?.value);
+          formData.append('quantity', this.articleForm.get('quantity')?.value);
+          formData.append('category', this.articleForm.get('category')?.value);
+          console.log("add");
+          this.store.dispatch(addarticleData({ newData: formData }));
+        }
       }
     }
 
     this.addModal?.hide();
     this.articleForm.reset();
   }
+  /* ************** ADD ***************** */
+
+  /* ************** DELETE ***************** */
+  deleteArticle(id: any) {
+    this.deleteID = id;
+    this.deleteModal?.show();
+  }
+
+  confirmDelete() {
+    console.log("this.deleteID ", this.deleteID);
+    this.store.dispatch(deletearticleData({ id: this.deleteID.toString() }));
+    this.deleteModal?.hide();
+  }
+  /* ************** DELETE ***************** */
+
+  /* ************** EDIT ***************** */
+  editModal(article: any) {
+    this.formUtils.articleData = article;
+    console.log("article ", article);
+    this.formUtils.action = 'edit';
+
+    this.addModal?.show();
+    this.editData = article;
+    this.articleForm.patchValue({ ...article });
+  }
+  /* ************** EDIT ***************** */
+
+
+  /* ************** CRUD ***************** */
+
+
+
 
   // saveProperty() {
   //   if (this.agentForm.valid) {
@@ -272,6 +351,73 @@ export class GridComponent implements OnInit {
   //   }
 
   // }
+
+
+  pageChanged(event
+    :
+    PageChangedEvent
+  ):
+    void {
+    const startItem = (event.page - 1) * event.itemsPerPage;
+    const endItem = event.page * event.itemsPerPage;
+    this.articles = this.articleList.slice(startItem, endItem);
+  }
+
+  selectstatus() {
+    const courtType = (document.getElementById("status-input") as HTMLInputElement).value;
+    if (courtType) {
+      this.articles = this.articleList.filter((data: any) => {
+        return data.type == courtType;
+      });
+    } else {
+      this.articles = this.articleList.slice(0, 10);
+    }
+  }
+
+
+
+  performSearch(): void {
+
+    console.log("this.searchTerm ", this.searchTerm);
+    this.searchResults = this.articleList.filter((item: any) => {
+      return item.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        || item.description.toLowerCase().includes(this.searchTerm.toLowerCase())
+    });
+    this.articles = this.searchResults.slice(0, 10);
+    this.updateNoResultDisplay();
+  }
+
+  searchByCategory(): void {
+    if (this.searchCategoryTerm == "none") {
+      this.articles = this.articleList.slice(0, 10);
+      return;
+    }
+    console.log("this.searchTerm ", this.searchCategoryTerm);
+    this.searchResults = this.articleList.filter(
+      (item: any) => item.category == this.searchCategoryTerm);
+
+    this.articles = this.searchResults.slice(0, 10);
+    this.updateNoResultDisplay();
+  }
+
+  updateNoResultDisplay() {
+    console.log("here no display update")
+    const noResultElement = document.getElementById('noresult') as HTMLElement;
+    const paginationElement = document.getElementById('pagination-element') as HTMLElement;
+
+    if (this.articles.length == 0) {
+      noResultElement.style.display = 'block';
+      paginationElement.classList.add('d-none');
+    } else {
+      noResultElement.style.display = 'none';
+      paginationElement.classList.remove('d-none');
+    }
+  }
+
+  formatType(type: string) {
+    return type.replaceAll("_", " ");
+  }
+
 
 
 }

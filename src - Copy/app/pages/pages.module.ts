@@ -5,13 +5,15 @@ import { CommonModule } from '@angular/common';
 // page route
 import { PagesRoutingModule } from './pages-routing.module';
 import { SharedModule } from '../shared/shared.module';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
     PagesRoutingModule,
-    SharedModule
+    SharedModule,
+    CoreModule
   ]
 })
 export class PagesModule { }

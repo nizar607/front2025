@@ -1,125 +1,193 @@
+<!-- Header -->
 
-<section class="hero">
-    <div class="hero-container">
-        <div class="hero-content">
-            <h1>Experience <span>Premium</span> Furniture Quality</h1>
-            <p>Elevate your living space with Modura’s expertly crafted furniture, designed for style and comfort.</p>
-            <div class="hero-buttons">
-                <a href="#products" class="btn">Shop Now</a>
-                <a class="btn btn-secondary" [routerLink]="['/client/3D']">Make your 3D Room</a>
-            </div>
-        </div>
-        <div class="hero-image">
-            <img class="img img-fluid" src="assets/images/logo.png" alt="SonicWave Premium Audio Products">
+
+<div class="scroll-indicator">
+    <span></span>
+</div>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1 class="hero-title">Timeless Design<br>Modern Living</h1>
+        <p class="hero-subtitle">Discover our curated collection of premium furniture and home accessories, crafted
+            for the discerning eye and built to last generations.</p>
+        <div class="hero-cta-group">
+            <a href="javascript:void;" routerLink="articles" class="hero-cta primary">Explore Collection</a>
+            <a href="javascript:void;" routerLink="3D" class="hero-cta secondary">Plan Your Room in 3D</a>
         </div>
     </div>
 </section>
 
-<section id="features" class="features">
-    <div class="section-title">
-        <h2>Why Choose Our Furniture</h2>
-        <p>Our furniture blends timeless craftsmanship with modern design to create pieces that elevate any space.</p>
+<!-- Featured Products -->
+<section class="featured" id="furniture">
+    <div class="section-header">
+        <h2 class="section-title">Featured Collection</h2>
+        <p class="section-subtitle">Handpicked pieces that define contemporary elegance</p>
     </div>
-    <div class="features-grid">
-        <div class="feature-card">
-            <div class="feature-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path
-                        d="M20 7H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm0 8H4V9h16v6z" />
-                </svg>
-            </div>
-            <h3>Premium Craftsmanship</h3>
-            <p>Each piece is handcrafted with high-quality materials, ensuring durability and a refined aesthetic for
-                your home.</p>
+
+    <div class="product-showcase">
+        <div class="product-image">
+            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Modern Sofa">
         </div>
-        <div class="feature-card">
-            <div class="feature-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-                </svg>
-            </div>
-            <h3>Customizable Designs</h3>
-            <p>Personalize your furniture with a variety of finishes, fabrics, and styles to match your unique vision.
-            </p>
+        <div class="product-info">
+            <div class="product-category">Living Room</div>
+            <h3 class="product-name">Milano Sectional Sofa</h3>
+            <p class="product-description">A masterpiece of Italian design, featuring premium Italian leather
+                upholstery and solid oak frame. The Milano combines unparalleled comfort with sophisticated
+                aesthetics.</p>
+            <div class="product-price">$3,299</div>
+            <a href="#" class="product-btn">View Details</a>
         </div>
-        <div class="feature-card">
-            <div class="feature-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path
-                        d="M21 11.5v-6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM5 5h14v6H5V5zm2 14h10v-2H7v2z" />
-                </svg>
-            </div>
-            <h3>Ergonomic Comfort</h3>
-            <p>Our chairs and tables are designed with ergonomics in mind, offering superior comfort for everyday use.
-            </p>
+    </div>
+
+    <div class="product-showcase">
+        <div class="product-info">
+            <div class="product-category">Dining Room</div>
+            <h3 class="product-name">Scandinavian Dining Set</h3>
+            <p class="product-description">Clean lines meet warm wood tones in this exceptional dining collection.
+                Crafted from sustainable Nordic oak with precision joinery and minimalist design philosophy.</p>
+            <div class="product-price">$2,499</div>
+            <a href="#" class="product-btn">View Details</a>
         </div>
-        <div class="feature-card">
-            <div class="feature-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path
-                        d="M21 7h-6V5c0-1.1-.9-2-2-2h-2c-1.1 0-2 .9-2 2v2H3v11c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7zm-10-2h2v2h-2V5zm8 13H5V9h14v9z" />
-                </svg>
-            </div>
-            <h3>Sustainable Materials</h3>
-            <p>We use eco-friendly, responsibly sourced materials to create furniture that’s as sustainable as it is
-                stylish.</p>
+        <div class="product-image">
+            <img src="https://images.unsplash.com/photo-1581539250439-c96689b516dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Dining Set">
+        </div>
+    </div>
+
+    <div class="product-showcase">
+        <div class="product-image">
+            <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Bedroom Set">
+        </div>
+        <div class="product-info">
+            <div class="product-category">Bedroom</div>
+            <h3 class="product-name">Contemporary Platform Bed</h3>
+            <p class="product-description">Sleek and sophisticated, this platform bed features a floating nightstand
+                design and integrated LED lighting. Perfect for the modern bedroom sanctuary.</p>
+            <div class="product-price">$1,899</div>
+            <a href="#" class="product-btn">View Details</a>
         </div>
     </div>
 </section>
 
-<section id="products" class="products">
-    <div class="section-title">
-        <h2>Our Product Line</h2>
-        <p>Discover our range of premium audio products designed to elevate your listening experience.</p>
+<!-- Categories -->
+<section class="categories">
+    <div class="section-header">
+        <h2 class="section-title">Shop by Category</h2>
+        <p class="section-subtitle">Find the perfect pieces for every room in your home</p>
     </div>
-    <div class="product-filters">
-        <button class="filter-btn active">All Products</button>
-        <button class="filter-btn">Headphones</button>
-        <button class="filter-btn">Earbuds</button>
-        <button class="filter-btn">Speakers</button>
-        <button class="filter-btn">Accessories</button>
-    </div>
-    <div class="products-grid">
-        <div class="product-item">
-            <div class="product-image">
-                <img class="img img-fluid"
-                    src="https://i5.walmartimages.com/seo/Lacoo-Faux-Leather-High-Back-Executive-Office-Chair-with-Lumbar-Support-Black_bf489981-70b3-42c2-972e-93ea9995756c.160b1f502b31db454018d773aed8b003.jpeg"
-                    alt="">
+
+    <div class="categories-grid">
+        <div class="category-card">
+            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                alt="Living Room">
+            <div class="category-overlay">
+                <h3 class="category-name">Living Room</h3>
+                <p class="category-count">245 Products</p>
             </div>
-            <div class="product-info">
-                <span class="product-category">Headphones</span>
-                <h3 class="product-name">SonicWave Pro Max</h3>
-                <p class="product-desc">Our flagship wireless headphones with adaptive noise cancellation
-                    and
-                    premium comfort.</p>
-                <div class="product-bottom">
-                    <div class="product-price">$299.99 <span>$399.99</span></div>
-                    <div class="add-to-cart">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-                        </svg>
-                    </div>
-                </div>
+        </div>
+        <div class="category-card">
+            <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                alt="Bedroom">
+            <div class="category-overlay">
+                <h3 class="category-name">Bedroom</h3>
+                <p class="category-count">180 Products</p>
+            </div>
+        </div>
+        <div class="category-card">
+            <img src="https://images.unsplash.com/photo-1581539250439-c96689b516dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                alt="Office">
+            <div class="category-overlay">
+                <h3 class="category-name">Dining Room</h3>
+                <p class="category-count">120 Products</p>
             </div>
         </div>
     </div>
 </section>
 
-<section class="complaint-section">
-    <div class="section-title">
-        <h2>We Value Your Feedback</h2>
-        <p>Help us improve our products and services by sharing your thoughts and experiences with us.</p>
-    </div>
-    <div class="complaint-container">
-        <form class="complaint-form">
-            <div class="form-group">
-                <label for="complaint">Your Feedback</label>
-                <textarea id="complaint" rows="5"
-                    placeholder="Please share your thoughts, suggestions, or concerns..."></textarea>
-            </div>
-            <button type="submit" class="btn">Submit Feedback</button>
+<!-- Newsletter -->
+<section class="newsletter">
+    <div class="newsletter-content">
+        <h2 class="newsletter-title">Stay Inspired</h2>
+        <p class="newsletter-text">Subscribe to our newsletter for exclusive previews, design tips, and special
+            offers on our latest collections.</p>
+        <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+            <button type="submit" class="newsletter-btn">Subscribe</button>
         </form>
     </div>
 </section>
 
+
+
+<script>
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Header scroll effect
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('.header');
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (currentScroll > 100) {
+            header.style.background = 'rgba(255, 255, 255, 0.98)';
+            header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+        } else {
+            header.style.background = 'rgba(255, 255, 255, 0.98)';
+            header.style.boxShadow = 'none';
+        }
+    });
+
+    // Newsletter form
+    document.querySelector('.newsletter-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const button = this.querySelector('.newsletter-btn');
+        const input = this.querySelector('.newsletter-input');
+
+        button.textContent = 'Subscribed!';
+        button.style.background = '#27ae60';
+        input.value = '';
+
+        setTimeout(() => {
+            button.textContent = 'Subscribe';
+            button.style.background = '#1a1a1a';
+        }, 3000);
+    });
+
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements for animations
+    document.querySelectorAll('.product-showcase, .category-card').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        observer.observe(el);
+    });
+</script>

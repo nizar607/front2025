@@ -1,0 +1,236 @@
+/* Experience Section */
+.experience {
+  padding: 8rem 5%;
+  background: white;
+}
+
+.experience-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 200px);
+  gap: 2rem;
+  height: 800px;
+}
+
+.experience-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.experience-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.experience-card.large {
+  grid-column: span 2;
+  grid-row: span 2;
+  display: flex;
+}
+
+.experience-card.medium {
+  grid-column: span 1;
+  grid-row: span 2;
+}
+
+.experience-card.small {
+  grid-column: span 1;
+  grid-row: span 1;
+  position: relative;
+}
+
+.experience-card.wide {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.experience-card.tall {
+  grid-column: span 1;
+  grid-row: span 3;
+}
+
+.card-content {
+  padding: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-content.vertical {
+  justify-content: flex-start;
+  gap: 1.5rem;
+}
+
+.card-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 300;
+  color: #d4af37;
+  line-height: 1;
+}
+
+.card-content h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: #2c2c2c;
+  margin-bottom: 1rem;
+}
+
+.card-content p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.card-link {
+  color: #d4af37;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.card-link:hover {
+  color: #2c2c2c;
+}
+
+.card-image {
+  flex: 1;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: white;
+  padding: 1.5rem;
+}
+
+.card-overlay h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  height: 100%;
+  align-items: center;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #d4af37;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.warranty-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.warranty-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #666;
+}
+
+.warranty-item svg {
+  color: #d4af37;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .experience {
+    padding: 4rem 3%;
+  }
+
+  .experience-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(6, 180px);
+    height: auto;
+  }
+
+  .experience-card.large {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .experience-card.tall {
+    grid-row: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .experience {
+    padding: 3rem 2%;
+  }
+
+  .experience-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 200px);
+    gap: 1.5rem;
+    height: auto;
+  }
+
+  .experience-card.large,
+  .experience-card.medium,
+  .experience-card.small,
+  .experience-card.wide,
+  .experience-card.tall {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  .experience-card.large {
+    flex-direction: column;
+  }
+
+  .card-content {
+    padding: 1.5rem;
+  }
+
+  .card-number {
+    font-size: 2rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}

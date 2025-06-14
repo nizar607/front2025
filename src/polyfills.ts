@@ -1,3 +1,15 @@
+import 'global';
+(window as any).global = window;
+
+
+import * as Buffer from 'buffer';
+(window as any).Buffer = Buffer;
+
+import * as process from 'process';
+(window as any).process = process;
+
+
+
 /***************************************************************************************************
  * Load `$localize` onto the global scope - used if i18n tags appear in Angular templates.
  */
@@ -52,6 +64,8 @@ import '@angular/localize/init';
 import 'zone.js';  // Included with Angular CLI.
 
 import 'intersection-observer';
+
+
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

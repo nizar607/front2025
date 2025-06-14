@@ -1,139 +1,125 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Audio Products | SonicWave</title>
-</head>
-
-<body>
-    <header>
-        <nav class="navbar">
-            <a href="#" class="logo">
-                MODURA
-            </a>
-            <div class="nav-links">
-                <a href="#">Home</a>
-                <a href="#">Products</a>
-                <a href="#">About</a>
-                <a href="#">Contact</a>
-                <div class="cart-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="cart-count">3</span>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <h1>Experience <span>Premium</span> Audio Products</h1>
-                <p>Immerse yourself in crystal-clear sound with our state-of-the-art audio lineup designed for
-                    audiophiles and casual listeners alike.</p>
-                <div class="hero-buttons">
-                    <a href="#products" class="btn">Shop Now</a>
-                    <a href="#features" class="btn btn-secondary">Learn More</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <img class="img img-fluid" src="assets/images/logo.png" alt="SonicWave Premium Audio Products">
+<section class="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1>Experience <span>Premium</span> Furniture Quality</h1>
+            <p>Elevate your living space with Modura’s expertly crafted furniture, designed for style and comfort.</p>
+            <div class="hero-buttons">
+                <a href="javascript:void()" routerLink="articles"  class="btn">Shop Now</a>
+                <a class="btn btn-secondary" routerLink="3D">Make your 3D Room</a>
             </div>
         </div>
-    </section>
+        <div class="hero-image">
+            <img class="img img-fluid" src="assets/images/logo.png" alt="SonicWave Premium Audio Products">
+        </div>
+    </div>
+</section>
 
-    <section id="features" class="features">
-        <div class="section-title">
-            <h2>Why Choose SonicWave</h2>
-            <p>Our products combine cutting-edge technology with premium comfort to deliver an unparalleled listening
-                experience.</p>
+<section id="features" class="features">
+    <div class="section-title">
+        <h2>Why Choose Our Furniture</h2>
+        <p>Our furniture blends timeless craftsmanship with modern design to create pieces that elevate any space.</p>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path
+                        d="M20 7H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm0 8H4V9h16v6z" />
+                </svg>
+            </div>
+            <h3>Premium Craftsmanship</h3>
+            <p>Each piece is handcrafted with high-quality materials, ensuring durability and a refined aesthetic for
+                your home.</p>
         </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path
-                            d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
-                    </svg>
-                </div>
-                <h3>Hi-Fi Audio Quality</h3>
-                <p>Experience studio-quality sound with our custom-engineered drivers that deliver rich bass and
-                    crystal-clear highs.</p>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                </svg>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M7 2v11h3v9l7-12h-4l4-8z" />
-                    </svg>
-                </div>
-                <h3>Lightning-Fast Charging</h3>
-                <p>Just 10 minutes of charging gives you 5 hours of playback time, with a total battery life of up to 40
-                    hours.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path
-                            d="M12 18.5c-3.58 0-6.5-2.92-6.5-6.5s2.92-6.5 6.5-6.5 6.5 2.92 6.5 6.5-2.92 6.5-6.5 6.5m0-15c-4.69 0-8.5 3.81-8.5 8.5s3.81 8.5 8.5 8.5 8.5-3.81 8.5-8.5-3.81-8.5-8.5-8.5zm-1 13h2v-6h-2z" />
-                    </svg>
-                </div>
-                <h3>Active Noise Cancellation</h3>
-                <p>Block out the world around you with our advanced noise cancellation technology that adapts to your
-                    environment.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path
-                            d="M21 9v-2h-13v2h13zm0 4v-2h-13v2h13zm-13 4h13v-2h-13v2zm-8-12h4v-4h2v4h4v2h-4v4h-2v-4h-4v-2z" />
-                    </svg>
-                </div>
-                <h3>Customizable EQ</h3>
-                <p>Fine-tune your listening experience with our advanced equalizer app that gives you complete control
-                    over your sound profile.</p>
-            </div>
+            <h3>Customizable Designs</h3>
+            <p>Personalize your furniture with a variety of finishes, fabrics, and styles to match your unique vision.
+            </p>
         </div>
-    </section>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path
+                        d="M21 11.5v-6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM5 5h14v6H5V5zm2 14h10v-2H7v2z" />
+                </svg>
+            </div>
+            <h3>Ergonomic Comfort</h3>
+            <p>Our chairs and tables are designed with ergonomics in mind, offering superior comfort for everyday use.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path
+                        d="M21 7h-6V5c0-1.1-.9-2-2-2h-2c-1.1 0-2 .9-2 2v2H3v11c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7zm-10-2h2v2h-2V5zm8 13H5V9h14v9z" />
+                </svg>
+            </div>
+            <h3>Sustainable Materials</h3>
+            <p>We use eco-friendly, responsibly sourced materials to create furniture that’s as sustainable as it is
+                stylish.</p>
+        </div>
+    </div>
+</section>
 
-    <section id="products" class="products">
-        <div class="section-title">
-            <h2>Our Product Line</h2>
-            <p>Discover our range of premium audio products designed to elevate your listening experience.</p>
-        </div>
-        <div class="product-filters">
-            <button class="filter-btn active">All Products</button>
-            <button class="filter-btn">Headphones</button>
-            <button class="filter-btn">Earbuds</button>
-            <button class="filter-btn">Speakers</button>
-            <button class="filter-btn">Accessories</button>
-        </div>
-        <div class="products-grid">
-            <div class="product-item">
-                <div class="product-image">
-                    <img class="img img-fluid"
-                        src="https://i5.walmartimages.com/seo/Lacoo-Faux-Leather-High-Back-Executive-Office-Chair-with-Lumbar-Support-Black_bf489981-70b3-42c2-972e-93ea9995756c.160b1f502b31db454018d773aed8b003.jpeg"
-                        alt="">
-                </div>
-                <div class="product-info">
-                    <span class="product-category">Headphones</span>
-                    <h3 class="product-name">SonicWave Pro Max</h3>
-                    <p class="product-desc">Our flagship wireless headphones with adaptive noise cancellation and
-                        premium comfort.</p>
-                    <div class="product-bottom">
-                        <div class="product-price">$299.99 <span>$399.99</span></div>
-                        <div class="add-to-cart">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-                            </svg>
-                        </div>
+<section id="products" class="products">
+    <div class="section-title">
+        <h2>Our Product Line</h2>
+        <p>Discover our range of premium audio products designed to elevate your listening experience.</p>
+    </div>
+    <div class="product-filters">
+        <button class="filter-btn active">All Products</button>
+        <button class="filter-btn">Headphones</button>
+        <button class="filter-btn">Earbuds</button>
+        <button class="filter-btn">Speakers</button>
+        <button class="filter-btn">Accessories</button>
+    </div>
+    <div class="products-grid">
+        <div class="product-item">
+            <div class="product-image">
+                <img class="img img-fluid"
+                    src="https://i5.walmartimages.com/seo/Lacoo-Faux-Leather-High-Back-Executive-Office-Chair-with-Lumbar-Support-Black_bf489981-70b3-42c2-972e-93ea9995756c.160b1f502b31db454018d773aed8b003.jpeg"
+                    alt="">
+            </div>
+            <div class="product-info">
+                <span class="product-category">Headphones</span>
+                <h3 class="product-name">SonicWave Pro Max</h3>
+                <p class="product-desc">Our flagship wireless headphones with adaptive noise cancellation
+                    and
+                    premium comfort.</p>
+                <div class="product-bottom">
+                    <div class="product-price">$299.99 <span>$399.99</span></div>
+                    <div class="add-to-cart">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                        </svg>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+<section class="complaint-section">
+    <div class="section-title">
+        <h2>We Value Your Feedback</h2>
+        <p>Help us improve our products and services by sharing your thoughts and experiences with us.</p>
+    </div>
+    <div class="complaint-container">
+        <form class="complaint-form">
+            <div class="form-group">
+                <label for="complaint">Your Feedback</label>
+                <textarea id="complaint" rows="5"
+                    placeholder="Please share your thoughts, suggestions, or concerns..."></textarea>
+            </div>
+            <button type="submit" class="btn">Submit Feedback</button>
+        </form>
+    </div>
+</section>
+

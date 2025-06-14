@@ -1,0 +1,21 @@
+<header>
+    <nav class="navbar">
+        <a class="logo" (click)="navigateToHome()" class="logo">
+            MODURA
+        </a>
+        <div class="nav-links">
+            <a href="javascript:void;" routerLink="/client">Home</a>
+            <a href="javascript:void;" routerLink="/client/articles">Products</a>
+            <a href="javascript:void;" routerLink="/client/about">About</a>
+            <div class="cart-icon" routerLink="basket">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span class="cart-count">3</span>
+            </div>
+        </div>
+    </nav>
+</header>

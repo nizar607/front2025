@@ -21,6 +21,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+
             "outputPath": "dist/steex",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -60,9 +61,7 @@
               "node_modules/prismjs/prism.js",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/slick-carousel/slick/slick.min.js",
-              "src/assets/js/blueprint3d.js",
-              "src/assets/js/items.js",
-              "src/assets/js/example.js"
+              "node_modules/global/window.js"
             ],
             "allowedCommonJsDependencies": [
               "leaflet",
@@ -76,7 +75,11 @@
               "polylabel",
               "dropzone",
               "prismjs",
-              "lodash"
+              "lodash",
+                            "crypto-browserify",
+              "stream-browserify",
+              "buffer",
+              "process"
             ]
           },
           "configurations": {

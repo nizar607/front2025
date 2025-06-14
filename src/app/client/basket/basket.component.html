@@ -1,0 +1,138 @@
+<!-- Main Content -->
+<div class="main-content">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="#home">Home</a>
+        <span class="breadcrumb-separator">/</span>
+        <span>Shopping Cart</span>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">Shopping Cart</h1>
+        <p class="page-subtitle">Review your items and proceed to checkout</p>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" id="success-message" *ngIf="showSuccessMessage">
+        Item successfully updated!
+    </div>
+
+    <!-- Cart Layout -->
+    <div class="cart-layout" id="cart-layout">
+        <!-- Cart Items Section -->
+        <div class="cart-items-section">
+            <div class="cart-items-header">
+                <div class="items-count" id="items-count">{{(cartItemsCount$ | async) || 0}} items in your cart</div>
+                <button class="clear-cart-btn" (click)="clearBasket()" [disabled]="cartLoading$ | async">Clear
+                    Cart</button>
+            </div>
+
+            <div class="cart-items-list" id="cart-items-list">
+                <!-- Loading State -->
+                @if (cartLoading$ | async) {
+                <div class="loading-state">
+                    <p>Loading cart...</p>
+                </div>
+                }
+
+                <!-- Error State -->
+                @if (cartError$ | async; as error) {
+                <div class="error-state">
+                    <p>Error: {{error}}</p>
+                    <button (click)="loadCart()">Retry</button>
+                </div>
+                }
+
+                <!-- Cart Items -->
+                @if ((cartItems$ | async)!.length > 0) {
+                <div>
+                    @for (item of cartItems$ | async; track trackByItemId($index, item)) {
+                    <div class="cart-item" [attr.data-id]="item.id">
+                        <img [src]="item.image ? 'http://localhost:8080/api/files/'+item.image : 'https://fastly.picsum.photos/id/677/350/200.jpg?hmac=n3-Up8asdopiFMxG7LU8g_kRnqT7rYmbb6Z2qBJJSyQ'"
+                            [alt]="item.name" class="item-image">
+
+                        <div class="item-details">
+                            <h3 class="item-name">{{item.name}}</h3>
+                            <div class="item-category">{{item.categoryName}}</div>
+
+                            <div class="item-controls">
+                                <div class="quantity-controls">
+                                    <button class="quantity-btn" (click)="updateQuantity(item.id, -1)"
+                                        [disabled]="item.quantity <= 1 || (cartLoading$ | async)">−</button>
+                                    <span class="quantity-display">{{item.quantity}}</span>
+                                    <button class="quantity-btn" (click)="updateQuantity(item.id, 1)"
+                                        [disabled]="cartLoading$ | async">+</button>
+                                </div>
+
+                                <button class="remove-btn" (click)="removeFromBasket(item.id)"
+                                    [disabled]="cartLoading$ | async">Remove</button>
+                            </div>
+                        </div>
+
+                        <div class="item-price-section">
+                            <div class="item-price">${{item.price | number:'1.2-2'}}</div>
+                            <div class="item-total" *ngIf="item.quantity > 1">
+                                ${{(item.price * item.quantity) | number:'1.2-2'}} total
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+                }
+
+                <!-- Empty Cart -->
+                @if ((cartItems$ | async)?.length === 0 && !(cartLoading$ | async)) {
+                <div class="empty-cart">
+                    <svg class="empty-cart-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4m1.6 8L5 3H3m4 10v6a1 1 0 001 1h6a1 1 0 001-1v-6m-5 3h2">
+                        </path>
+                    </svg>
+                    <h3>Your cart is empty</h3>
+                    <p>Looks like you haven't added any items to your cart yet.</p>
+                    <a routerLink="/client/articles" class="continue-shopping-btn">Continue Shopping</a>
+                </div>
+                }
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        @if ((cartItems$ | async)!.length > 0) {
+        <div class="order-summary">
+            <h2 class="summary-title">Order Summary</h2>
+
+            <div class="summary-row subtotal">
+                <span>Subtotal</span>
+                <span id="subtotal">${{(cartSubtotal$ | async) | number:'1.2-2'}}</span>
+            </div>
+
+            <div class="summary-row shipping">
+                <span>Shipping</span>
+                <span id="shipping">${{(shippingCost$ | async) | number:'1.2-2'}}</span>
+            </div>
+
+            <div class="summary-row total">
+                <span>Total</span>
+                <span id="total">${{(cartTotal$ | async) | number:'1.2-2'}}</span>
+            </div>
+
+            <div class="promo-code-section">
+                <div class="promo-code-title">Promo Code</div>
+                <div class="promo-code-input">
+                    <input type="text" class="promo-input" id="promo-input" placeholder="Enter code">
+                    <button class="apply-promo-btn">Apply</button>
+                </div>
+            </div>
+
+            <button class="checkout-btn" id="checkout-btn"
+                [disabled]="(cartItemsCount$ | async) === 0 || (cartLoading$ | async)" (click)="proceedToCheckout()">
+                Proceed to Checkout
+            </button>
+
+            <a routerLink="/client/articles" class="continue-shopping" (click)="continueShopping()">Continue
+                Shopping</a>
+        </div>
+        }
+    </div>
+</div>

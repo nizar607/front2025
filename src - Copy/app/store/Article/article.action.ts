@@ -7,6 +7,17 @@ export const fetcharticleData = createAction('[Data] Fetch article Table Data');
 export const fetcharticleSuccess = createAction('[Data] Fetch article Data Success', props<{ fetchedArticleData: any[] }>());
 export const fetcharticleFailure = createAction('[Data] Fetch article Data Failure', props<{ error: string }>());
 
+// search article data
+export const searcharticleData = createAction('[Data] Search article Table Data', props<{ searchInput: string, minPrice: number, maxPrice: number,categories:number[] }>());
+export const searcharticleSuccess = createAction('[Data] Fetch article Data Success', props<{ fetchedArticleData: any[] }>());
+export const searcharticleFailure = createAction('[Data] Fetch article Data Failure', props<{ error: string }>());
+
+
+// search article by categorie
+// export const searcharticleByCategoryData = createAction('[Data] Fetch article Table Data', props<{ searchValue: string }>());
+// export const searcharticleByCategorySuccess = createAction('[Data] Fetch article Data Success', props<{ fetchedArticleData: any[] }>());
+// export const searcharticleByCategoryFailure = createAction('[Data] Fetch article Data Failure', props<{ error: string }>());
+
 // Add Data
 export const addarticleData = createAction(
   '[Data] Add articleData',

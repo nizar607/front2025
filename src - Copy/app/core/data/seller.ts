@@ -154,10 +154,10 @@ const sellerOverview = [
 ]
 
 
-import { ChartOptions } from "../../../app/store/Seller/seller.model"
+
 
 // Seller-1 chart
-const seller1Chart: ChartOptions = {
+const seller1Chart: any = {
     series: [{
         data: [12, 14, 2, 47, 42, 15, 47, 75, 65, 19, 14],
     }],
@@ -204,7 +204,7 @@ const seller1Chart: ChartOptions = {
 };
 
 // Seller-2 chart
-const seller2Chart: ChartOptions = {
+const seller2Chart: any = {
     series: [{
         data: [12, 14, 2, 47, 42, 15, 35, 75, 20, 67, 89],
     },],
@@ -251,7 +251,7 @@ const seller2Chart: ChartOptions = {
 };
 
 // Seller-3 chart
-const seller3Chart: ChartOptions = {
+const seller3Chart: any = {
     series: [{
         data: [45, 20, 8, 42, 30, 5, 35, 79, 22, 54, 64],
     },],
@@ -298,7 +298,7 @@ const seller3Chart: ChartOptions = {
 };
 
 // Seller-4 chart
-const seller4Chart: ChartOptions = {
+const seller4Chart: any = {
     series: [{
         data: [26, 15, 48, 12, 47, 19, 35, 19, 85, 68, 50],
     },],
@@ -345,7 +345,7 @@ const seller4Chart: ChartOptions = {
 };
 
 // Seller-5 chart
-const seller5Chart: ChartOptions = {
+const seller5Chart: any = {
     series: [{
         data: [60, 67, 12, 49, 6, 78, 63, 51, 33, 8, 16],
     },],
@@ -392,7 +392,7 @@ const seller5Chart: ChartOptions = {
 };
 
 // Seller-6 chart
-const seller6Chart: ChartOptions = {
+const seller6Chart: any = {
     series: [{
         data: [78, 63, 51, 33, 8, 16, 60, 67, 12, 49,],
     },],
@@ -439,7 +439,7 @@ const seller6Chart: ChartOptions = {
 };
 
 // Seller-7 chart
-const seller7Chart: ChartOptions = {
+const seller7Chart: any = {
     series: [{
         data: [15, 35, 75, 20, 67, 8, 42, 30, 5, 35],
     },],
@@ -486,7 +486,7 @@ const seller7Chart: ChartOptions = {
 };
 
 // Seller-8 chart
-const seller8Chart: ChartOptions = {
+const seller8Chart: any = {
     series: [{
         data: [45, 32, 68, 55, 36, 10, 48, 25, 74, 54],
     },],

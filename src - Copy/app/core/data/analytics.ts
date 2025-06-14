@@ -1,6 +1,6 @@
-import { ChartOptions } from "src/app/store/Analytics/analytics.model";
+
 // Other-1 chart
-const SessionChart: ChartOptions = {
+const SessionChart: any = {
     series: [{
         name: 'Total Sessions',
         data: [31, 40, 28, 51, 42, 109, 103]
@@ -44,7 +44,7 @@ const SessionChart: ChartOptions = {
     },
 };
 
-const DurationChart: ChartOptions = {
+const DurationChart: any = {
     series: [{
         name: 'Avg. Visit Duration',
         data: [29, 43, 71, 58, 99, 93, 130]
@@ -88,7 +88,7 @@ const DurationChart: ChartOptions = {
     },
 };
 
-const ImpressionChart: ChartOptions = {
+const ImpressionChart: any = {
     series: [{
         name: 'Impressions',
         data: [50, 18, 47, 32, 84, 110, 93]
@@ -132,7 +132,7 @@ const ImpressionChart: ChartOptions = {
     },
 };
 
-const ViewChart: ChartOptions = {
+const ViewChart: any = {
     series: [{
         name: 'Total Views',
         data: [72, 58, 30, 51, 42, 95, 119]

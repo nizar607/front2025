@@ -1,3 +1,33 @@
-.logo{
+  
+  .nav-icon {
+    stroke: #4a4a4a;
     cursor: pointer;
-}
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .nav-icon:hover {
+    stroke: #1a1a1a;
+    transform: scale(1.1);
+  }
+  
+  .nav-icon.active {
+    stroke: #1a1a1a;
+  }
+  
+  .cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #1a1a1a;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+  

@@ -1,0 +1,151 @@
+
+
+<!-- Main Content -->
+<main class="main-content">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">My Favorites</h1>
+    <p class="page-subtitle">Your curated collection of beautiful furniture pieces</p>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div class="loading-indicator" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading your favorites...</p>
+  </div>
+
+  <!-- Favorites Stats -->
+  <div class="favorites-stats" *ngIf="!loading">
+    <div class="stat-item">
+      <div class="stat-number">{{ favoriteItems.length }}</div>
+      <div class="stat-label">Saved Items</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">{{ getTotalValue() | currency:'USD':'symbol':'1.0-0' }}</div>
+      <div class="stat-label">Total Value</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">{{ getAverageRating() }}</div>
+      <div class="stat-label">Avg Rating</div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-group">
+      <span class="filter-label">Sort by:</span>
+      <select class="filter-select" [(ngModel)]="sortBy" (change)="sortFavorites()">
+        <option value="newest">Recently Added</option>
+        <option value="oldest">Oldest First</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="rating">Highest Rated</option>
+        <option value="name">Name A-Z</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Category:</span>
+      <select class="filter-select" [(ngModel)]="selectedCategory" (change)="filterByCategory()">
+        <option value="all">All Categories</option>
+        <option *ngFor="let category of categories" [value]="category.value">{{ category.label }}</option>
+      </select>
+    </div>
+
+    <div class="view-toggle">
+      <button class="view-btn" [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+          </path>
+        </svg>
+      </button>
+      <button class="view-btn" [class.active]="viewMode === 'list'" (click)="setViewMode('list')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16">
+          </path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Favorites Grid -->
+  <div class="favorites-grid" [class.list-view]="viewMode === 'list'" *ngIf="filteredFavorites.length > 0">
+    <div class="favorite-item" [class.list-view]="viewMode === 'list'" *ngFor="let item of filteredFavorites">
+      <div class="item-image-container">
+        <img
+          [src]="item.image ? 'http://localhost:8080/api/files/'+item.image : 'https://fastly.picsum.photos/id/677/350/200.jpg?hmac=n3-Up8asdopiFMxG7LU8g_kRnqT7rYmbb6Z2qBJJSyQ'"
+          [alt]="item.name" class="item-image">
+        <div class="item-badge" *ngIf="item.badge">{{ item.badge }}</div>
+        <button class="remove-favorite" (click)="removeFromFavorites(item.id)">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="item-content">
+        <div class="item-details">
+          <div class="item-category">{{ item.category }}</div>
+          <h3 class="item-title">{{ item.name }}</h3>
+          <div class="item-price">{{ item.price | currency:'USD':'symbol':'1.0-0' }}</div>
+
+          <div class="item-rating">
+            <div class="stars">
+              <svg *ngFor="let star of getStarsArray(5); let i = index" class="star"
+                  [class.filled]="i < (item.rating || 0)" [class.empty]="i >= (item.rating || 0)"
+                  viewBox="0 0 24 24">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+              </svg>
+            </div>
+            <span class="rating-text">{{ item.rating || 'No Rating' }} out of 5 ({{ item.reviewCount || 0 }} reviews)</span>
+          </div>
+
+          <div class="added-date">Added {{ item.dateAdded | date:'mediumDate' }}</div>
+        </div>
+
+        <div class="item-actions">
+          <a [routerLink]="['/client/product', item.id]" class="action-btn">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+              </path>
+            </svg>
+            View Details
+          </a>
+          <button class="action-btn primary" (click)="addToCart(item)">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4m1.6 8L5 3H3m4 10v6a1 1 0 001 1h6a1 1 0 001-1v-6m-5 3h2"></path>
+            </svg>
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-favorites" *ngIf="filteredItems.length === 0">
+    <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+      </path>
+    </svg>
+    <h2 class="empty-title">No favorites yet</h2>
+    <p class="empty-description">
+      Start building your dream collection by adding items to your favorites.
+      Browse our curated selection of premium furniture pieces.
+    </p>
+    <a href="javascript:void;" routerLink="/client/articles" class="browse-btn">Browse Furniture</a>
+  </div>
+</main>
+
+<!-- Bulk Actions -->
+<div class="bulk-actions" [class.show]="selectedItems.length > 0">
+  <span class="bulk-text">{{ selectedItems.length }} item(s) selected</span>
+  <button class="bulk-btn" (click)="addSelectedToCart()">Add to Cart</button>
+  <button class="bulk-btn danger" (click)="removeSelectedFromFavorites()">Remove</button>
+</div>

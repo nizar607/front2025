@@ -20,7 +20,6 @@ import {
   uploadImageSuccess,
   uploadImageFailure
 } from "./category.action";
-import { fetchsalesFailure } from "../Ecommerce/ecommerce.actions";
 import { CategoryModel } from "./category.model";
 
 

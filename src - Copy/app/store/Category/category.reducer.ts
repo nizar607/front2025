@@ -29,6 +29,7 @@ export const CategoryReducer = createReducer(
   }),
 
   on(fetchcategorySuccess, (state, {fetchedCategoryData}) => {
+    console.log("fetchedCategoryData ", fetchedCategoryData);
     return {...state, categoryData:fetchedCategoryData, loading: false};
   }),
 

@@ -20,7 +20,7 @@ import {
   uploadImageSuccess,
   uploadImageFailure
 } from "./agent.action";
-import {fetchsalesFailure} from "../Ecommerce/ecommerce.actions";
+
 import {AgentModel} from "./agent.model";
 
 

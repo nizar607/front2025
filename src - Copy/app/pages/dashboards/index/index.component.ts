@@ -11,8 +11,6 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import am5geodata_worldLow from "@amcharts/amcharts5-geodata/worldLow";
 import { shuffleArray } from 'src/app/shared/commonFunction';
 import { Store } from '@ngrx/store';
-import { fetchorderData,  fetchsalesData } from 'src/app/store/Ecommerce/ecommerce.actions';
-import { selectData, selectorderata, selectproductData } from 'src/app/store/Ecommerce/ecommerce-selector';
 import { getUser } from 'src/app/store/Authentication/authentication-selector';
 import { products } from './data';
 
@@ -46,16 +44,6 @@ export class IndexComponent {
 
     this.produtlist = products
 
-    // Recent Sales
-    this.store.dispatch(fetchsalesData());
-    this.store.select(selectData).subscribe((data) => {
-      this.salesList = data;
-    });
-    // Latest Orders
-    this.store.dispatch(fetchorderData());
-    this.store.select(selectorderata).subscribe((data) => {
-      this.orderList = data;
-    });
 
     // Set world-map-markers amchart
     setTimeout(() => {
