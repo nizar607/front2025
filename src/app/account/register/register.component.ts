@@ -78,7 +78,7 @@ export class RegisterComponent {
           firstName: firstName,
           lastName: lastName,
           password: password,
-          roles:["ROLE_CLIENT"]
+          roles:["ROLE_ADMIN"]
         }
       ));
       }

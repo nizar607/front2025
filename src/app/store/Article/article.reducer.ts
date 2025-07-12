@@ -16,7 +16,12 @@ import {
   searcharticleSuccess,
   searcharticleFailure,
   updatearticleDataSuccess,
-  uploadImageSuccess
+  uploadImageSuccess,
+  addToCartSuccess,
+  removeFromCartSuccess,
+  removeItemFromCartByArticleId,
+  removeItemFromCartByArticleIdSuccess,
+  removeItemFromCartByArticleIdFailure
 } from './article.action';
 
 
@@ -119,7 +124,53 @@ export const ArticleReducer = createReducer(
 
   on(searcharticleFailure, (state, { error }) => {
     return { ...state, error, loading: false };
-  })
+  }),
+
+  on(addToCartSuccess, (state, { updatedArticle }) => {
+    return {
+      ...state,
+      articleData: state.articleData.map(article => 
+        article.id === updatedArticle.id 
+          ? { ...article, inCart: true }
+          : article
+      )
+    };
+  }),
+
+  on(removeFromCartSuccess, (state, { updatedArticle }) => {
+    return {
+      ...state,
+      articleData: state.articleData.map(article => 
+        article.id === updatedArticle.id 
+          ? { ...article, inCart: false }
+          : article
+      )
+    };
+  }),
+
+  // Remove Item from Cart by Article ID
+  on(removeItemFromCartByArticleId, (state) => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+  on(removeItemFromCartByArticleIdSuccess, (state, { updatedArticle }) => {
+    return {
+      ...state,
+      loading: false,
+      error: null,
+      articleData: state.articleData.map(article => 
+        article.id === updatedArticle.id 
+          ? { ...article, inCart: false }
+          : article
+      )
+    };
+  }),
+  on(removeItemFromCartByArticleIdFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error
+  }))
 
 )
 

@@ -65,7 +65,19 @@
             </div>
 
             <div class="action-buttons">
-                <button class="add-to-cart-btn" (click)="addToCart()">Add to Cart</button>
+                <button class="add-to-cart-btn" [ngClass]="{
+                    'remove-from-cart-btn': product.inCart,
+                    'add-to-cart-btn': !product.inCart
+                }" (click)="addToCart()">
+                    <span *ngIf="!product.inCart">
+                        <i class="bi bi-cart me-2"></i>
+                        Add to Cart
+                    </span>
+                    <span *ngIf="product.inCart">
+                        <i class="bi bi-x me-2"></i>
+                        Remove from Cart
+                    </span>
+                </button>
                 <button class="wishlist-btn" (click)="toggleWishlist()">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -75,7 +87,7 @@
                 </button>
             </div>
 
-            <button class="buy-now-btn" (click)="buyNow()">Buy Now</button>
+            <button class="buy-now-btn" routerLink="/client/basket">Buy Now</button>
         </div>
     </div>
 </div>

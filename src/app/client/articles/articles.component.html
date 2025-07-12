@@ -86,8 +86,21 @@
                     <h3 class="product-name">{{article.name}}</h3>
                     <div class="product-price">${{article.price}}</div>
                     <div class="product-actions">
-                        <button class="add-to-cart-btn" (click)="addToCart(article, $event)">
-                            Add to Cart
+                        <button [ngClass]="{ 
+                            'add-to-cart-btn': !article.inCart, 
+                            'remove-from-cart-btn': article.inCart
+                          }" (click)="addToCart(article, $event)">
+                            @if (!article.inCart) {
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 6px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5-6M17 21a2 2 0 100-4 2 2 0 000 4zM9 21a2 2 0 100-4 2 2 0 000 4z"></path>
+                                </svg>
+                                Add to Cart
+                            } @else {
+                                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 6px;">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                  </svg>
+                                  Remove
+                              }
                         </button>
                         <button [ngClass]="{ 
                             'wishlist-btn': !article.favorite, 

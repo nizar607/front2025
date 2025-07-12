@@ -1,0 +1,267 @@
+<div class="templates-container">
+  <div class="templates-header">
+    <h1 class="templates-title">Choose Your Homepage Template</h1>
+    <p class="templates-subtitle">Select the perfect design that matches your vision</p>
+    
+    <!-- Admin Edit Toggle -->
+    @if (isAdmin) {
+      <div class="admin-controls">
+        <button class="edit-toggle-btn" (click)="toggleEditMode()" [class.active]="editingMode">
+          <i class="bi bi-pencil"></i>
+          {{ editingMode ? 'Exit Edit Mode' : 'Edit Templates' }}
+        </button>
+        @if (editingMode) {
+          <p class="edit-instructions">Click on any text or image to edit</p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="templates-grid">
+
+    <!-- Homepage V3 Template -->
+    <div class="template-card" (click)="!editingMode && selectTemplate('v3')" [class.editing]="editingMode">
+      <div class="template-preview">
+        <div class="preview-image">
+          <img [src]="getTemplate('v3').image" alt="Homepage V3 Preview" 
+               (click)="editingMode && $event.stopPropagation()">
+          @if (editingMode && isAdmin) {
+            <div class="image-edit-overlay">
+              <input type="file" accept="image/*" (change)="updateImage('v3', $event)" 
+                     style="display: none" #imageInput>
+              <button class="edit-image-btn" (click)="imageInput.click(); $event.stopPropagation()">
+                <i class="bi bi-camera"></i>
+              </button>
+            </div>
+          }
+          <div class="preview-overlay">
+            <div class="preview-content">
+              <h3 [contentEditable]="editingMode && isAdmin" 
+                  (click)="startEditing('v3', 'previewTitle'); $event.stopPropagation()"
+                  (blur)="saveEdit('v3', 'previewTitle', $event)"
+                  [class.editable]="editingMode && isAdmin">
+                {{ getTemplate('v3').previewTitle }}
+              </h3>
+              <p [contentEditable]="editingMode && isAdmin" 
+                 (click)="startEditing('v3', 'previewDescription'); $event.stopPropagation()"
+                 (blur)="saveEdit('v3', 'previewDescription', $event)"
+                 [class.editable]="editingMode && isAdmin">
+                {{ getTemplate('v3').previewDescription }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="template-info">
+        <h3 [contentEditable]="editingMode && isAdmin" 
+            (click)="startEditing('v3', 'name'); $event.stopPropagation()"
+            (blur)="saveEdit('v3', 'name', $event)"
+            [class.editable]="editingMode && isAdmin">
+          {{ getTemplate('v3').name }}
+        </h3>
+        <p [contentEditable]="editingMode && isAdmin" 
+           (click)="startEditing('v3', 'description'); $event.stopPropagation()"
+           (blur)="saveEdit('v3', 'description', $event)"
+           [class.editable]="editingMode && isAdmin">
+          {{ getTemplate('v3').description }}
+        </p>
+        <div class="template-features">
+          @for (feature of getTemplate('v3').features; track feature) {
+            <span class="feature-tag">{{ feature }}</span>
+          }
+        </div>
+        <button class="select-btn" (click)="selectTemplate('v3'); $event.stopPropagation()">
+          Select Template
+        </button>
+      </div>
+    </div>
+
+    <!-- Homepage V1 Template -->
+    <div class="template-card" (click)="!editingMode && selectTemplate('v1')" [class.editing]="editingMode">
+      <div class="template-preview">
+        <div class="preview-image">
+          <img [src]="getTemplate('v1').image" alt="Homepage V1 Preview" 
+               (click)="editingMode && $event.stopPropagation()">
+          @if (editingMode && isAdmin) {
+            <div class="image-edit-overlay">
+              <input type="file" accept="image/*" (change)="updateImage('v1', $event)" 
+                     style="display: none" #imageInput2>
+              <button class="edit-image-btn" (click)="imageInput2.click(); $event.stopPropagation()">
+                <i class="bi bi-camera"></i>
+              </button>
+            </div>
+          }
+          <div class="preview-overlay">
+            <div class="preview-content">
+              <h3 [contentEditable]="editingMode && isAdmin" 
+                  (click)="startEditing('v1', 'previewTitle'); $event.stopPropagation()"
+                  (blur)="saveEdit('v1', 'previewTitle', $event)"
+                  [class.editable]="editingMode && isAdmin">
+                {{ getTemplate('v1').previewTitle }}
+              </h3>
+              <p [contentEditable]="editingMode && isAdmin" 
+                 (click)="startEditing('v1', 'previewDescription'); $event.stopPropagation()"
+                 (blur)="saveEdit('v1', 'previewDescription', $event)"
+                 [class.editable]="editingMode && isAdmin">
+                {{ getTemplate('v1').previewDescription }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="template-info">
+        <h3 [contentEditable]="editingMode && isAdmin" 
+            (click)="startEditing('v1', 'name'); $event.stopPropagation()"
+            (blur)="saveEdit('v1', 'name', $event)"
+            [class.editable]="editingMode && isAdmin">
+          {{ getTemplate('v1').name }}
+        </h3>
+        <p [contentEditable]="editingMode && isAdmin" 
+           (click)="startEditing('v1', 'description'); $event.stopPropagation()"
+           (blur)="saveEdit('v1', 'description', $event)"
+           [class.editable]="editingMode && isAdmin">
+          {{ getTemplate('v1').description }}
+        </p>
+        <div class="template-features">
+          @for (feature of getTemplate('v1').features; track feature) {
+            <span class="feature-tag">{{ feature }}</span>
+          }
+        </div>
+        <button class="select-btn" (click)="selectTemplate('v1'); $event.stopPropagation()">
+          Select Template
+        </button>
+      </div>
+    </div>
+
+    
+    <!-- Homepage V2 Template -->
+    <div class="template-card" (click)="!editingMode && selectTemplate('v2')" [class.editing]="editingMode">
+      <div class="template-preview">
+        <div class="preview-image">
+          <img [src]="getTemplate('v2').image" alt="Homepage V2 Preview" 
+               (click)="editingMode && $event.stopPropagation()">
+          @if (editingMode && isAdmin) {
+            <div class="image-edit-overlay">
+              <input type="file" accept="image/*" (change)="updateImage('v2', $event)" 
+                     style="display: none" #imageInput3>
+              <button class="edit-image-btn" (click)="imageInput3.click(); $event.stopPropagation()">
+                <i class="bi bi-camera"></i>
+              </button>
+            </div>
+          }
+          <div class="preview-overlay">
+            <div class="preview-content">
+              <h3 [contentEditable]="editingMode && isAdmin" 
+                  (click)="startEditing('v2', 'previewTitle'); $event.stopPropagation()"
+                  (blur)="saveEdit('v2', 'previewTitle', $event)"
+                  [class.editable]="editingMode && isAdmin">
+                {{ getTemplate('v2').previewTitle }}
+              </h3>
+              <p [contentEditable]="editingMode && isAdmin" 
+                 (click)="startEditing('v2', 'previewDescription'); $event.stopPropagation()"
+                 (blur)="saveEdit('v2', 'previewDescription', $event)"
+                 [class.editable]="editingMode && isAdmin">
+                {{ getTemplate('v2').previewDescription }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="template-info">
+        <h3 [contentEditable]="editingMode && isAdmin" 
+            (click)="startEditing('v2', 'name'); $event.stopPropagation()"
+            (blur)="saveEdit('v2', 'name', $event)"
+            [class.editable]="editingMode && isAdmin">
+          {{ getTemplate('v2').name }}
+        </h3>
+        <p [contentEditable]="editingMode && isAdmin" 
+           (click)="startEditing('v2', 'description'); $event.stopPropagation()"
+           (blur)="saveEdit('v2', 'description', $event)"
+           [class.editable]="editingMode && isAdmin">
+          {{ getTemplate('v2').description }}
+        </p>
+        <div class="template-features">
+          @for (feature of getTemplate('v2').features; track feature) {
+            <span class="feature-tag">{{ feature }}</span>
+          }
+        </div>
+        <button class="select-btn" (click)="selectTemplate('v2'); $event.stopPropagation()">
+          Select Template
+        </button>
+      </div>
+    </div>
+
+    <!-- Custom Template Card -->
+    <div class="template-card custom-template" (click)="!editingMode && selectTemplate('custom')" [class.editing]="editingMode">
+      <div class="template-preview">
+        <div class="preview-image custom-preview">
+          <img [src]="getTemplate('custom').image" alt="Custom Template Preview" 
+               (click)="editingMode && $event.stopPropagation()" 
+               style="display: none;" #customImg
+               (load)="customImg.style.display = 'block'"
+               (error)="customImg.style.display = 'none'">
+          <div class="custom-icon" [style.display]="'flex'">
+            <i class="bi bi-brush"></i>
+          </div>
+          @if (editingMode && isAdmin) {
+            <div class="image-edit-overlay">
+              <input type="file" accept="image/*" (change)="updateImage('custom', $event)" 
+                     style="display: none" #imageInput4>
+              <button class="edit-image-btn" (click)="imageInput4.click(); $event.stopPropagation()">
+                <i class="bi bi-camera"></i>
+              </button>
+            </div>
+          }
+          <div class="preview-overlay">
+            <div class="preview-content">
+              <h3 [contentEditable]="editingMode && isAdmin" 
+                  (click)="startEditing('custom', 'previewTitle'); $event.stopPropagation()"
+                  (blur)="saveEdit('custom', 'previewTitle', $event)"
+                  [class.editable]="editingMode && isAdmin">
+                {{ getTemplate('custom').previewTitle }}
+              </h3>
+              <p [contentEditable]="editingMode && isAdmin" 
+                 (click)="startEditing('custom', 'previewDescription'); $event.stopPropagation()"
+                 (blur)="saveEdit('custom', 'previewDescription', $event)"
+                 [class.editable]="editingMode && isAdmin">
+                {{ getTemplate('custom').previewDescription }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="template-info">
+        <h3 [contentEditable]="editingMode && isAdmin" 
+            (click)="startEditing('custom', 'name'); $event.stopPropagation()"
+            (blur)="saveEdit('custom', 'name', $event)"
+            [class.editable]="editingMode && isAdmin">
+          {{ getTemplate('custom').name }}
+        </h3>
+        <p [contentEditable]="editingMode && isAdmin" 
+           (click)="startEditing('custom', 'description'); $event.stopPropagation()"
+           (blur)="saveEdit('custom', 'description', $event)"
+           [class.editable]="editingMode && isAdmin">
+          {{ getTemplate('custom').description }}
+        </p>
+        <div class="template-features">
+          @for (feature of getTemplate('custom').features; track feature) {
+            <span class="feature-tag">{{ feature }}</span>
+          }
+        </div>
+        <button class="select-btn custom-btn" (click)="selectTemplate('custom'); $event.stopPropagation()">
+          Create Custom
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="templates-footer">
+    <button class="skip-templates-btn" (click)="skipTemplateSelection()">
+      <i class="bi bi-arrow-right"></i>
+      Skip for Now
+    </button>
+    <p>You can always switch between templates later in your dashboard</p>
+  </div>
+
+</div>

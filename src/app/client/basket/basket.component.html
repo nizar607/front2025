@@ -19,7 +19,7 @@
     </div>
 
     <!-- Cart Layout -->
-    <div class="cart-layout" id="cart-layout">
+    <div class="cart-layout row" id="cart-layout">
         <!-- Cart Items Section -->
         <div class="cart-items-section">
             <div class="cart-items-header">
@@ -136,3 +136,10 @@
         }
     </div>
 </div>
+
+<!-- Checkout Popup -->
+<app-checkout-popup 
+    [isVisible]="showCheckoutPopup"
+    (closePopup)="onCloseCheckoutPopup()"
+    (paymentSuccess)="onPaymentSuccess($event)">
+</app-checkout-popup>

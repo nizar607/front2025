@@ -112,3 +112,51 @@ export const addfavoriteByArticleDataFailure = createAction(
   '[Data] Add favoriteData Failure',
   props<{ error: string }>()
 );
+
+// Add to Cart
+export const addToCartData = createAction(
+  '[Data] Add to Cart',
+  props<{ articleId: number, quantity: number }>()
+);
+
+export const addToCartSuccess = createAction(
+  '[Data] Add to Cart Success',
+  props<{ updatedArticle: any }>()
+);
+
+export const addToCartFailure = createAction(
+  '[Data] Add to Cart Failure',
+  props<{ error: string }>()
+);
+
+// Remove from Cart
+export const removeFromCartData = createAction(
+  '[Data] Remove from Cart',
+  props<{ articleId: number }>()
+);
+
+export const removeFromCartSuccess = createAction(
+  '[Data] Remove from Cart Success',
+  props<{ updatedArticle: any }>()
+);
+
+export const removeFromCartFailure = createAction(
+  '[Data] Remove from Cart Failure',
+  props<{ error: string }>()
+);
+
+// Remove Item from Cart by Article ID
+export const removeItemFromCartByArticleId = createAction(
+  '[Article] Remove Item from Cart by Article ID',
+  props<{ articleId: number }>()
+);
+
+export const removeItemFromCartByArticleIdSuccess = createAction(
+  '[Article] Remove Item from Cart by Article ID Success',
+  props<{ updatedArticle: any }>()
+);
+
+export const removeItemFromCartByArticleIdFailure = createAction(
+  '[Article] Remove Item from Cart by Article ID Failure',
+  props<{ error: string }>()
+);

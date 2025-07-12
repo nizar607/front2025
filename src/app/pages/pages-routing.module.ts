@@ -8,6 +8,9 @@ const routes: Routes = [
     path: '', loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule)
   },
   {
+    path: 'templates', loadChildren: () => import('./templates/templates.module').then(m => m.TemplatesModule)
+  },
+  {
     path: 'article', loadChildren: () => import('./article/article.module').then(m => m.ArticleModule)
   },
   {
@@ -27,6 +30,9 @@ const routes: Routes = [
   },
   {
     path: 'notifications', loadChildren: () => import('./notifications/notifications.module').then(m => m.NotificationsModule)
+  },
+  {
+    path: 'profile-setup', loadChildren: () => import('./profile-setup/profile-setup.module').then(m => m.ProfileSetupModule)
   },
 
 ];

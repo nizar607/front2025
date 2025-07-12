@@ -209,6 +209,24 @@ body {
     object-fit: cover;
     border-radius: 8px;
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+    display: block;
+}
+
+/* Hero image overlay positioning */
+.hero-image .image-upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+    border-radius: 8px;
 }
 
 /* Modern Experience Section */
@@ -368,6 +386,7 @@ body {
 .card-image-modern {
     height: 200px;
     overflow: hidden;
+    position: relative;
 }
 
 .card-image-modern img {
@@ -375,6 +394,23 @@ body {
     height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
+    display: block;
+}
+
+/* Make overlay match image dimensions exactly */
+.card-image-modern .image-upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
 }
 
 .vertical-card:hover .card-image-modern img {
@@ -707,12 +743,33 @@ body {
 .content-image {
     flex: 1;
     overflow: hidden;
+    position: relative;
 }
 
 .content-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+/* Artisan spotlight image upload overlay - only covers the image area */
+.content-image:hover .image-upload-overlay {
+    opacity: 1;
+}
+
+.content-image .image-upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
 }
 
 /* Newsletter */
@@ -1036,5 +1093,132 @@ body {
         text-align: center;
     }
 }
+
+/* Image Upload Overlay Styles */
+.image-upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+.card-image-modern:hover .image-upload-overlay,
+.card-background:hover .image-upload-overlay,
+.item-image:hover .image-upload-overlay {
+    opacity: 1;
+}
+
+/* Hero image specific hover - only on image itself */
+.hero-image img:hover + .image-upload-overlay,
+.hero-image .image-upload-overlay:hover {
+    opacity: 1;
+}
+
+/* Show overlay when hovering over the image upload overlay itself */
+.image-upload-overlay:hover {
+    opacity: 1 !important;
+}
+
+/* Prevent overlay from showing when hovering over text content */
+.vertical-card:hover .image-upload-overlay {
+    opacity: 0;
+}
+
+/* Only show overlay when specifically hovering over the image area */
+.vertical-card .card-image-modern:hover .image-upload-overlay {
+    opacity: 1 !important;
+}
+
+/* For hero card, prevent overlay when hovering over content */
+.hero-card:hover .image-upload-overlay {
+    opacity: 0;
+}
+
+/* Only show overlay when specifically hovering over the hero background */
+.hero-card .card-background:hover .image-upload-overlay {
+    opacity: 1 !important;
+}
+
+.image-upload-overlay .btn {
+    background: rgba(255, 255, 255, 0.9);
+    color: #2c2c2c;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.image-upload-overlay .btn:hover {
+    background: #d4af37;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Hero Background Upload Styles */
+.hero-bg-upload {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 15;
+    opacity: 1 !important;
+}
+
+.hero-bg-upload .btn {
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #2c2c2c !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    padding: 12px 20px !important;
+    border-radius: 25px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.hero-bg-upload .btn:hover {
+    background: rgba(255, 255, 255, 1) !important;
+    border-color: #d4af37 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3) !important;
+    color: #d4af37 !important;
+}
+
+/* Admin Controls */
+.admin-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.admin-controls .btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+
 
 

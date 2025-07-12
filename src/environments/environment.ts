@@ -7,6 +7,9 @@ export const environment = {
   production: false,
   defaultauth: 'springboot',
   //defaultauth: 'fakebackend',
+  stripe: {
+    publishableKey: 'pk_test_51RXlPKQ6JcV4ZCjF1vl3NeGmma3hKAnfSGEKpULi1MYwVyduiUhViG3Dkdvdhl9IOhe6AkzlKgbyNUJGXumc2XLs00qULacej6'
+  },
   firebaseConfig: {
     apiKey: "AIzaSyCqS9cSPrDCNSQ-Ku2kZf5DBWjPPv7hvcA",
     authDomain: "test-demo-774f8.firebaseapp.com",

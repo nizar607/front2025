@@ -91,8 +91,9 @@ body {
 
 /* Hero Section */
 .hero {
+    --hero-bg-image: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
     min-height: 100vh;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: transparent;
     display: flex;
     align-items: center;
     position: relative;
@@ -107,8 +108,9 @@ body {
     right: 0;
     width: 60%;
     height: 100%;
-    background: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+    background: var(--hero-bg-image) center/cover;
     clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%);
+    z-index: 1;
 }
 
 .hero-container {
@@ -714,4 +716,137 @@ body {
         grid-template-columns: 1fr;
         text-align: center;
     }
+}
+
+/* Admin Controls */
+.admin-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.admin-controls .btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+/* Editable Styles */
+.editable {
+    border: 2px dashed #007bff;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: rgba(0, 123, 255, 0.1);
+    transition: all 0.3s ease;
+    cursor: text;
+}
+
+.editable:hover {
+    border-color: #0056b3;
+    background-color: rgba(0, 123, 255, 0.2);
+}
+
+.editable:focus {
+    outline: none;
+    border-color: #28a745;
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+.test{
+    z-index: 10000;
+}
+
+.admin-controls button:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.hero-bg-upload {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  opacity: 1 !important;
+}
+
+.hero-bg-upload .btn {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #333 !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  font-weight: 500 !important;
+  font-size: 0.85rem !important;
+  padding: 8px 16px !important;
+  border-radius: 25px !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+  backdrop-filter: blur(10px) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.hero-bg-upload .btn:hover {
+  background: white !important;
+  border-color: rgba(0, 123, 255, 0.3) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  color: #0066cc !important;
+}
+
+/* Image Upload Overlay for Products */
+.image-upload-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.product-image:hover .image-upload-overlay {
+    opacity: 1;
+}
+
+.image-upload-overlay .btn {
+    background: rgba(0, 123, 255, 0.9);
+    border: none;
+    color: white;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.image-upload-overlay .btn:hover {
+    background: rgba(0, 123, 255, 1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Hero Background Upload - Higher specificity to override generic styles */
+.hero-bg-upload.image-upload-overlay .btn {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #333 !important;
+    border: none !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    padding: 8px 16px !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+.hero-bg-upload.image-upload-overlay .btn:hover {
+    background: white !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
 }

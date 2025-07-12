@@ -87,6 +87,7 @@ export class AuthenticationService {
         this.logger.log("user here ", user);
         this.logger.warn("accesses  to be set", user.data.accesses);
         this.store.dispatch(loginSuccess({user}));
+      
         return user;
       }),
       catchError((error: any) => {
@@ -105,6 +106,13 @@ export class AuthenticationService {
     localStorage.removeItem('token');
     // Clear permissions from localStorage when logging out
     localStorage.removeItem('user_permissions');
+    
+    // Clear user flow flags
+    localStorage.setItem('hasProfile', 'false');
+    localStorage.setItem('templates', 'false');
+    localStorage.setItem('hasHomepage', 'false');
+    localStorage.removeItem('selectedTemplate');
+    
     this.currentUserSubject.next(null!);
     this.store.dispatch(logoutSuccess());
 

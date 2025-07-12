@@ -41,6 +41,13 @@ export class CartService {
 
   
   /**
+   * Remove item from cart by article ID
+   */
+  removeItemFromCartByArticleId(articleId: number): Observable<Cart> {
+    return this.http.delete<Cart>(`${API_URL}/remove/article/${articleId}`);
+  }
+
+  /**
    * Clear cart
    */
   clearCart(): Observable<Cart> {

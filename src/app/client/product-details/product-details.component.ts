@@ -5,8 +5,8 @@ import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 
 
-import { selectSingleArticleData } from 'src/app/store/Article/article-selector';
-import { fetchSingleArticleData } from 'src/app/store/Article/article.action';
+import { selectSingleArticleData, selectarticleData } from 'src/app/store/Article/article-selector';
+import { fetchSingleArticleData, addToCartData, removeItemFromCartByArticleId } from 'src/app/store/Article/article.action';
 import { addreviewData, fetchreviewByArticleData } from 'src/app/store/Review/review.action';
 
 
@@ -123,6 +123,18 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         this.productImages = [data.image];
       }
     });
+
+    // Subscribe to article list for real-time updates
+    this.store.select(selectarticleData).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((articles) => {
+      if (articles && articles.length > 0) {
+        const updatedProduct = articles.find(article => article.id === id);
+        if (updatedProduct && this.product) {
+          this.product = { ...this.product, inCart: updatedProduct.inCart };
+        }
+      }
+    });
   }
 
   // Image gallery navigation
@@ -149,9 +161,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   // Add to cart functionality
   addToCart(): void {
-    // Here you would implement the logic to add the product to the cart
-    console.log('Adding to cart:', this.product, 'Quantity:', this.quantity);
-    // Show a success message or navigate to cart
+    if (this.product.inCart) {
+      this.store.dispatch(removeItemFromCartByArticleId({ articleId: this.product.id }));
+      console.log('Removing from cart:', this.product);
+    } else {
+      this.store.dispatch(addToCartData({ articleId: this.product.id, quantity: this.quantity }));
+      console.log('Adding to cart:', this.product, 'Quantity:', this.quantity);
+    }
   }
 
 
@@ -169,12 +185,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     console.log('Adding to wishlist:', this.product);
     // Here you would implement the logic to add the product to the wishlist
     // Show a success message
-  }
-
-  // Buy now functionality
-  buyNow(): void {
-    console.log('Buy now:', this.product, 'Quantity:', this.quantity, 'Color:', this.selectedColor, 'Size:', this.selectedSize);
-    // Here you would implement the logic to proceed to checkout
   }
 
   // Review helpful functionality

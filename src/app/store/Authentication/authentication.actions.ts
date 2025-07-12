@@ -23,4 +23,9 @@ export const logout = createAction('[Authentication] Logout');
 
 export const logoutSuccess = createAction('[Auth] Logout Success');
 
+// fetch user from localStorage action
+export const fetchUser = createAction('[Authentication] Fetch User');
+export const fetchUserSuccess = createAction('[Authentication] Fetch User Success', props<{ user: any }>());
+export const fetchUserFailure = createAction('[Authentication] Fetch User Failure', props<{ error: string }>());
+
 

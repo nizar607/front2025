@@ -14,7 +14,7 @@ import * as CartSelectors from 'src/app/store/Cart/cart.selector';
 })
 export class BasketComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  
+
   cart$: Observable<Cart | null>;
   cartItems$: Observable<CartItem[]>;
   cartLoading$: Observable<boolean>;
@@ -23,12 +23,14 @@ export class BasketComponent implements OnInit, OnDestroy {
   cartSubtotal$: Observable<number>;
   cartTotal$: Observable<number>;
   shippingCost$: Observable<number>;
-  
+
   showSuccessMessage = false;
+  showCheckoutPopup = false;
 
   constructor(private store: Store, private router: Router) {
     this.cart$ = this.store.select(CartSelectors.selectCart);
     this.cartItems$ = this.store.select(CartSelectors.selectCartItems);
+    this.cartItems$.forEach((i) => console.log(i));
     this.cartLoading$ = this.store.select(CartSelectors.selectCartLoading);
     this.cartError$ = this.store.select(CartSelectors.selectCartError);
     this.cartItemsCount$ = this.store.select(CartSelectors.selectCartItemsCount);
@@ -39,6 +41,7 @@ export class BasketComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadCart();
+
   }
 
   ngOnDestroy() {
@@ -70,7 +73,7 @@ export class BasketComponent implements OnInit, OnDestroy {
     this.cartItems$.pipe(take(1)).subscribe(items => {
       currentItems = items;
     });
-    
+
     const item = currentItems.find(i => i.id === itemId);
     if (item) {
       const newQuantity = item.quantity + change;
@@ -83,8 +86,22 @@ export class BasketComponent implements OnInit, OnDestroy {
   }
 
   proceedToCheckout() {
-    // Navigate to checkout page
-    this.router.navigate(['/checkout']);
+    this.showCheckoutPopup = true;
+  }
+
+  onCloseCheckoutPopup() {
+    this.showCheckoutPopup = false;
+  }
+
+  onPaymentSuccess(paymentData: any) {
+    console.log('Payment successful:', paymentData);
+    // Clear the cart after successful payment
+    this.clearBasket();
+    // Show success message
+    this.showSuccessMessage = true;
+    setTimeout(() => this.showSuccessMessage = false, 5000);
+    // Close popup
+    this.showCheckoutPopup = false;
   }
 
   continueShopping() {

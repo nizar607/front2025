@@ -13,8 +13,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { HomepageV4Component } from './homepage/homepage-v4.component';
 import { ExperienceComponent } from './experience/experience.component';
 import { HomepageV2Component } from './homepage-v2/homepage-v2.component';
-import { WelcomeComponent } from './welcome/welcome.component';
-
 const routes: Routes = [
   {
     path: '', component: MainComponent, children: [
@@ -29,7 +27,6 @@ const routes: Routes = [
       { path: 'product/:id', component: ProductDetailsComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'about', component: AboutComponent },
-      { path: 'welcome', component: WelcomeComponent },
     ]
   },
 ];

@@ -20,7 +20,7 @@ import { FavoritesComponent } from './favorites/favorites.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ExperienceComponent } from './experience/experience.component';
 import { HomepageV2Component } from './homepage-v2/homepage-v2.component';
-import { WelcomeComponent } from './welcome/welcome.component';
+import { CheckoutPopupComponent } from './checkout-popup/checkout-popup.component';
 
 
 @NgModule({
@@ -39,7 +39,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     ProfileComponent,
     ExperienceComponent,
     HomepageV2Component,
-    WelcomeComponent,
+    CheckoutPopupComponent,
   ],
   imports: [
     CommonModule,

@@ -7,8 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { category } from 'src/app/core/data/learning';
 import { FavoriteService } from 'src/app/core/services/favorite/favorite.service';
 import { selectarticleData } from 'src/app/store/Article/article-selector';
-import { addfavoriteByArticleData, deletefavoriteByArticleData, fetcharticleData, searcharticleData } from 'src/app/store/Article/article.action';
-import { addItemToCart } from 'src/app/store/Cart/cart.action';
+import { addfavoriteByArticleData, deletefavoriteByArticleData, fetcharticleData, searcharticleData, addToCartData, removeFromCartData, removeItemFromCartByArticleId } from 'src/app/store/Article/article.action';
 import { selectcategoryData } from 'src/app/store/Category/category-selector';
 import { fetchcategoryData } from 'src/app/store/Category/category.action';
 
@@ -166,8 +165,13 @@ export class ArticlesComponent implements OnInit, AfterViewInit, OnDestroy {
     event.stopPropagation();
     event.preventDefault();
 
-    this.store.dispatch(addItemToCart({ articleId: article.id, quantity: 1 }));
-    console.log('Adding to cart:', article);
+    if (article.inCart) {
+      this.store.dispatch(removeItemFromCartByArticleId({ articleId: article.id }));
+      console.log('Removing from cart:', article);
+    } else {
+      this.store.dispatch(addToCartData({ articleId: article.id, quantity: 1 }));
+      console.log('Adding to cart:', article);
+    }
   }
 
   addToWishlist(article: any, event: Event) {
