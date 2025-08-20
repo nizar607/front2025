@@ -74,7 +74,7 @@ export class TemplatesComponent implements OnInit {
     
     // Navigate to the selected homepage template
     if (version === 'v1') {
-      this.router.navigate(['/client']);
+      this.router.navigate(['/client/v1']);
     } else if (version === 'v2') {
       this.router.navigate(['/client/v2']);
     } else if (version === 'v3') {

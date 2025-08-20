@@ -1,7 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
 import { AuthenticationService } from '../../core/services/auth.service';
-import { createCompanyWithImage } from '../../store/Company/company.action';
+import { fetchaboutusData, addaboutusData, updateaboutusData, updateaboutusImages } from '../../store/AboutUs/aboutUs.action';
+import { selectaboutusData, selectDataLoading, selectDataError } from '../../store/AboutUs/aboutUs-selector';
+
 
 interface CompanyValueDTO {
   title: string;
@@ -11,6 +14,7 @@ interface CompanyValueDTO {
 }
 
 interface TeamMemberDTO {
+  id: number,
   name: string;
   position: string;
   bio: string;
@@ -64,15 +68,44 @@ export class AboutComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   editingMode: boolean = false;
   connectedUser: any = null;
-  
+
   // Image files for upload
   coverImageFile: File | null = null;
   storyImageFile: File | null = null;
   teamImageFiles: { [key: number]: File } = {};
 
+  // NgRx observables
+  aboutUsData$: Observable<any>;
+  loading$: Observable<boolean>;
+  error$: Observable<string | null>;
+  private subscription: Subscription = new Subscription();
+
+  // Default content as fallback
+  defaultContent: AboutContent = {
+    coverImage: 'default-cover-image.png',
+    heroTitle: 'About FORMA',
+    heroSubtitle: 'Crafting Timeless Elegance Since 1987',
+    storyTitle: 'Our Story',
+    storyContent: 'Born from a passion for exceptional design and uncompromising quality, FORMA has been creating furniture that transcends trends for over three decades.',
+    storyText1: 'FORMA began in 1987 in a small workshop in Milan.',
+    storyText2: 'Our commitment to excellence is evident in every piece we create.',
+    storyText3: 'Today, FORMA continues to push boundaries while honoring our heritage.',
+    storyImage: 'default-story-image.png',
+    valuesTitle: 'Our Values',
+    valuesDescription: 'The principles that guide everything we do.',
+    companyValues: [],
+    teamTitle: 'Meet Our Team',
+    teamDescription: 'The passionate individuals behind every FORMA creation.',
+    teamMembers: [],
+    statsTitle: 'FORMA by the Numbers',
+    companyStatistics: [],
+    ctaTitle: 'Experience FORMA',
+    ctaDescription: 'Visit our showroom to see our craftsmanship up close.'
+  };
+
   // Content structure following the DTO
   content: AboutContent = {
-    coverImage: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    coverImage: 'default-cover-image.png',
     heroTitle: 'About FORMA',
     heroSubtitle: 'Crafting Timeless Elegance Since 1987',
     storyTitle: 'Our Story',
@@ -80,7 +113,7 @@ export class AboutComponent implements OnInit, OnDestroy {
     storyText1: 'FORMA began in 1987 in a small workshop in Milan, where master craftsman Giovanni Rossi combined traditional Italian woodworking techniques with contemporary design sensibilities. What started as a family business has evolved into a globally recognized brand synonymous with luxury and sophistication.',
     storyText2: 'Our commitment to excellence is evident in every piece we create. We source only the finest materials from sustainable suppliers and work with skilled artisans who share our dedication to perfection. Each piece of furniture is not just a product, but a work of art that tells a story of craftsmanship and care.',
     storyText3: 'Today, FORMA continues to push boundaries while honoring our heritage, creating furniture that seamlessly blends form and function for the modern home.',
-    storyImage: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    storyImage: 'default-story-image.png',
     valuesTitle: 'Our Values',
     valuesDescription: 'The principles that guide everything we do, from design conception to final delivery.',
     companyValues: [
@@ -113,31 +146,35 @@ export class AboutComponent implements OnInit, OnDestroy {
     teamDescription: 'The passionate individuals behind every FORMA creation.',
     teamMembers: [
       {
+        id: 1,
         name: 'Sarah Johnson',
         position: 'Founder & CEO',
         bio: 'With over 20 years in furniture design, Sarah leads our vision of creating beautiful, functional spaces.',
-        image: 'https://futureoflife.org/wp-content/uploads/2020/08/elon_musk_royal_society.jpg',
+        image: 'default-person-one.png',
         displayOrder: 1
       },
       {
+        id: 2,
         name: 'Michael Chen',
         position: 'Head of Design',
         bio: 'Michael brings innovative design concepts to life, blending modern aesthetics with practical functionality.',
-        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+        image: 'default-person-two.png',
         displayOrder: 2
       },
       {
+        id: 3,
         name: 'Emily Rodriguez',
         position: 'Quality Assurance Director',
         bio: 'Emily ensures every piece meets our exacting standards before it reaches your home.',
-        image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+        image: 'default-person-three.png',
         displayOrder: 3
       },
       {
+        id: 4,
         name: 'David Thompson',
         position: 'Customer Experience Manager',
         bio: 'David leads our customer service team, ensuring every interaction exceeds expectations.',
-        image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+        image: 'default-person-four.png',
         displayOrder: 4
       }
     ],
@@ -155,9 +192,34 @@ export class AboutComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthenticationService,
     private store: Store
-  ) { }
+  ) {
+    // Initialize observables
+    this.aboutUsData$ = this.store.select(selectaboutusData);
+    this.loading$ = this.store.select(selectDataLoading);
+    this.error$ = this.store.select(selectDataError);
+  }
 
   ngOnInit(): void {
+    // Dispatch action to fetch AboutUs data
+    this.store.dispatch(fetchaboutusData());
+
+    // Subscribe to AboutUs data and update content
+    this.subscription.add(
+      this.aboutUsData$.subscribe(data => {
+        if (data) {
+          // Create deep copies to avoid read-only issues
+          this.content = {
+            ...this.defaultContent,
+            ...data,
+            companyValues: data.companyValues ? data.companyValues.map((value: any) => ({ ...value })) : this.defaultContent.companyValues,
+            teamMembers: data.teamMembers ? data.teamMembers.map((member: any) => ({ ...member })) : this.defaultContent.teamMembers,
+            companyStatistics: data.companyStatistics ? data.companyStatistics.map((stat: any) => ({ ...stat })) : this.defaultContent.companyStatistics
+          };
+        } else {
+          this.content = this.defaultContent;
+        }
+      })
+    );
 
     // Check admin status
     this.connectedUser = this.authService.currentUserValue;
@@ -174,6 +236,7 @@ export class AboutComponent implements OnInit, OnDestroy {
     if (this.testimonialInterval) {
       clearInterval(this.testimonialInterval);
     }
+    this.subscription.unsubscribe();
   }
 
   // Admin functionality methods
@@ -236,19 +299,28 @@ export class AboutComponent implements OnInit, OnDestroy {
 
   updateValueContent(index: number, field: string, value: string): void {
     if (this.editingMode && this.isAdmin && this.content.companyValues[index]) {
-      (this.content.companyValues[index] as any)[field] = value;
+      // Create a new array with updated object to avoid mutating read-only data
+      this.content.companyValues = this.content.companyValues.map((item, i) =>
+        i === index ? { ...item, [field]: value } : item
+      );
     }
   }
 
   updateTeamMemberContent(index: number, field: string, value: string): void {
     if (this.editingMode && this.isAdmin && this.content.teamMembers[index]) {
-      (this.content.teamMembers[index] as any)[field] = value;
+      // Create a new array with updated object to avoid mutating read-only data
+      this.content.teamMembers = this.content.teamMembers.map((item, i) =>
+        i === index ? { ...item, [field]: value } : item
+      );
     }
   }
 
   updateStatContent(index: number, field: string, value: string): void {
     if (this.editingMode && this.isAdmin && this.content.companyStatistics[index]) {
-      (this.content.companyStatistics[index] as any)[field] = value;
+      // Create a new array with updated object to avoid mutating read-only data
+      this.content.companyStatistics = this.content.companyStatistics.map((item, i) =>
+        i === index ? { ...item, [field]: value } : item
+      );
     }
   }
 
@@ -274,7 +346,10 @@ export class AboutComponent implements OnInit, OnDestroy {
         } else if (section === 'story') {
           this.content.storyImage = imageUrl;
         } else if (section === 'team' && index !== undefined) {
-          this.content.teamMembers[index].image = imageUrl;
+          // Create a new array with updated team member image
+          this.content.teamMembers = this.content.teamMembers.map((member, i) =>
+            i === index ? { ...member, image: imageUrl } : member
+          );
         }
       };
       reader.readAsDataURL(file);
@@ -290,45 +365,55 @@ export class AboutComponent implements OnInit, OnDestroy {
   saveChanges(): void {
     if (this.editingMode && this.isAdmin) {
       console.log('Saving changes:', this.content);
-      
-      // Prepare company data (excluding images)
-      const companyData = {
-        ...this.content,
-        // Remove image URLs as they will be handled separately
-        coverImage: undefined,
-        storyImage: undefined,
-        teamMembers: this.content.teamMembers.map(member => ({
-          ...member,
-          image: undefined
-        }))
+
+      // Prepare AboutUs data (without images for content update)
+      const aboutUsData = {
+        ...this.content
       };
 
-      // Determine which image to upload (prioritize cover image, then story image)
-      let imageFile: File | null = null;
-      if (this.coverImageFile) {
-        imageFile = this.coverImageFile;
-      } else if (this.storyImageFile) {
-        imageFile = this.storyImageFile;
-      } else {
-        // Check for team member images
-        const teamImageKeys = Object.keys(this.teamImageFiles);
-        if (teamImageKeys.length > 0) {
-          imageFile = this.teamImageFiles[parseInt(teamImageKeys[0])];
+      // Check if this is an update (has ID) or new creation
+      if (this.content.id) {
+        // Update existing AboutUs data
+        console.log(aboutUsData);
+        // this.store.dispatch(updateaboutusData({
+        //   id: this.content.id,
+        //   updatedData: aboutUsData
+        // }));
+
+        // Handle image uploads separately if there are any files
+        if (this.coverImageFile || this.storyImageFile || Object.keys(this.teamImageFiles).length > 0) {
+          const imageFormData = new FormData();
+          console.log("updating images here");
+
+          // Add cover image if exists
+          if (this.coverImageFile) {
+            imageFormData.append('coverImage', this.coverImageFile);
+          }
+
+          // Add story image if exists
+          if (this.storyImageFile) {
+            imageFormData.append('storyImage', this.storyImageFile);
+          }
+
+          // Add team member images if exist
+          Object.keys(this.teamImageFiles).forEach(index => {
+            const teamMemberId = this.content.teamMembers[parseInt(index)]?.id;
+            if (teamMemberId && this.teamImageFiles[parseInt(index)]) {
+              imageFormData.append(`teamMemberImages[${teamMemberId}]`, this.teamImageFiles[parseInt(index)]);
+            }
+          });
+
+          // Dispatch image update action
+          this.store.dispatch(updateaboutusImages({ id: this.content.id, imageData: imageFormData }));
         }
       }
 
-      // Dispatch the chained action
-      this.store.dispatch(createCompanyWithImage({ 
-        companyData, 
-        imageFile 
-      }));
-      
       // Reset image files after saving
       this.coverImageFile = null;
       this.storyImageFile = null;
       this.teamImageFiles = {};
-      
-      alert('Changes are being saved...');
+
+
     }
   }
 
@@ -342,5 +427,33 @@ export class AboutComponent implements OnInit, OnDestroy {
 
   getStarsArray(count: number): number[] {
     return Array(count).fill(0).map((x, i) => i + 1);
+  }
+
+  // Helper methods for image URLs
+  getStoryImageUrl(): string {
+    // If image starts with 'data:', it's a local preview (base64)
+    if (this.content.storyImage && this.content.storyImage.startsWith('data:')) {
+      return this.content.storyImage;
+    }
+    // Otherwise, use backend URL
+    return `http://localhost:8080/api/files/${this.content.storyImage}`;
+  }
+
+  getCoverImageUrl(): string {
+    // If image starts with 'data:', it's a local preview (base64)
+    if (this.content.coverImage && this.content.coverImage.startsWith('data:')) {
+      return this.content.coverImage;
+    }
+    // Otherwise, use backend URL
+    return `http://localhost:8080/api/files/${this.content.coverImage}`;
+  }
+
+  getTeamMemberImageUrl(member: any): string {
+    // If image starts with 'data:', it's a local preview (base64)
+    if (member.image && member.image.startsWith('data:')) {
+      return member.image;
+    }
+    // Otherwise, use backend URL
+    return `http://localhost:8080/api/files/${member.image}`;
   }
 }

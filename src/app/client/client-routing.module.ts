@@ -10,15 +10,21 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
 import { AboutComponent } from './about/about.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { ProfileComponent } from './profile/profile.component';
-import { HomepageV4Component } from './homepage/homepage-v4.component';
+import { HomepageV3Component } from './homepage-v3/homepage-v3.component';
 import { ExperienceComponent } from './experience/experience.component';
 import { HomepageV2Component } from './homepage-v2/homepage-v2.component';
+import { ClientLoginComponent } from './login/login.component';
+import { ClientRegisterComponent } from './register/register.component';
+import { ClientLoadingComponent } from './components/loading/loading.component';
 const routes: Routes = [
-  {
+  { path: 'login', component: ClientLoginComponent },
+  { path: 'register', component: ClientRegisterComponent },
+  {//path: ':uriParam', 
     path: '', component: MainComponent, children: [
-      { path: '', component: HomepageComponent },
-      { path: 'v3', component: HomepageV4Component },
+      // { path: '', component: ClientLoadingComponent },
+      { path: 'v1', component: HomepageComponent },
       { path: 'v2', component: HomepageV2Component },
+      { path: 'v3', component: HomepageV3Component },
       { path: 'room-planner', component: RoomPlannerComponent },
       { path: '3D', component: Room3dComponent },
       { path: 'articles', component: ArticlesComponent },

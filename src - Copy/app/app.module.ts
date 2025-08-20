@@ -41,6 +41,9 @@ import { CustomerEffects } from './store/Customer/customer.effects';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CategoryEffects } from './store/Category/category.effects';
 import { ArticleEffects } from './store/Article/article.effects';
+import { Homepage3Effects } from 'src/app/store/Homepage3/homepage3.effects';
+import { Homepage1Effects } from 'src/app/store/Homepage1/homepage1.effects';
+import { Homepage2Effects } from 'src/app/store/Homepage2/homepage2.effects';
 
 
 export function createTranslateLoader(http: HttpClient): any {
@@ -79,7 +82,10 @@ if (environment.defaultauth === 'firebase') {
       AuthenticationEffects,
       CustomerEffects,
       ArticleEffects,
-      CategoryEffects
+      CategoryEffects,
+      Homepage1Effects,
+      Homepage2Effects,
+      Homepage3Effects,
 ]),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     HttpClientModule,

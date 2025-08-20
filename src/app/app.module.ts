@@ -46,6 +46,10 @@ import { FavoriteEffects } from './store/Favorite/favorite.effects';
 import { CartEffects } from './store/Cart/cart.effects';
 import { AboutUsEffects } from './store/AboutUs/aboutUs.effects';
 import { CompanyEffects } from './store/Company/company.effects';
+import { HomepageEffects } from './store/Homepage/homepage.effects';
+import { Homepage1Effects } from './store/Homepage1/homepage1.effects';
+import { Homepage2Effects } from './store/Homepage2/homepage2.effects';
+import { Homepage3Effects } from './store/Homepage3/homepage3.effects';
 
 
 export function createTranslateLoader(http: HttpClient): any {
@@ -89,7 +93,11 @@ if (environment.defaultauth === 'firebase') {
       FavoriteEffects,
       CartEffects,
       CompanyEffects,
-      AboutUsEffects
+      AboutUsEffects,
+      HomepageEffects,
+      Homepage1Effects,
+      Homepage2Effects,
+      Homepage3Effects
 ]),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     HttpClientModule,

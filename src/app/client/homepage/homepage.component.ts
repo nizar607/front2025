@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
 import { getUser } from 'src/app/store/Authentication/authentication-selector';
 import { fetchUser } from 'src/app/store/Authentication/authentication.actions';
+import { AuthenticationService } from '../../core/services/auth.service';
+import { fetchHomepage1Data, addHomepage1Data, updateHomepage1Data, updateHomepage1Images } from '../../store/Homepage1/homepage1.action';
+import { selectHomepage1Data, selectHomepage1Loading, selectHomepage1Error } from '../../store/Homepage1/homepage1-selector';
+import { Homepage1Model } from '../../store/Homepage1/homepage1.model';
+
 import gsap from 'gsap';
 
 @Component({
@@ -9,95 +15,143 @@ import gsap from 'gsap';
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css'
 })
-export class HomepageComponent implements OnInit {
+export class HomepageComponent implements OnInit, OnDestroy {
   connectedUser: any;
   isAdmin: boolean = false;
   editingMode: boolean = false;
   editingSection: string | null = null;
   editingField: string | null = null;
 
-  // Homepage content data structure
-  content = {
-    hero: {
-      title: 'Timeless Design<br>Modern Living',
-      subtitle: 'Discover our curated collection of premium furniture and home accessories, crafted for the discerning eye and built to last generations.',
-      primaryCta: 'Explore Collection',
-      secondaryCta: 'Plan Your Room in 3D',
-      backgroundImage: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'
-    },
-    featured: {
-      title: 'Featured Collection',
-      subtitle: 'Handpicked pieces that define contemporary elegance',
-      products: [
-        {
-          image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-          category: 'Living Room',
-          name: 'Milano Sectional Sofa',
-          description: 'A masterpiece of Italian design, featuring premium Italian leather upholstery and solid oak frame. The Milano combines unparalleled comfort with sophisticated aesthetics.',
-          price: '$3,299'
-        },
-        {
-          image: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-          category: 'Dining Room',
-          name: 'Scandinavian Dining Set',
-          description: 'Clean lines meet warm wood tones in this exceptional dining collection. Crafted from sustainable Nordic oak with precision joinery and minimalist design philosophy.',
-          price: '$2,499'
-        },
-        {
-          image: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-          category: 'Bedroom',
-          name: 'Contemporary Platform Bed',
-          description: 'Sleek and sophisticated, this platform bed features a floating nightstand design and integrated LED lighting. Perfect for the modern bedroom sanctuary.',
-          price: '$1,899'
-        }
-      ]
-    },
-    categories: {
-      title: 'Shop by Category',
-      subtitle: 'Find the perfect pieces for every room in your home',
-      items: [
-        {
-          image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-          name: 'Living Room',
-          count: '245 Products'
-        },
-        {
-          image: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-          name: 'Bedroom',
-          count: '180 Products'
-        },
-        {
-          image: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-          name: 'Dining Room',
-          count: '120 Products'
-        }
-      ]
-    },
-    newsletter: {
-      title: 'Stay Inspired',
-      text: 'Subscribe to our newsletter for exclusive previews, design tips, and special offers on our latest collections.'
-    }
+  // NgRx observables
+  homepageData$: Observable<Homepage1Model | null>;
+  loading$: Observable<boolean>;
+  error$: Observable<string | null>;
+  private subscription: Subscription = new Subscription();
+
+  // Image files for upload
+  heroImageFile: File | null = null;
+  heroBackgroundImageFile: File | null = null;
+  featuredImageFiles: { [key: number]: File } = {};
+  categoryImageFiles: { [key: number]: File } = {};
+  artisanImageFile: File | null = null;
+  diningImageFile: File | null = null;
+
+  // Default content as fallback (flat structure)
+  defaultContent: Homepage1Model = {
+    // Hero Section
+    heroTitle: 'Loading...',
+    heroSubtitle: 'Please wait while we load your content',
+    heroPrimaryCta: 'Explore Collection',
+    heroSecondaryCta: 'Plan Your Room in 3D',
+    heroBackgroundImage: '',
+    
+    // Featured Section
+    featuredTitle: 'Loading Collections...',
+    featuredSubtitle: 'Please wait while we fetch the latest content',
+    
+    // Featured Products
+    featuredProduct1Image: '',
+    featuredProduct1Category: 'Loading...',
+    featuredProduct1Name: 'Loading product...',
+    featuredProduct1Description: 'Please wait while we load product details...',
+    featuredProduct1Price: '...',
+    
+    featuredProduct2Image: '',
+    featuredProduct2Category: 'Loading...',
+    featuredProduct2Name: 'Loading product...',
+    featuredProduct2Description: 'Please wait while we load product details...',
+    featuredProduct2Price: '...',
+    
+    featuredProduct3Image: '',
+    featuredProduct3Category: 'Loading...',
+    featuredProduct3Name: 'Loading product...',
+    featuredProduct3Description: 'Please wait while we load product details...',
+    featuredProduct3Price: '...',
+    
+    // Categories Section
+    categoriesTitle: 'Loading Categories...',
+    categoriesSubtitle: 'Please wait while we load categories...',
+    
+    // Category Items
+    categoryItem1Image: '',
+    categoryItem1Name: 'Loading...',
+    categoryItem1Count: '...',
+    
+    categoryItem2Image: '',
+    categoryItem2Name: 'Loading...',
+    categoryItem2Count: '...',
+    
+    categoryItem3Image: '',
+    categoryItem3Name: 'Loading...',
+    categoryItem3Count: '...',
+    
+    
+    // Newsletter Section
+    newsletterTitle: 'Loading...',
+    newsletterText: 'Please wait while we load content...',
+    
+    isActive: true
   };
 
-  constructor(public store: Store) {}
+  // Content structure following the flat model
+  content: Homepage1Model = { ...this.defaultContent };
+
+  constructor(
+    public store: Store,
+    private authService: AuthenticationService
+  ) {
+    // Initialize observables
+    this.homepageData$ = this.store.select(selectHomepage1Data);
+    this.loading$ = this.store.select(selectHomepage1Loading);
+    this.error$ = this.store.select(selectHomepage1Error);
+  }
 
 
   ngOnInit() {
     // Dispatch fetchUser action to get user from localStorage
     this.store.dispatch(fetchUser());
     
+    // Dispatch action to fetch Homepage1 data
+    this.store.dispatch(fetchHomepage1Data());
+
+    // Subscribe to Homepage data and update content
+    this.subscription.add(
+      this.homepageData$.subscribe(data => {
+        if (data) {
+          // Merge with default content and update flat structure
+          this.content = {
+            ...this.defaultContent,
+            ...data
+          };
+          console.log('Homepage content loaded:', this.content);
+        } else {
+          this.content = { ...this.defaultContent };
+        }
+      })
+    );
+    
     // Get connected user and check admin status
     this.store.select(getUser).subscribe(user => {
       this.connectedUser = user;
-      console.log("connected user ",this.connectedUser)
+      console.log("connected user ", this.connectedUser);
 
       // Check if user is admin
       this.isAdmin = this.connectedUser?.roles?.[0] === 'ROLE_ADMIN';
     });
 
+    // Check admin status from auth service as well
+    this.connectedUser = this.authService.currentUserValue;
+    if (this.connectedUser && this.connectedUser.roles && this.connectedUser.roles.length > 0) {
+      this.isAdmin = this.connectedUser.roles[0] === 'ROLE_ADMIN';
+    }
+
     // Temporary fix: Force admin mode and editing mode for testing
     this.isAdmin = true;
     this.editingMode = true;
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
 
     // GSAP animations setup
     
@@ -192,7 +246,7 @@ export class HomepageComponent implements OnInit {
   }
 
   // Admin editing methods
-  toggleEditMode() {
+  toggleEditMode(): void {
     if (this.isAdmin) {
       this.editingMode = !this.editingMode;
       this.editingSection = null;
@@ -200,48 +254,143 @@ export class HomepageComponent implements OnInit {
     }
   }
 
-  saveChanges() {
+  saveChanges(): void {
     if (this.isAdmin && this.editingMode) {
-      // Here you would typically save to a backend service
       console.log('Saving homepage content changes:', this.content);
-      // this.store.dispatch()
+
+      // Prepare Homepage data (without images for content update)
+      const homepageData = {
+        ...this.content
+      };
+
+      // Check if this is an update (has ID) or new creation
+      if (this.content.id) {
+        // Update existing Homepage1 data
+        console.log('Updating homepage data:', homepageData);
+        this.store.dispatch(updateHomepage1Data({
+          id: this.content.id,
+          updatedData: homepageData
+        }));
+
+        // Handle image uploads separately if there are any files
+        if (this.heroImageFile || this.heroBackgroundImageFile || Object.keys(this.featuredImageFiles).length > 0 || 
+            Object.keys(this.categoryImageFiles).length > 0 || this.artisanImageFile || this.diningImageFile) {
+          const imageFormData = new FormData();
+          console.log("Updating images");
+
+          // Add hero image if exists
+          if (this.heroImageFile) {
+            imageFormData.append('heroImage', this.heroImageFile);
+          }
+
+          // Add hero background image if exists
+          if (this.heroBackgroundImageFile) {
+            imageFormData.append('heroBackgroundImage', this.heroBackgroundImageFile);
+          }
+
+          // Add featured product images if exist
+          Object.keys(this.featuredImageFiles).forEach(index => {
+            if (this.featuredImageFiles[parseInt(index)]) {
+              imageFormData.append(`featuredProduct${parseInt(index) + 1}Image`, this.featuredImageFiles[parseInt(index)]);
+            }
+          });
+
+          // Add category images if exist
+          Object.keys(this.categoryImageFiles).forEach(index => {
+            if (this.categoryImageFiles[parseInt(index)]) {
+              imageFormData.append(`categoryItem${parseInt(index) + 1}Image`, this.categoryImageFiles[parseInt(index)]);
+            }
+          });
+
+          // Add artisan image if exists
+          if (this.artisanImageFile) {
+            imageFormData.append('artisanImage', this.artisanImageFile);
+          }
+
+          // Add dining image if exists
+          if (this.diningImageFile) {
+            imageFormData.append('diningInfoImage', this.diningImageFile);
+          }
+
+          // Dispatch image update action
+          this.store.dispatch(updateHomepage1Images({ id: this.content.id, imageData: imageFormData }));
+        }
+      }
+
+      // Reset image files after saving
+      this.heroImageFile = null;
+      this.heroBackgroundImageFile = null;
+      this.featuredImageFiles = {};
+      this.categoryImageFiles = {};
+      this.artisanImageFile = null;
+      this.diningImageFile = null;
+
       this.editingMode = false;
       this.editingSection = null;
       this.editingField = null;
     }
   }
 
-  startEditing(section: string, field: string) {
+  startEditing(section: string, field: string): void {
     if (this.isAdmin && this.editingMode) {
       this.editingSection = section;
       this.editingField = field;
+      console.log(`Editing ${section}.${field}`);
     }
   }
 
-  updateContent(section: string, field: string, value: string) {
+  updateContent(field: string, value: string): void {
     if (this.isAdmin && this.editingMode) {
-      const keys = section.split('.');
-      let obj: any = this.content;
+      this.content = {
+        ...this.content,
+        [field]: value
+      };
+    }
+  }
+
+  updateProductContent(productIndex: number, field: string, value: string): void {
+    if (this.isAdmin && this.editingMode) {
+      const productNumber = productIndex + 1;
+      const flatField = `featuredProduct${productNumber}${field.charAt(0).toUpperCase() + field.slice(1)}`;
       
-      // Navigate to the correct nested object
-      for (let i = 0; i < keys.length - 1; i++) {
-        obj = obj[keys[i]];
-      }
+      this.content = {
+        ...this.content,
+        [flatField]: value
+      };
+    }
+  }
+
+  updateCategoryContent(categoryIndex: number, field: string, value: string): void {
+    if (this.isAdmin && this.editingMode) {
+      const categoryNumber = categoryIndex + 1;
+      const flatField = `categoryItem${categoryNumber}${field.charAt(0).toUpperCase() + field.slice(1)}`;
       
-      // Update the field
-      obj[keys[keys.length - 1]][field] = value;
+      this.content = {
+        ...this.content,
+        [flatField]: value
+      };
     }
   }
-
-  updateProductContent(productIndex: number, field: string, value: string) {
+  
+  updateArtisanContent(field: string, value: string): void {
     if (this.isAdmin && this.editingMode) {
-      (this.content.featured.products[productIndex] as any)[field] = value;
+      const flatField = `artisan${field.charAt(0).toUpperCase() + field.slice(1)}`;
+      
+      this.content = {
+        ...this.content,
+        [flatField]: value
+      };
     }
   }
-
-  updateCategoryContent(categoryIndex: number, field: string, value: string) {
+  
+  updateDiningContent(field: string, value: string): void {
     if (this.isAdmin && this.editingMode) {
-      (this.content.categories.items[categoryIndex] as any)[field] = value;
+      const flatField = `diningInfo${field.charAt(0).toUpperCase() + field.slice(1)}`;
+      
+      this.content = {
+        ...this.content,
+        [flatField]: value
+      };
     }
   }
 
@@ -273,22 +422,102 @@ export class HomepageComponent implements OnInit {
     }
   }
 
-  onImageUpload(event: any, section: string, index?: number) {
-    if (this.isAdmin && this.editingMode) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          if (section === 'hero') {
-            this.content.hero.backgroundImage = e.target.result;
-          } else if (section === 'featured' && index !== undefined) {
-            this.content.featured.products[index].image = e.target.result;
-          } else if (section === 'categories' && index !== undefined) {
-            this.content.categories.items[index].image = e.target.result;
-          }
-        };
-        reader.readAsDataURL(file);
+  onImageUpload(event: any, fieldName: string): void {
+    const file = event.target.files[0];
+    if (file && this.isAdmin && this.editingMode) {
+      // Store the file for later upload based on field name
+      if (fieldName === 'hero') {
+        this.heroImageFile = file;
+      } else if (fieldName === 'heroBackground') {
+        this.heroBackgroundImageFile = file;
+      } else if (fieldName.startsWith('featuredProduct')) {
+        const productNumber = fieldName.replace('featuredProduct', '').replace('Image', '');
+        this.featuredImageFiles[parseInt(productNumber) - 1] = file;
+      } else if (fieldName.startsWith('categoryItem')) {
+        const categoryNumber = fieldName.replace('categoryItem', '').replace('Image', '');
+        this.categoryImageFiles[parseInt(categoryNumber) - 1] = file;
+      } else if (fieldName === 'artisan') {
+        this.artisanImageFile = file;
+      } else if (fieldName === 'dining') {
+        this.diningImageFile = file;
       }
+
+      // Create preview URL for immediate display
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const imageUrl = e.target.result;
+        
+        // Update the content with the new image URL
+        if (fieldName === 'hero') {
+          this.content = { ...this.content, heroImage: imageUrl };
+        } else if (fieldName === 'heroBackground') {
+          this.content = { ...this.content, heroBackgroundImage: imageUrl };
+        } else if (fieldName.startsWith('featuredProduct')) {
+          const imageField = fieldName.endsWith('Image') ? fieldName : `${fieldName}Image`;
+          this.content = { ...this.content, [imageField]: imageUrl };
+        } else if (fieldName.startsWith('categoryItem')) {
+          const imageField = fieldName.endsWith('Image') ? fieldName : `${fieldName}Image`;
+          this.content = { ...this.content, [imageField]: imageUrl };
+        } else if (fieldName === 'artisan') {
+          this.content = { ...this.content, artisanImage: imageUrl };
+        } else if (fieldName === 'dining') {
+          this.content = { ...this.content, diningInfoImage: imageUrl };
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Helper methods for image URLs
+  getHeroImageUrl(): string {
+    return this.getImageUrl(this.content.heroBackgroundImage);
+  }
+
+  getProductImageUrl(imageUrl?: string): string {
+    return this.getImageUrl(imageUrl);
+  }
+
+  getCategoryImageUrl(imageUrl?: string): string {
+    return this.getImageUrl(imageUrl);
+  }
+  
+  getArtisanImageUrl(): string {
+    return this.getImageUrl(this.content.artisanImage);
+  }
+  
+  getDiningImageUrl(): string {
+    return this.getImageUrl(this.content.diningInfoImage);
+  }
+  
+  getImageUrl(imageUrl?: string): string {
+    if (!imageUrl) return '';
+    
+    // If image starts with 'data:', it's a local preview (base64)
+    if (imageUrl.startsWith('data:')) {
+      return imageUrl;
+    }
+    
+    // If it's already a full URL, return as is
+    if (imageUrl.startsWith('http')) {
+      return imageUrl;
+    }
+    
+    // Otherwise, construct backend URL
+    return `http://localhost:8080/api/files/${imageUrl}`;
+  }
+  
+  // Additional helper methods for file input triggers
+  triggerArtisanImageInput(): void {
+    const fileInput = document.getElementById('artisan-image') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  }
+  
+  triggerDiningImageInput(): void {
+    const fileInput = document.getElementById('dining-image') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
     }
   }
 

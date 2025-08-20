@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {GlobalComponent} from 'src/app/global-component';
-import {AboutUsModel} from "../../../store/AboutUs/aboutUs.model";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { GlobalComponent } from 'src/app/global-component';
+import { AboutUsModel } from "../../../store/AboutUs/aboutUs.model";
 
 const API_URL = GlobalComponent.API_URL + 'about-us';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AboutUsService {
   constructor(private http: HttpClient) {
   }
@@ -23,8 +23,12 @@ export class AboutUsService {
     return this.http.post<any>(API_URL, newData);
   }
 
-  updateData(id : number, updatedData: any): Observable<any> {
+  updateData(id: number, updatedData: any): Observable<any> {
     return this.http.put<any>(`${API_URL}/${id}`, updatedData);
+  }
+
+  updateImages(id: number, imageData: FormData): Observable<any> {
+    return this.http.put<any>(`${API_URL}/${id}/images`, imageData);
   }
 
   deleteData(id: string): Observable<any> {

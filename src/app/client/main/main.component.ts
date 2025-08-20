@@ -3,6 +3,7 @@ import { ViewEncapsulation } from '@angular/core';
 import { SharedService } from '../shared-service.service';
 import { Subscription } from 'rxjs';
 
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -12,13 +13,11 @@ import { Subscription } from 'rxjs';
 export class MainComponent {
 
   private subscription!: Subscription;
-  constructor(private sharedService: SharedService) {
+  constructor(private sharedService: SharedService) {}
 
-  }
   ngOnInit() {
-
+    // Ensure scroll is enabled on initialisation
     document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
-
   }
 
   ngAfterViewInit() {

@@ -53,6 +53,22 @@ export const updateaboutusDataFailure = createAction(
   props<{ error: string }>()
 );
 
+// Update Images
+export const updateaboutusImages = createAction(
+  '[Data] Update aboutusImages',
+  props<{ id: number, imageData: FormData }>()
+);
+
+export const updateaboutusImagesSuccess = createAction(
+  '[Data] Update aboutusImages Success',
+  props<{ updatedData: any }>()
+);
+
+export const updateaboutusImagesFailure = createAction(
+  '[Data] Update aboutusImages Failure',
+  props<{ error: string }>()
+);
+
 // Delete Data
 export const deleteaboutusData = createAction(
   '[Data] Delete aboutusData',

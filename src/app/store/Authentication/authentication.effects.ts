@@ -39,11 +39,12 @@ export class AuthenticationEffects {
               localStorage.setItem('token', user.token);
               // Refresh permissions after successful login
               this.permissionService.loadPermissionsFromStorage();
-              
+
+              console.log("yser tesssst here ",user);
               // Check localStorage values for redirection logic
-              const hasProfile = localStorage.getItem('hasProfile') === 'true';
-              const hasHomepage = localStorage.getItem('hasHomepage') === 'true';
-              
+              const hasProfile = user.data.hasCompany === true;
+              const hasHomepage = user.data.hasHomepage === true;
+
               if (!hasProfile) {
                 // Profile not completed, start with profile setup
                 this.router.navigate(['/profile-setup']);
@@ -80,7 +81,7 @@ export class AuthenticationEffects {
         try {
           const currentUser = localStorage.getItem('currentUser');
           const token = localStorage.getItem('token');
-          
+
           if (currentUser && token) {
             const user = JSON.parse(currentUser);
             // Refresh permissions when fetching user from localStorage

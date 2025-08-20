@@ -4,7 +4,7 @@
     <p class="templates-subtitle">Select the perfect design that matches your vision</p>
     
     <!-- Admin Edit Toggle -->
-    @if (isAdmin) {
+    <!-- @if (isAdmin) {
       <div class="admin-controls">
         <button class="edit-toggle-btn" (click)="toggleEditMode()" [class.active]="editingMode">
           <i class="bi bi-pencil"></i>
@@ -14,7 +14,7 @@
           <p class="edit-instructions">Click on any text or image to edit</p>
         }
       </div>
-    }
+    } -->
   </div>
 
   <div class="templates-grid">
@@ -192,7 +192,7 @@
     </div>
 
     <!-- Custom Template Card -->
-    <div class="template-card custom-template" (click)="!editingMode && selectTemplate('custom')" [class.editing]="editingMode">
+    <!-- <div class="template-card custom-template" (click)="!editingMode && selectTemplate('custom')" [class.editing]="editingMode">
       <div class="template-preview">
         <div class="preview-image custom-preview">
           <img [src]="getTemplate('custom').image" alt="Custom Template Preview" 
@@ -252,7 +252,7 @@
           Create Custom
         </button>
       </div>
-    </div>
+    </div> -->
 
   </div>
 

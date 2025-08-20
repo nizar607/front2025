@@ -20,38 +20,38 @@
 }
 
 <!-- Hero Section -->
-<section class="hero" id="home" [style.background-image]="'url(' + content.hero.backgroundImage + ')'">
+<section class="hero" id="home" [style.background-image]="'url(' + getImageUrl(content.heroBackgroundImage) + ')'">
     <div class="hero-content">
         <h1 #heroTitle
             class="hero-title" 
             [contentEditable]="editingMode && isAdmin"
-            (blur)="updateContent('hero', 'title', heroTitle.textContent || '')"
+            (blur)="updateContent('heroTitle', heroTitle.textContent || '')"
             (click)="startEditing('hero', 'title')"
-            [class.editable]="editingMode && isAdmin"
-            [innerHTML]="content.hero.title">
+            [class.editable]="editingMode && isAdmin">
+            {{ content.heroTitle }}
         </h1>
         <p #heroSubtitle
            class="hero-subtitle" 
            [contentEditable]="editingMode && isAdmin"
-           (blur)="updateContent('hero', 'subtitle', heroSubtitle.textContent || '')"
+           (blur)="updateContent('heroSubtitle', heroSubtitle.textContent || '')"
            (click)="startEditing('hero', 'subtitle')"
            [class.editable]="editingMode && isAdmin">
-           {{ content.hero.subtitle }}
+           {{ content.heroSubtitle }}
         </p>
         <div class="hero-cta-group">
             <a #heroPrimaryCta
                href="javascript:void;" routerLink="articles" class="hero-cta primary"
                [contentEditable]="editingMode && isAdmin"
-               (blur)="updateContent('hero', 'primaryCta', heroPrimaryCta.textContent || '')"
+               (blur)="updateContent('heroPrimaryCta', heroPrimaryCta.textContent || '')"
                [class.editable]="editingMode && isAdmin">
-               {{ content.hero.primaryCta }}
+               {{ content.heroPrimaryCta }}
             </a>
             <a #heroSecondaryCta
                href="javascript:void;" routerLink="3D" class="hero-cta secondary"
                [contentEditable]="editingMode && isAdmin"
-               (blur)="updateContent('hero', 'secondaryCta', heroSecondaryCta.textContent || '')"
+               (blur)="updateContent('heroSecondaryCta', heroSecondaryCta.textContent || '')"
                [class.editable]="editingMode && isAdmin">
-               {{ content.hero.secondaryCta }}
+               {{ content.heroSecondaryCta }}
             </a>
         </div>
         @if (editingMode && isAdmin) {
@@ -60,7 +60,7 @@
                 Change Background
             </button>
             <input #heroBgInput type="file" accept="image/*" style="display: none;"
-                   (change)="onImageUpload($event, 'hero')">
+                   (change)="onImageUpload($event, 'heroBackground')">
         </div>
         }
     </div>
@@ -72,80 +72,163 @@
         <h2 #featuredTitle
             class="section-title"
             [contentEditable]="editingMode && isAdmin"
-            (blur)="updateContent('featured', 'title', featuredTitle.textContent || '')"
+            (blur)="updateContent('featuredTitle', featuredTitle.textContent || '')"
             [class.editable]="editingMode && isAdmin">
-            {{ content.featured.title }}
+            {{ content.featuredTitle }}
         </h2>
         <p #featuredSubtitle
            class="section-subtitle"
            [contentEditable]="editingMode && isAdmin"
-           (blur)="updateContent('featured', 'subtitle', featuredSubtitle.textContent || '')"
+           (blur)="updateContent('featuredSubtitle', featuredSubtitle.textContent || '')"
            [class.editable]="editingMode && isAdmin">
-           {{ content.featured.subtitle }}
+           {{ content.featuredSubtitle }}
         </p>
     </div>
 
-    @for (product of content.featured.products; track $index) {
+    <!-- Featured Product 1 -->
+    @if (content.featuredProduct1Name) {
     <div class="product-showcase">
-        @if ($index % 2 === 0) {
         <div class="product-image">
-            <img [src]="product.image" [alt]="product.name">
+            <img [src]="getImageUrl(content.featuredProduct1Image)" [alt]="content.featuredProduct1Name">
             @if (editingMode && isAdmin) {
             <div class="image-upload-overlay">
-                <button class="btn btn-sm btn-primary" (click)="productImg.click()">
+                <button class="btn btn-sm btn-primary" (click)="product1Img.click()">
                     Change Image
                 </button>
-                <input #productImg type="file" accept="image/*" style="display: none;"
-                       (change)="onImageUpload($event, 'featured', $index)">
+                <input #product1Img type="file" accept="image/*" style="display: none;"
+                       (change)="onImageUpload($event, 'featuredProduct1')">
             </div>
             }
         </div>
-        }
         <div class="product-info">
-            <div #productCategory
+            <div #product1Category
                  class="product-category"
                  [contentEditable]="editingMode && isAdmin"
-                 (blur)="updateProductContent($index, 'category', productCategory.textContent || '')"
+                 (blur)="updateContent('featuredProduct1Category', product1Category.textContent || '')"
                  [class.editable]="editingMode && isAdmin">
-                 {{ product.category }}
+                 {{ content.featuredProduct1Category }}
             </div>
-            <h3 #productName
+            <h3 #product1Name
                 class="product-name"
                 [contentEditable]="editingMode && isAdmin"
-                (blur)="updateProductContent($index, 'name', productName.textContent || '')"
+                (blur)="updateContent('featuredProduct1Name', product1Name.textContent || '')"
                 [class.editable]="editingMode && isAdmin">
-                {{ product.name }}
+                {{ content.featuredProduct1Name }}
             </h3>
-            <p #productDescription
+            <p #product1Description
                class="product-description"
                [contentEditable]="editingMode && isAdmin"
-               (blur)="updateProductContent($index, 'description', productDescription.textContent || '')"
+               (blur)="updateContent('featuredProduct1Description', product1Description.textContent || '')"
                [class.editable]="editingMode && isAdmin">
-               {{ product.description }}
+               {{ content.featuredProduct1Description }}
             </p>
-            <div #productPrice
+            <div #product1Price
                  class="product-price"
                  [contentEditable]="editingMode && isAdmin"
-                 (blur)="updateProductContent($index, 'price', productPrice.textContent || '')"
+                 (blur)="updateContent('featuredProduct1Price', product1Price.textContent || '')"
                  [class.editable]="editingMode && isAdmin">
-                 {{ product.price }}
+                 {{ content.featuredProduct1Price }}
             </div>
             <a href="#" class="product-btn">View Details</a>
         </div>
-        @if ($index % 2 === 1) {
+    </div>
+    }
+
+    <!-- Featured Product 2 -->
+    @if (content.featuredProduct2Name) {
+    <div class="product-showcase">
+        <div class="product-info">
+            <div #product2Category
+                 class="product-category"
+                 [contentEditable]="editingMode && isAdmin"
+                 (blur)="updateContent('featuredProduct2Category', product2Category.textContent || '')"
+                 [class.editable]="editingMode && isAdmin">
+                 {{ content.featuredProduct2Category }}
+            </div>
+            <h3 #product2Name
+                class="product-name"
+                [contentEditable]="editingMode && isAdmin"
+                (blur)="updateContent('featuredProduct2Name', product2Name.textContent || '')"
+                [class.editable]="editingMode && isAdmin">
+                {{ content.featuredProduct2Name }}
+            </h3>
+            <p #product2Description
+               class="product-description"
+               [contentEditable]="editingMode && isAdmin"
+               (blur)="updateContent('featuredProduct2Description', product2Description.textContent || '')"
+               [class.editable]="editingMode && isAdmin">
+               {{ content.featuredProduct2Description }}
+            </p>
+            <div #product2Price
+                 class="product-price"
+                 [contentEditable]="editingMode && isAdmin"
+                 (blur)="updateContent('featuredProduct2Price', product2Price.textContent || '')"
+                 [class.editable]="editingMode && isAdmin">
+                 {{ content.featuredProduct2Price }}
+            </div>
+            <a href="#" class="product-btn">View Details</a>
+        </div>
         <div class="product-image">
-            <img [src]="product.image" [alt]="product.name">
+            <img [src]="getImageUrl(content.featuredProduct2Image)" [alt]="content.featuredProduct2Name">
             @if (editingMode && isAdmin) {
             <div class="image-upload-overlay">
-                <button class="btn btn-sm btn-primary" (click)="productImg.click()">
+                <button class="btn btn-sm btn-primary" (click)="product2Img.click()">
                     Change Image
                 </button>
-                <input #productImg type="file" accept="image/*" style="display: none;"
-                       (change)="onImageUpload($event, 'featured', $index)">
+                <input #product2Img type="file" accept="image/*" style="display: none;"
+                       (change)="onImageUpload($event, 'featuredProduct2')">
             </div>
             }
         </div>
-        }
+    </div>
+    }
+
+    <!-- Featured Product 3 -->
+    @if (content.featuredProduct3Name) {
+    <div class="product-showcase">
+        <div class="product-image">
+            <img [src]="getImageUrl(content.featuredProduct3Image)" [alt]="content.featuredProduct3Name">
+            @if (editingMode && isAdmin) {
+            <div class="image-upload-overlay">
+                <button class="btn btn-sm btn-primary" (click)="product3Img.click()">
+                    Change Image
+                </button>
+                <input #product3Img type="file" accept="image/*" style="display: none;"
+                       (change)="onImageUpload($event, 'featuredProduct3')">
+            </div>
+            }
+        </div>
+        <div class="product-info">
+            <div #product3Category
+                 class="product-category"
+                 [contentEditable]="editingMode && isAdmin"
+                 (blur)="updateContent('featuredProduct3Category', product3Category.textContent || '')"
+                 [class.editable]="editingMode && isAdmin">
+                 {{ content.featuredProduct3Category }}
+            </div>
+            <h3 #product3Name
+                class="product-name"
+                [contentEditable]="editingMode && isAdmin"
+                (blur)="updateContent('featuredProduct3Name', product3Name.textContent || '')"
+                [class.editable]="editingMode && isAdmin">
+                {{ content.featuredProduct3Name }}
+            </h3>
+            <p #product3Description
+               class="product-description"
+               [contentEditable]="editingMode && isAdmin"
+               (blur)="updateContent('featuredProduct3Description', product3Description.textContent || '')"
+               [class.editable]="editingMode && isAdmin">
+               {{ content.featuredProduct3Description }}
+            </p>
+            <div #product3Price
+                 class="product-price"
+                 [contentEditable]="editingMode && isAdmin"
+                 (blur)="updateContent('featuredProduct3Price', product3Price.textContent || '')"
+                 [class.editable]="editingMode && isAdmin">
+                 {{ content.featuredProduct3Price }}
+            </div>
+            <a href="#" class="product-btn">View Details</a>
+        </div>
     </div>
     }
 </section>
@@ -156,47 +239,144 @@
         <h2 #categoriesTitle
             class="section-title"
             [contentEditable]="editingMode && isAdmin"
-            (blur)="updateContent('categories', 'title', categoriesTitle.textContent || '')"
+            (blur)="updateContent('categoriesTitle', categoriesTitle.textContent || '')"
             [class.editable]="editingMode && isAdmin">
-            {{ content.categories.title }}
+            {{ content.categoriesTitle }}
         </h2>
         <p #categoriesSubtitle
            class="section-subtitle"
            [contentEditable]="editingMode && isAdmin"
-           (blur)="updateContent('categories', 'subtitle', categoriesSubtitle.textContent || '')"
+           (blur)="updateContent('categoriesSubtitle', categoriesSubtitle.textContent || '')"
            [class.editable]="editingMode && isAdmin">
-           {{ content.categories.subtitle }}
+           {{ content.categoriesSubtitle }}
         </p>
     </div>
 
     <div class="categories-grid">
-        @for (category of content.categories.items; track $index) {
+        <!-- Category 1 -->
+        @if (content.categoryItem1Name) {
         <div class="category-card">
-            <img [src]="category.image" [alt]="category.name">
+            <img [src]="getImageUrl(content.categoryItem1Image)" [alt]="content.categoryItem1Name">
             @if (editingMode && isAdmin) {
             <div class="image-upload-overlay">
-                <button class="btn btn-sm btn-primary" (click)="categoryImg.click()">
+                <button class="btn btn-sm btn-primary" (click)="category1Img.click()">
                     Change Image
                 </button>
-                <input #categoryImg type="file" accept="image/*" style="display: none;"
-                       (change)="onImageUpload($event, 'categories', $index)">
+                <input #category1Img type="file" accept="image/*" style="display: none;"
+                       (change)="onImageUpload($event, 'categoryItem1')">
             </div>
             }
             <div class="category-overlay">
-                <h3 #categoryName
-                    class="category-name"
-                    [contentEditable]="editingMode && isAdmin"
-                    (blur)="updateCategoryContent($index, 'name', categoryName.textContent || '')"
-                    [class.editable]="editingMode && isAdmin">
-                    {{ category.name }}
-                </h3>
-                <p #categoryCount
-                   class="category-count"
-                   [contentEditable]="editingMode && isAdmin"
-                   (blur)="updateCategoryContent($index, 'count', categoryCount.textContent || '')"
-                   [class.editable]="editingMode && isAdmin">
-                   {{ category.count }}
-                </p>
+                <h3 #category1Name
+                class="category-name"
+                [contentEditable]="editingMode && isAdmin"
+                (blur)="updateContent('categoryItem1Name', category1Name.textContent || '')"
+                [class.editable]="editingMode && isAdmin">
+                {{ content.categoryItem1Name }}
+            </h3>
+            <p #category1Count
+               class="category-count"
+               [contentEditable]="editingMode && isAdmin"
+               (blur)="updateContent('categoryItem1Count', category1Count.textContent || '')"
+               [class.editable]="editingMode && isAdmin">
+               {{ content.categoryItem1Count }}
+            </p>
+            </div>
+        </div>
+        }
+
+        <!-- Category 2 -->
+        @if (content.categoryItem2Name) {
+        <div class="category-card">
+            <img [src]="getImageUrl(content.categoryItem2Image)" [alt]="content.categoryItem2Name">
+            @if (editingMode && isAdmin) {
+            <div class="image-upload-overlay">
+                <button class="btn btn-sm btn-primary" (click)="category2Img.click()">
+                    Change Image
+                </button>
+                <input #category2Img type="file" accept="image/*" style="display: none;"
+                       (change)="onImageUpload($event, 'categoryItem2')">
+            </div>
+            }
+            <div class="category-overlay">
+                <h3 #category2Name
+                class="category-name"
+                [contentEditable]="editingMode && isAdmin"
+                (blur)="updateContent('categoryItem2Name', category2Name.textContent || '')"
+                [class.editable]="editingMode && isAdmin">
+                {{ content.categoryItem2Name }}
+            </h3>
+            <p #category2Count
+               class="category-count"
+               [contentEditable]="editingMode && isAdmin"
+               (blur)="updateContent('categoryItem2Count', category2Count.textContent || '')"
+               [class.editable]="editingMode && isAdmin">
+               {{ content.categoryItem2Count }}
+            </p>
+            </div>
+        </div>
+        }
+
+        <!-- Category 3 -->
+        @if (content.categoryItem3Name) {
+        <div class="category-card">
+            <img [src]="getImageUrl(content.categoryItem3Image)" [alt]="content.categoryItem3Name">
+            @if (editingMode && isAdmin) {
+            <div class="image-upload-overlay">
+                <button class="btn btn-sm btn-primary" (click)="category3Img.click()">
+                    Change Image
+                </button>
+                <input #category3Img type="file" accept="image/*" style="display: none;"
+                       (change)="onImageUpload($event, 'categoryItem3')">
+            </div>
+            }
+            <div class="category-overlay">
+                <h3 #category3Name
+                class="category-name"
+                [contentEditable]="editingMode && isAdmin"
+                (blur)="updateContent('categoryItem3Name', category3Name.textContent || '')"
+                [class.editable]="editingMode && isAdmin">
+                {{ content.categoryItem3Name }}
+            </h3>
+            <p #category3Count
+               class="category-count"
+               [contentEditable]="editingMode && isAdmin"
+               (blur)="updateContent('categoryItem3Count', category3Count.textContent || '')"
+               [class.editable]="editingMode && isAdmin">
+               {{ content.categoryItem3Count }}
+            </p>
+            </div>
+        </div>
+        }
+
+        <!-- Category 4 -->
+        @if (content.categoryItem4Name) {
+        <div class="category-card">
+            <img [src]="getImageUrl(content.categoryItem4Image)" [alt]="content.categoryItem4Name">
+            @if (editingMode && isAdmin) {
+            <div class="image-upload-overlay">
+                <button class="btn btn-sm btn-primary" (click)="category4Img.click()">
+                    Change Image
+                </button>
+                <input #category4Img type="file" accept="image/*" style="display: none;"
+                       (change)="onImageUpload($event, 'categoryItem4')">
+            </div>
+            }
+            <div class="category-overlay">
+                <h3 #category4Name
+                class="category-name"
+                [contentEditable]="editingMode && isAdmin"
+                (blur)="updateContent('categoryItem4Name', category4Name.textContent || '')"
+                [class.editable]="editingMode && isAdmin">
+                {{ content.categoryItem4Name }}
+            </h3>
+            <p #category4Count
+               class="category-count"
+               [contentEditable]="editingMode && isAdmin"
+               (blur)="updateContent('categoryItem4Count', category4Count.textContent || '')"
+               [class.editable]="editingMode && isAdmin">
+               {{ content.categoryItem4Count }}
+            </p>
             </div>
         </div>
         }
@@ -209,16 +389,16 @@
         <h2 #newsletterTitle
             class="newsletter-title"
             [contentEditable]="editingMode && isAdmin"
-            (blur)="updateContent('newsletter', 'title', newsletterTitle.textContent || '')"
+            (blur)="updateContent('newsletterTitle', newsletterTitle.textContent || '')"
             [class.editable]="editingMode && isAdmin">
-            {{ content.newsletter.title }}
+            {{ content.newsletterTitle }}
         </h2>
         <p #newsletterText
            class="newsletter-text"
            [contentEditable]="editingMode && isAdmin"
-           (blur)="updateContent('newsletter', 'text', newsletterText.textContent || '')"
+           (blur)="updateContent('newsletterText', newsletterText.textContent || '')"
            [class.editable]="editingMode && isAdmin">
-           {{ content.newsletter.text }}
+           {{ content.newsletterText }}
         </p>
         <form class="newsletter-form">
             <input type="email" class="newsletter-input" placeholder="Enter your email address" required>

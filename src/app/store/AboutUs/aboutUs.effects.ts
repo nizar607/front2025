@@ -16,6 +16,9 @@ import {
   updateaboutusData,
   updateaboutusDataFailure,
   updateaboutusDataSuccess,
+  updateaboutusImages,
+  updateaboutusImagesFailure,
+  updateaboutusImagesSuccess,
   uploadImage,
   uploadImageSuccess,
   uploadImageFailure
@@ -64,7 +67,17 @@ export class AboutUsEffects {
     )
   );
 
-
+  updateImages$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateaboutusImages),
+      mergeMap(({ id, imageData }) =>
+        this.aboutusService.updateImages(id, imageData).pipe(
+          map((updatedData: any) => updateaboutusImagesSuccess({ updatedData })),
+          catchError((error) => of(updateaboutusImagesFailure({ error })))
+        )
+      )
+    )
+  );
 
   deleteData$ = createEffect(() =>
     this.actions$.pipe(

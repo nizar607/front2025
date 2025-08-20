@@ -65,4 +65,5 @@ import { IndexComponent } from './index/index.component';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
+
 export class DashboardsModule { }

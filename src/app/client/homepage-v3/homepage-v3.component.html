@@ -1,0 +1,301 @@
+
+<!-- Admin Controls -->
+@if (isAdmin) {
+    <div class="admin-controls">
+        <button class="btn btn-primary me-2" (click)="toggleEditMode()">
+            {{ editingMode ? 'Exit Edit Mode' : 'Edit Homepage' }}
+        </button>
+        @if (editingMode) {
+        <button class="btn btn-success" (click)="saveChanges()">
+            Save Changes
+        </button>
+        }
+    </div>
+    }
+    
+<main class="main-content">
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    @if (editingMode && isAdmin) {
+    <div class="hero-bg-upload image-upload-overlay">
+        <button class="btn btn-sm btn-primary" (click)="heroImg.click()">
+            Change Background
+        </button>
+        <input #heroImg type="file" accept="image/*" style="display: none;"
+               (change)="onImageUpload($event, 'hero')">
+    </div>
+    }
+    <div class="hero-container">
+        <div class="hero-content fade-in">
+            <span #heroBadge class="hero-badge" 
+                  [contentEditable]="editingMode && isAdmin" 
+                  (blur)="updateContent('heroBadge', heroBadge.textContent || '')" 
+                  (click)="startEditing('hero', 'badge')"
+                  [class.editable]="editingMode && isAdmin">
+                  {{ content.heroBadge }}
+            </span>
+            <h1 class="hero-title">
+                <span #heroTitlePart1 
+                      [contentEditable]="editingMode && isAdmin" 
+                      (blur)="updateContent('heroTitle', heroTitlePart1.textContent || '')" 
+                      (click)="startEditing('hero', 'title')"
+                      [class.editable]="editingMode && isAdmin">
+                      {{ content.heroTitle }}
+                </span>
+                <span #heroTitlePart2 class="highlight" 
+                      [contentEditable]="editingMode && isAdmin" 
+                      (blur)="updateContent('heroSubtitle', heroTitlePart2.textContent || '')" 
+                      (click)="startEditing('hero', 'subtitle')"
+                      [class.editable]="editingMode && isAdmin">
+                      {{ content.heroSubtitle }}
+                </span>
+            </h1>
+            <p #heroDescription class="hero-subtitle" 
+               [contentEditable]="editingMode && isAdmin" 
+               (blur)="updateContent('heroDescription', heroDescription.textContent || '')" 
+               (click)="startEditing('hero', 'description')"
+               [class.editable]="editingMode && isAdmin">
+               {{ content.heroDescription }}
+            </p>
+            <div class="hero-actions">
+                <a #primaryButton (click)="navigateToArticles()" class="btn-primary" 
+                   [contentEditable]="editingMode && isAdmin" 
+                   (blur)="updateContent('heroPrimaryButton', primaryButton.textContent || '')" 
+                   (click)="startEditing('hero', 'primaryButton')"
+                   [class.editable]="editingMode && isAdmin">
+                   {{ content.heroPrimaryButton }}
+                </a>
+                <a #secondaryButton (click)="navigateTo3D()" class="btn-secondary" 
+                   [contentEditable]="editingMode && isAdmin" 
+                   (blur)="updateContent('heroSecondaryButton', secondaryButton.textContent || '')" 
+                   (click)="startEditing('hero', 'secondaryButton')"
+                   [class.editable]="editingMode && isAdmin">
+                    {{ content.heroSecondaryButton }}
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features" id="features">
+    <div class="features-container">
+        <div class="features-header fade-in">
+            <h2 #featuresTitle 
+                [contentEditable]="editingMode && isAdmin" 
+                (blur)="updateContent('featuredTitle', featuresTitle.textContent || '')" 
+                (click)="startEditing('featured', 'title')"
+                [class.editable]="editingMode && isAdmin">
+                {{ content.featuredTitle }}
+            </h2>
+            <p #featuresSubtitle 
+               [contentEditable]="editingMode && isAdmin" 
+               (blur)="updateContent('featuredSubtitle', featuresSubtitle.textContent || '')" 
+               (click)="startEditing('featured', 'subtitle')"
+               [class.editable]="editingMode && isAdmin">
+               {{ content.featuredSubtitle }}
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<!-- Products Section -->
+<section class="products" id="products">
+    <div class="products-container">
+        <div class="products-header fade-in">
+            <h2 #productsTitle 
+                [contentEditable]="editingMode && isAdmin" 
+                (blur)="updateContent('featuredTitle', productsTitle.textContent || '')" 
+                (click)="startEditing('products', 'title')"
+                [class.editable]="editingMode && isAdmin">
+                {{ content.featuredTitle }}
+            </h2>
+            <div class="products-nav">
+                <button class="product-nav-btn active" data-category="all">All</button>
+                <button class="product-nav-btn" data-category="living">Living Room</button>
+                <button class="product-nav-btn" data-category="bedroom">Bedroom</button>
+                <button class="product-nav-btn" data-category="dining">Dining</button>
+            </div>
+        </div>
+        <div class="products-grid">
+            <div class="product-card fade-in living" data-category="living">
+                <div class="product-image">
+                    <img [src]="content.featuredProduct1Image" alt="Modern Sofa">
+                    @if (editingMode && isAdmin) {
+                    <div class="image-upload-overlay">
+                        <button class="btn btn-sm btn-primary" (click)="productImg0.click()">
+                            Change Image
+                        </button>
+                        <input #productImg0 type="file" accept="image/*" style="display: none;"
+                               (change)="onImageUpload($event, 'products', 0)">
+                    </div>
+                    }
+                    <div #product1Badge class="product-badge" 
+                         [contentEditable]="editingMode && isAdmin" 
+                         (blur)="updateContent('featuredProduct1Badge', product1Badge.textContent || '')" 
+                         (click)="startEditing('product1', 'badge')"
+                         [class.editable]="editingMode && isAdmin">
+                         {{ content.featuredProduct1Badge }}
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div #product1Category class="product-category" 
+                         [contentEditable]="editingMode && isAdmin" 
+                         (blur)="updateContent('featuredProduct1Category', product1Category.textContent || '')" 
+                         (click)="startEditing('product1', 'category')"
+                         [class.editable]="editingMode && isAdmin">
+                         {{ content.featuredProduct1Category }}
+                    </div>
+                    <h3 #product1Name class="product-name" 
+                        [contentEditable]="editingMode && isAdmin" 
+                        (blur)="updateContent('featuredProduct1Name', product1Name.textContent || '')" 
+                        (click)="startEditing('product1', 'name')"
+                        [class.editable]="editingMode && isAdmin">
+                        {{ content.featuredProduct1Name }}
+                    </h3>
+                    <div #product1Price class="product-price" 
+                         [contentEditable]="editingMode && isAdmin" 
+                         (blur)="updateContent('featuredProduct1Price', product1Price.textContent || '')" 
+                         (click)="startEditing('product1', 'price')"
+                         [class.editable]="editingMode && isAdmin">
+                         {{ content.featuredProduct1Price }}
+                    </div>
+                    <button #product1Button class="product-btn" 
+                            [contentEditable]="editingMode && isAdmin" 
+                            (blur)="updateContent('featuredProduct1ButtonText', product1Button.textContent || '')" 
+                            (click)="startEditing('product1', 'buttonText')"
+                            [class.editable]="editingMode && isAdmin">
+                            {{ content.featuredProduct1ButtonText }}
+                    </button>
+                </div>
+            </div>
+            
+            <div class="product-card fade-in bedroom" data-category="bedroom">
+                <div class="product-image">
+                    <img [src]="content.featuredProduct2Image" alt="Platform Bed">
+                    @if (editingMode && isAdmin) {
+                    <div class="image-upload-overlay">
+                        <button class="btn btn-sm btn-primary" (click)="productImg1.click()">
+                            Change Image
+                        </button>
+                        <input #productImg1 type="file" accept="image/*" style="display: none;"
+                               (change)="onImageUpload($event, 'products', 1)">
+                    </div>
+                    }
+                    <div #product2Badge class="product-badge" 
+                         [contentEditable]="editingMode && isAdmin" 
+                         (blur)="updateContent('featuredProduct2Badge', product2Badge.textContent || '')" 
+                         (click)="startEditing('product2', 'badge')"
+                         [class.editable]="editingMode && isAdmin">
+                         {{ content.featuredProduct2Badge }}
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div #product2Category class="product-category" 
+                         [contentEditable]="editingMode && isAdmin" 
+                         (blur)="updateContent('featuredProduct2Category', product2Category.textContent || '')" 
+                         (click)="startEditing('product2', 'category')"
+                         [class.editable]="editingMode && isAdmin">
+                         {{ content.featuredProduct2Category }}
+                    </div>
+                    <h3 #product2Name class="product-name" 
+                        [contentEditable]="editingMode && isAdmin" 
+                        (blur)="updateContent('featuredProduct2Name', product2Name.textContent || '')" 
+                        (click)="startEditing('product2', 'name')"
+                        [class.editable]="editingMode && isAdmin">
+                        {{ content.featuredProduct2Name }}
+                    </h3>
+                    <div #product2Price class="product-price" 
+                         [contentEditable]="editingMode && isAdmin" 
+                         (blur)="updateContent('featuredProduct2Price', product2Price.textContent || '')" 
+                         (click)="startEditing('product2', 'price')"
+                         [class.editable]="editingMode && isAdmin">
+                         {{ content.featuredProduct2Price }}
+                    </div>
+                    <button #product2Button class="product-btn" 
+                            [contentEditable]="editingMode && isAdmin" 
+                            (blur)="updateContent('featuredProduct2ButtonText', product2Button.textContent || '')" 
+                            (click)="startEditing('product2', 'buttonText')"
+                            [class.editable]="editingMode && isAdmin">
+                            {{ content.featuredProduct2ButtonText }}
+                    </button>
+                </div>
+            </div>
+            
+            <div class="product-card fade-in dining" data-category="dining">
+                <div class="product-image">
+                    <img [src]="content.featuredProduct3Image" alt="Dining Table">
+                    @if (editingMode && isAdmin) {
+                    <div class="image-upload-overlay">
+                        <button class="btn btn-sm btn-primary" (click)="productImg2.click()">
+                            Change Image
+                        </button>
+                        <input #productImg2 type="file" accept="image/*" style="display: none;"
+                               (change)="onImageUpload($event, 'products', 2)">
+                    </div>
+                    }
+                    <div #product3Badge class="product-badge" 
+                         [contentEditable]="editingMode && isAdmin" 
+                         (blur)="updateContent('featuredProduct3Badge', product3Badge.textContent || '')" 
+                         (click)="startEditing('product3', 'badge')"
+                         [class.editable]="editingMode && isAdmin">
+                         {{ content.featuredProduct3Badge }}
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div #product3Category class="product-category" 
+                         [contentEditable]="editingMode && isAdmin" 
+                         (blur)="updateContent('featuredProduct3Category', product3Category.textContent || '')" 
+                         (click)="startEditing('product3', 'category')"
+                         [class.editable]="editingMode && isAdmin">
+                         {{ content.featuredProduct3Category }}
+                    </div>
+                    <h3 #product3Name class="product-name" 
+                        [contentEditable]="editingMode && isAdmin" 
+                        (blur)="updateContent('featuredProduct3Name', product3Name.textContent || '')" 
+                        (click)="startEditing('product3', 'name')"
+                        [class.editable]="editingMode && isAdmin">
+                        {{ content.featuredProduct3Name }}
+                    </h3>
+                    <div #product3Price class="product-price" 
+                         [contentEditable]="editingMode && isAdmin" 
+                         (blur)="updateContent('featuredProduct3Price', product3Price.textContent || '')" 
+                         (click)="startEditing('product3', 'price')"
+                         [class.editable]="editingMode && isAdmin">
+                         {{ content.featuredProduct3Price }}
+                    </div>
+                    <button #product3Button class="product-btn" 
+                            [contentEditable]="editingMode && isAdmin" 
+                            (blur)="updateContent('featuredProduct3ButtonText', product3Button.textContent || '')" 
+                            (click)="startEditing('product3', 'buttonText')"
+                            [class.editable]="editingMode && isAdmin">
+                            {{ content.featuredProduct3ButtonText }}
+                    </button>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Newsletter -->
+<section class="newsletter">
+    <div class="newsletter-container fade-in">
+        <h2 #newsletterTitle [contentEditable]="editingMode && isAdmin" (blur)="updateContent('newsletterTitle', newsletterTitle.textContent || '')" (click)="startEditing('newsletter', 'title')" [class.editable]="editingMode && isAdmin">{{content.newsletterTitle || 'Stay Updated'}}</h2>
+        <p #newsletterText [contentEditable]="editingMode && isAdmin" (blur)="updateContent('newsletterText', newsletterText.textContent || '')" (click)="startEditing('newsletter', 'text')" [class.editable]="editingMode && isAdmin">{{content.newsletterText || 'Get the latest updates on new collections, exclusive offers, and design inspiration delivered to your inbox.'}}</p>
+        <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+            <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+    </div>
+</section>
+
+</main>
+

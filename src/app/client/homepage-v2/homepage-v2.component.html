@@ -12,30 +12,46 @@
 </div>
 }
 
+<!-- Loading State -->
+@if (loading$ | async) {
+<div class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading homepage content...</p>
+</div>
+}
+
+<!-- Error State -->
+@if (error$ | async; as error) {
+<div class="error-container">
+    <p>Error loading content: {{ error }}</p>
+</div>
+}
+
+<!-- Main Content -->
 <!-- Hero Section -->
 <section class="hero" id="home">
     <div class="hero-container">
         <div class="hero-content">
             <h1 #heroTitle 
                 [contentEditable]="editingMode && isAdmin" 
-                (blur)="updateContent('hero', 'title', heroTitle.textContent || '')" 
+                (blur)="updateContent('heroTitle', heroTitle.textContent || '')" 
                 (click)="startEditing('hero', 'title')"
                 [class.editable]="editingMode && isAdmin"
-                [innerHTML]="content.hero.title">
+                [innerHTML]="content.heroTitle">
             </h1>
             <p #heroSubtitle 
                [contentEditable]="editingMode && isAdmin" 
-               (blur)="updateContent('hero', 'subtitle', heroSubtitle.textContent || '')" 
+               (blur)="updateContent('heroSubtitle', heroSubtitle.textContent || '')" 
                (click)="startEditing('hero', 'subtitle')"
                [class.editable]="editingMode && isAdmin">
-               {{ content.hero.subtitle }}
+               {{ content.heroSubtitle }}
             </p>
             <div class="hero-buttons">
                 <a #heroPrimaryCta href="#collections" class="btn-primary" 
                    [contentEditable]="editingMode && isAdmin" 
-                   (blur)="updateContent('hero', 'primaryCta', heroPrimaryCta.textContent || '')" 
+                   (blur)="updateContent('heroPrimaryCta', heroPrimaryCta.textContent || '')" 
                    [class.editable]="editingMode && isAdmin">
-                    {{ content.hero.primaryCta }}
+                    {{ content.heroPrimaryCta }}
                     <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -43,14 +59,14 @@
                 </a>
                 <a #heroSecondaryCta href="#featured" class="btn-secondary" 
                    [contentEditable]="editingMode && isAdmin" 
-                   (blur)="updateContent('hero', 'secondaryCta', heroSecondaryCta.textContent || '')" 
+                   (blur)="updateContent('heroSecondaryCta', heroSecondaryCta.textContent || '')" 
                    [class.editable]="editingMode && isAdmin">
-                   {{ content.hero.secondaryCta }}
+                   {{ content.heroSecondaryCta }}
                 </a>
             </div>
         </div>
         <div class="hero-image">
-            <img [src]="content.hero.backgroundImage"
+            <img [src]="getImageUrl('heroImage')"
                 alt="Luxury Living Room">
             @if (editingMode && isAdmin) {
             <div class="hero-bg-upload image-upload-overlay">
@@ -58,7 +74,7 @@
                     Change Background
                 </button>
                 <input #heroImg type="file" accept="image/*" style="display: none;"
-                       (change)="onImageUpload($event, 'hero')">
+                       (change)="onImageUpload($event, 'heroImage')">
             </div>
             }
         </div>
@@ -71,219 +87,119 @@
     <div class="experience-container-modern">
         <div class="experience-header">
             <h2 #experienceTitle class="section-title fade-in" 
-                [contentEditable]="editingMode && isAdmin" 
-                (blur)="updateContent('experience', 'title', experienceTitle.textContent || '')" 
-                (click)="startEditing('experience', 'title')"
-                [class.editable]="editingMode && isAdmin">
-                {{ content.experience.title }}
-            </h2>
-            <p #experienceSubtitle class="section-subtitle fade-in" 
-               [contentEditable]="editingMode && isAdmin" 
-               (blur)="updateContent('experience', 'subtitle', experienceSubtitle.textContent || '')" 
-               (click)="startEditing('experience', 'subtitle')"
-               [class.editable]="editingMode && isAdmin">
-               {{ content.experience.subtitle }}
-            </p>
+            [contentEditable]="editingMode && isAdmin" 
+            (blur)="updateContent('experienceTitle', experienceTitle.textContent || '')" 
+            (click)="startEditing('experience', 'title')"
+            [class.editable]="editingMode && isAdmin">
+            {{ content.experienceTitle }}
+        </h2>
+        <p #experienceSubtitle class="section-subtitle fade-in" 
+           [contentEditable]="editingMode && isAdmin" 
+           (blur)="updateContent('experienceSubtitle', experienceSubtitle.textContent || '')" 
+           (click)="startEditing('experience', 'subtitle')"
+           [class.editable]="editingMode && isAdmin">
+           {{ content.experienceSubtitle }}
+        </p>
         </div>
-        
-        <div class="experience-grid-modern">
-            <!-- Full width hero card -->
-            <div class="experience-card-modern hero-card fade-in">
-                <div class="card-background">
-                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Craftsmanship">
-                    <div class="card-overlay-modern"></div>
-                    @if (editingMode && isAdmin) {
-                    <div class="image-upload-overlay">
-                        <button class="btn btn-sm btn-primary" (click)="card0Img.click()">
-                            Change Image
-                        </button>
-                        <input #card0Img type="file" accept="image/*" style="display: none;"
-                               (change)="onImageUpload($event, 'experience', 0)">
-                    </div>
-                    }
-                </div>
-
-                <div class="card-content-modern">
-                    <span class="card-number-modern">01</span>
-                    <h3 #craftTitle 
-                        [contentEditable]="editingMode && isAdmin" 
-                        (blur)="updateExperienceContent(0, 'title', craftTitle.textContent || '')" 
-                        (click)="startEditing('experience.cards.0', 'title')"
-                        [class.editable]="editingMode && isAdmin">
-                        {{ content.experience.cards[0].title }}
-                    </h3>
-                    <p #craftDescription 
-                       [contentEditable]="editingMode && isAdmin" 
-                       (blur)="updateExperienceContent(0, 'description', craftDescription.textContent || '')" 
-                       (click)="startEditing('experience.cards.0', 'description')"
-                       [class.editable]="editingMode && isAdmin">
-                       {{ content.experience.cards[0].description }}
-                    </p>
-                    <a #craftLink href="#" class="card-link-modern" 
-                       [contentEditable]="editingMode && isAdmin" 
-                       (blur)="updateExperienceContent(0, 'link', craftLink.textContent || '')" 
-                       (click)="startEditing('experience.cards.0', 'link')"
-                       [class.editable]="editingMode && isAdmin">
-                       {{ content.experience.cards[0].link }}
-                    </a>
-                </div>
-                
-            </div>
-
-            <!-- Vertical cards row -->
-            <div class="vertical-cards-row">
-                <div class="experience-card-modern vertical-card fade-in">
-                    <div class="card-image-modern">
-                        <img [src]="content.experience.cards[1].image" alt="{{ content.experience.cards[1].title }}">
-                        @if (editingMode && isAdmin) {
-                        <div class="image-upload-overlay">
-                            <button class="btn btn-sm btn-primary" (click)="card1Img.click()">
-                                Change Image
-                            </button>
-                            <input #card1Img type="file" accept="image/*" style="display: none;"
-                                   (change)="onImageUpload($event, 'experience', 1)">
-                        </div>
-                        }
+ 
+        <div class="experience-features">
+            <div class="feature-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <span class="card-number-modern">{{ content.feature1Number }}</span>
                     </div>
                     <div class="card-content-modern">
-                        <span class="card-number-modern">01</span>
-                        <h3 #bespokeTitle 
+                        <h3 #feature1Title 
                             [contentEditable]="editingMode && isAdmin" 
-                            (blur)="updateExperienceContent(1, 'title', bespokeTitle.textContent || '')" 
-                            (click)="startEditing('experience.cards.1', 'title')"
+                            (blur)="updateContent('feature1Title', feature1Title.textContent || '')" 
+                            (click)="startEditing('feature1', 'title')"
                             [class.editable]="editingMode && isAdmin">
-                            {{ content.experience.cards[1].title }}
+                            {{ content.feature1Title }}
                         </h3>
-                        <p #bespokeDescription 
+                        <p #feature1Description 
                            [contentEditable]="editingMode && isAdmin" 
-                           (blur)="updateExperienceContent(1, 'description', bespokeDescription.textContent || '')" 
-                           (click)="startEditing('experience.cards.1', 'description')"
+                           (blur)="updateContent('feature1Description', feature1Description.textContent || '')" 
+                           (click)="startEditing('feature1', 'description')"
                            [class.editable]="editingMode && isAdmin">
-                           {{ content.experience.cards[1].description }}
+                           {{ content.feature1Description }}
                         </p>
-                        <a #bespokeLink href="#" class="card-link-modern" 
+                        <a #feature1Link href="#" class="card-link-modern" 
                            [contentEditable]="editingMode && isAdmin" 
-                           (blur)="updateExperienceContent(1, 'link', bespokeLink.textContent || '')" 
-                           (click)="startEditing('experience.cards.1', 'link')"
+                           (blur)="updateContent('feature1Link', feature1Link.textContent || '')" 
+                           (click)="startEditing('feature1', 'link')"
                            [class.editable]="editingMode && isAdmin">
-                           {{ content.experience.cards[1].link }}
+                           {{ content.feature1Link }}
+                           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                           </svg>
                         </a>
                     </div>
                 </div>
 
-                <div class="experience-card-modern vertical-card fade-in">
-                    <div class="card-image-modern">
-                        <img [src]="content.experience.cards[2].image" alt="{{ content.experience.cards[2].title }}">
-                        @if (editingMode && isAdmin) {
-                        <div class="image-upload-overlay">
-                            <button class="btn btn-sm btn-primary" (click)="card2Img.click()">
-                                Change Image
-                            </button>
-                            <input #card2Img type="file" accept="image/*" style="display: none;"
-                                   (change)="onImageUpload($event, 'experience', 2)">
-                        </div>
-                        }
+                <!-- Feature 2 -->
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <span class="card-number-modern">{{ content.feature2Number }}</span>
                     </div>
                     <div class="card-content-modern">
-                        <span class="card-number-modern">02</span>
-                        <h3 #sustainableTitle 
+                        <h3 #feature2Title 
                             [contentEditable]="editingMode && isAdmin" 
-                            (blur)="updateExperienceContent(2, 'title', sustainableTitle.textContent || '')" 
-                            (click)="startEditing('experience.cards.2', 'title')"
+                            (blur)="updateContent('feature2Title', feature2Title.textContent || '')" 
+                            (click)="startEditing('feature2', 'title')"
                             [class.editable]="editingMode && isAdmin">
-                            {{ content.experience.cards[2].title }}
+                            {{ content.feature2Title }}
                         </h3>
-                        <p #sustainableDescription 
+                        <p #feature2Description 
                            [contentEditable]="editingMode && isAdmin" 
-                           (blur)="updateExperienceContent(2, 'description', sustainableDescription.textContent || '')" 
-                           (click)="startEditing('experience.cards.2', 'description')"
+                           (blur)="updateContent('feature2Description', feature2Description.textContent || '')" 
+                           (click)="startEditing('feature2', 'description')"
                            [class.editable]="editingMode && isAdmin">
-                           {{ content.experience.cards[2].description }}
+                           {{ content.feature2Description }}
                         </p>
-                        <a #sustainableLink href="#" class="card-link-modern" 
+                        <a #feature2Link href="#" class="card-link-modern" 
                            [contentEditable]="editingMode && isAdmin" 
-                           (blur)="updateExperienceContent(2, 'link', sustainableLink.textContent || '')" 
-                           (click)="startEditing('experience.cards.2', 'link')"
+                           (blur)="updateContent('feature2Link', feature2Link.textContent || '')" 
+                           (click)="startEditing('feature2', 'link')"
                            [class.editable]="editingMode && isAdmin">
-                           {{ content.experience.cards[2].link }}
+                           {{ content.feature2Link }}
+                           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                           </svg>
                         </a>
                     </div>
                 </div>
 
-                <div class="experience-card-modern vertical-card fade-in">
-                    <div class="card-image-modern">
-                        <img [src]="content.experience.cards[3].image" alt="{{ content.experience.cards[3].title }}">
-                        @if (editingMode && isAdmin) {
-                        <div class="image-upload-overlay">
-                            <button class="btn btn-sm btn-primary" (click)="card3Img.click()">
-                                Change Image
-                            </button>
-                            <input #card3Img type="file" accept="image/*" style="display: none;"
-                                   (change)="onImageUpload($event, 'experience', 3)">
-                        </div>
-                        }
+                <!-- Feature 3 -->
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <span class="card-number-modern">{{ content.feature3Number }}</span>
                     </div>
                     <div class="card-content-modern">
-                        <span class="card-number-modern">03</span>
-                        <h3 #warrantyTitle 
+                        <h3 #feature3Title 
                             [contentEditable]="editingMode && isAdmin" 
-                            (blur)="updateExperienceContent(3, 'title', warrantyTitle.textContent || '')" 
-                            (click)="startEditing('experience.cards.3', 'title')"
+                            (blur)="updateContent('feature3Title', feature3Title.textContent || '')" 
+                            (click)="startEditing('feature3', 'title')"
                             [class.editable]="editingMode && isAdmin">
-                            {{ content.experience.cards[3].title }}
+                            {{ content.feature3Title }}
                         </h3>
-                        <p #warrantyDescription 
+                        <p #feature3Description 
                            [contentEditable]="editingMode && isAdmin" 
-                           (blur)="updateExperienceContent(3, 'description', warrantyDescription.textContent || '')" 
-                           (click)="startEditing('experience.cards.3', 'description')"
+                           (blur)="updateContent('feature3Description', feature3Description.textContent || '')" 
+                           (click)="startEditing('feature3', 'description')"
                            [class.editable]="editingMode && isAdmin">
-                           {{ content.experience.cards[3].description }}
+                           {{ content.feature3Description }}
                         </p>
-                        <a #warrantyLink href="#" class="card-link-modern" 
+                        <a #feature3Link href="#" class="card-link-modern" 
                            [contentEditable]="editingMode && isAdmin" 
-                           (blur)="updateExperienceContent(3, 'link', warrantyLink.textContent || '')" 
-                           (click)="startEditing('experience.cards.3', 'link')"
+                           (blur)="updateContent('feature3Link', feature3Link.textContent || '')" 
+                           (click)="startEditing('feature3', 'link')"
                            [class.editable]="editingMode && isAdmin">
-                           {{ content.experience.cards[3].link }}
+                           {{ content.feature3Link }}
+                           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                           </svg>
                         </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stats and features section -->
-            <div class="stats-features-row">
-                <div class="stats-card fade-in">
-                    <div class="stats-grid-modern">
-                        <div class="stat-item-modern" *ngFor="let stat of content.stats.items; let i = index">
-                            <span class="stat-number-modern" 
-                                  #statNumber
-                                  [contentEditable]="editingMode && isAdmin" 
-                                  (blur)="updateStatsContent(i, 'number', statNumber.textContent || '')" 
-                                  [class.editable]="editingMode && isAdmin">{{ stat.number }}</span>
-                            <span class="stat-label-modern" 
-                                  #statLabel
-                                  [contentEditable]="editingMode && isAdmin" 
-                                  (blur)="updateStatsContent(i, 'label', statLabel.textContent || '')" 
-                                  [class.editable]="editingMode && isAdmin">{{ stat.label }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="features-card fade-in">
-                    <h4 #whyChooseTitle 
-                        [contentEditable]="editingMode && isAdmin" 
-                        (blur)="updateContent('whyChoose', 'title', whyChooseTitle.textContent || '')" 
-                        [class.editable]="editingMode && isAdmin">{{ content.whyChoose.title }}</h4>
-                    <div class="features-list">
-                        <div class="feature-item" *ngFor="let feature of content.whyChoose.features; let i = index">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="20,6 9,17 4,12"></polyline>
-                            </svg>
-                            <span #featureText
-                                  [contentEditable]="editingMode && isAdmin" 
-                                  (blur)="updateFeatureContent(i, featureText.textContent || '')" 
-                                  [class.editable]="editingMode && isAdmin">{{ feature }}</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -298,17 +214,17 @@
             <div class="header-content">
                 <h2 #galleryTitle 
                     [contentEditable]="editingMode && isAdmin" 
-                    (blur)="updateContent('gallery', 'title', galleryTitle.textContent || '')" 
+                    (blur)="updateContent('galleryTitle', galleryTitle.textContent || '')" 
                     (click)="startEditing('gallery', 'title')"
                     [class.editable]="editingMode && isAdmin">
-                    {{ content.gallery.title }}
+                    {{ content.galleryTitle }}
                 </h2>
                 <p #gallerySubtitle 
                    [contentEditable]="editingMode && isAdmin" 
-                   (blur)="updateContent('gallery', 'subtitle', gallerySubtitle.textContent || '')" 
+                   (blur)="updateContent('gallerySubtitle', gallerySubtitle.textContent || '')" 
                    (click)="startEditing('gallery', 'subtitle')"
                    [class.editable]="editingMode && isAdmin">
-                   {{ content.gallery.subtitle }}
+                   {{ content.gallerySubtitle }}
                 </p>
             </div>
             <div class="gallery-nav">
@@ -322,39 +238,33 @@
         <div class="gallery-masonry">
             <div class="gallery-item large living fade-in" data-category="living">
                 <div class="item-image">
-                    <img [src]="content.gallery.products[0].image" [alt]="content.gallery.products[0].name">
+                    <img [src]="getImageUrl('featuredProduct1Image')" [alt]="content.featuredProduct1Name">
                     @if (editingMode && isAdmin) {
                     <div class="image-upload-overlay">
-                        <button class="btn btn-sm btn-primary" (click)="galleryImg0.click()">
+                        <button class="btn btn-sm btn-primary" (click)="featuredProduct1Img.click()">
                             Change Image
                         </button>
-                        <input #galleryImg0 type="file" accept="image/*" style="display: none;"
-                               (change)="onImageUpload($event, 'gallery', 0)">
+                        <input #featuredProduct1Img type="file" accept="image/*" style="display: none;"
+                               (change)="onImageUpload($event, 'featuredProduct1Image')">
                     </div>
                     }
                     <div class="item-overlay">
                         <div class="item-info">
-                            <h3 #product1Name 
+                            <h3 #featuredProduct1Name 
                                 [contentEditable]="editingMode && isAdmin" 
-                                (blur)="updateProductContent(0, 'name', product1Name.textContent || '')" 
-                                (click)="startEditing('featured.products.0', 'name')"
+                                (blur)="updateContent('featuredProduct1Name', featuredProduct1Name.textContent || '')" 
+                                (click)="startEditing('featuredProduct1', 'name')"
                                 [class.editable]="editingMode && isAdmin">
-                                {{ content.gallery.products[0].name }}
+                                {{ content.featuredProduct1Name }}
                             </h3>
-                            <p #product1Price class="item-price" 
+                            <p #featuredProduct1Price class="item-price" 
                                [contentEditable]="editingMode && isAdmin" 
-                               (blur)="updateProductContent(0, 'price', product1Price.textContent || '')" 
-                               (click)="startEditing('featured.products.0', 'price')"
+                               (blur)="updateContent('featuredProduct1Price', featuredProduct1Price.textContent || '')" 
+                               (click)="startEditing('featuredProduct1', 'price')"
                                [class.editable]="editingMode && isAdmin">
-                               {{ content.gallery.products[0].price }}
+                               {{ content.featuredProduct1Price }}
                             </p>
-                            <button #product1Button class="quick-view" 
-                                    [contentEditable]="editingMode && isAdmin" 
-                                    (blur)="updateProductContent(0, 'buttonText', product1Button.textContent || '')" 
-                                    (click)="startEditing('featured.products.0', 'buttonText')"
-                                    [class.editable]="editingMode && isAdmin">
-                                    {{ content.gallery.products[0].button || 'Quick View' }}
-                            </button>
+
                         </div>
                     </div>
                 </div>
@@ -362,39 +272,33 @@
 
             <div class="gallery-item medium dining fade-in" data-category="dining">
                 <div class="item-image">
-                    <img [src]="content.gallery.products[1].image" [alt]="content.gallery.products[1].name">
+                    <img [src]="getImageUrl('featuredProduct2Image')" [alt]="content.featuredProduct2Name">
                     @if (editingMode && isAdmin) {
                     <div class="image-upload-overlay">
-                        <button class="btn btn-sm btn-primary" (click)="galleryImg1.click()">
+                        <button class="btn btn-sm btn-primary" (click)="featuredProduct2Img.click()">
                             Change Image
                         </button>
-                        <input #galleryImg1 type="file" accept="image/*" style="display: none;"
-                               (change)="onImageUpload($event, 'gallery', 1)">
+                        <input #featuredProduct2Img type="file" accept="image/*" style="display: none;"
+                               (change)="onImageUpload($event, 'featuredProduct2Image')">
                     </div>
                     }
                     <div class="item-overlay">
                         <div class="item-info">
-                            <h3 #product2Name 
+                            <h3 #featuredProduct2Name 
                                 [contentEditable]="editingMode && isAdmin" 
-                                (blur)="updateProductContent(1, 'name', product2Name.textContent || '')" 
-                                (click)="startEditing('featured.products.1', 'name')"
+                                (blur)="updateContent('featuredProduct2Name', featuredProduct2Name.textContent || '')" 
+                                (click)="startEditing('featuredProduct2', 'name')"
                                 [class.editable]="editingMode && isAdmin">
-                                {{ content.gallery.products[1].name }}
+                                {{ content.featuredProduct2Name }}
                             </h3>
-                            <p #product2Price class="item-price" 
+                            <p #featuredProduct2Price class="item-price" 
                                [contentEditable]="editingMode && isAdmin" 
-                               (blur)="updateProductContent(1, 'price', product2Price.textContent || '')" 
-                               (click)="startEditing('featured.products.1', 'price')"
+                               (blur)="updateContent('featuredProduct2Price', featuredProduct2Price.textContent || '')" 
+                               (click)="startEditing('featuredProduct2', 'price')"
                                [class.editable]="editingMode && isAdmin">
-                               {{ content.gallery.products[1].price }}
+                               {{ content.featuredProduct2Price }}
                             </p>
-                            <button #product2Button class="quick-view" 
-                                    [contentEditable]="editingMode && isAdmin" 
-                                    (blur)="updateProductContent(1, 'buttonText', product2Button.textContent || '')" 
-                                    (click)="startEditing('featured.products.1', 'buttonText')"
-                                    [class.editable]="editingMode && isAdmin">
-                                    {{ content.gallery.products[1].button || 'Quick View' }}
-                            </button>
+
                         </div>
                     </div>
                 </div>
@@ -402,39 +306,32 @@
 
             <div class="gallery-item small bedroom fade-in" data-category="bedroom">
                 <div class="item-image">
-                    <img [src]="content.gallery.products[2].image" [alt]="content.gallery.products[2].name">
+                    <img [src]="getImageUrl('featuredProduct3Image')" [alt]="content.featuredProduct3Name">
                     @if (editingMode && isAdmin) {
                     <div class="image-upload-overlay">
-                        <button class="btn btn-sm btn-primary" (click)="galleryImg2.click()">
+                        <button class="btn btn-sm btn-primary" (click)="featuredProduct3Img.click()">
                             Change Image
                         </button>
-                        <input #galleryImg2 type="file" accept="image/*" style="display: none;"
-                               (change)="onImageUpload($event, 'gallery', 2)">
+                        <input #featuredProduct3Img type="file" accept="image/*" style="display: none;"
+                               (change)="onImageUpload($event, 'featuredProduct3Image')">
                     </div>
                     }
                     <div class="item-overlay">
                         <div class="item-info">
-                            <h3 #product3Name 
+                            <h3 #featuredProduct3Name 
                                 [contentEditable]="editingMode && isAdmin" 
-                                (blur)="updateProductContent(2, 'name', product3Name.textContent || '')" 
-                                (click)="startEditing('featured.products.2', 'name')"
+                                (blur)="updateContent('featuredProduct3Name', featuredProduct3Name.textContent || '')" 
+                                (click)="startEditing('featuredProduct3', 'name')"
                                 [class.editable]="editingMode && isAdmin">
-                                {{ content.gallery.products[2].name }}
+                                {{ content.featuredProduct3Name }}
                             </h3>
-                            <p #product3Price class="item-price" 
+                            <p #featuredProduct3Price class="item-price" 
                                [contentEditable]="editingMode && isAdmin" 
-                               (blur)="updateProductContent(2, 'price', product3Price.textContent || '')" 
-                               (click)="startEditing('featured.products.2', 'price')"
+                               (blur)="updateContent('featuredProduct3Price', featuredProduct3Price.textContent || '')" 
+                               (click)="startEditing('featuredProduct3', 'price')"
                                [class.editable]="editingMode && isAdmin">
-                               {{ content.gallery.products[2].price }}
+                               {{ content.featuredProduct3Price }}
                             </p>
-                            <button #product3Button class="quick-view" 
-                                    [contentEditable]="editingMode && isAdmin" 
-                                    (blur)="updateProductContent(2, 'buttonText', product3Button.textContent || '')" 
-                                    (click)="startEditing('featured.products.2', 'buttonText')"
-                                    [class.editable]="editingMode && isAdmin">
-                                    {{ content.gallery.products[2].button || 'Quick View' }}
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -443,12 +340,12 @@
             <div class="gallery-item wide living fade-in" data-category="living">
                 <div class="item-content">
                     <div class="content-text">
-                        <h3 #artisanTitle [contentEditable]="editingMode && isAdmin" (blur)="updateContent('artisan', 'title', artisanTitle.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.artisan.title }}</h3>
-                        <p #artisanDescription [contentEditable]="editingMode && isAdmin" (blur)="updateContent('artisan', 'description', artisanDescription.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.artisan.description }}</p>
-                        <a #artisanLink href="#" class="content-link" [contentEditable]="editingMode && isAdmin" (blur)="updateContent('artisan', 'link', artisanLink.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.artisan.link }}</a>
+                        <h3 #artisanTitle [contentEditable]="editingMode && isAdmin" (blur)="updateContent('artisanTitle', artisanTitle.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.artisanTitle }}</h3>
+                        <p #artisanDescription [contentEditable]="editingMode && isAdmin" (blur)="updateContent('artisanDescription', artisanDescription.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.artisanDescription }}</p>
+                        <a #artisanLink href="#" class="content-link" [contentEditable]="editingMode && isAdmin" (blur)="updateContent('artisanLink', artisanLink.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.artisanLink }}</a>
                     </div>
                     <div class="content-image">
-                        <img [src]="content.artisan.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'"
+                        <img [src]="getImageUrl('artisanImage') || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'"
                             alt="Craftsperson">
                         @if (editingMode && isAdmin) {
                         <div class="image-upload-overlay">
@@ -456,7 +353,7 @@
                                 Change Image
                             </button>
                             <input #artisanImg type="file" accept="image/*" style="display: none;"
-                                   (change)="onImageUpload($event, 'artisan', 'image')">
+                                   (change)="onImageUpload($event, 'artisanImage')">
                         </div>
                         }
                     </div>
@@ -465,7 +362,7 @@
 
             <div class="gallery-item tall dining fade-in" data-category="dining">
                 <div class="item-image">
-                    <img [src]="content.gallery.dining.image || 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'"
+                    <img [src]="getImageUrl('diningInfoImage') || 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'"
                         alt="Dining Experience">
                     @if (editingMode && isAdmin) {
                     <div class="image-upload-overlay">
@@ -473,40 +370,20 @@
                             Change Image
                         </button>
                         <input #diningImg type="file" accept="image/*" style="display: none;"
-                               (change)="onImageUpload($event, 'gallery.dining', 'image')">
+                               (change)="onImageUpload($event, 'diningInfoImage')">
                     </div>
                     }
                     <div class="item-overlay">
                         <div class="item-info">
-                            <h3 #diningTitle [contentEditable]="editingMode && isAdmin" (blur)="updateContent('gallery.dining', 'title', diningTitle.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.gallery.dining.title }}</h3>
-                            <p #diningDescription class="item-description" [contentEditable]="editingMode && isAdmin" (blur)="updateContent('gallery.dining', 'description', diningDescription.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.gallery.dining.description }}</p>
-                            <button #diningButton class="quick-view" [contentEditable]="editingMode && isAdmin" (blur)="updateContent('gallery.dining', 'button', diningButton.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.gallery.dining.button }}</button>
+                            <h3 #diningInfoTitle [contentEditable]="editingMode && isAdmin" (blur)="updateContent('diningInfoTitle', diningInfoTitle.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.diningInfoTitle }}</h3>
+                            <p #diningInfoDescription class="item-description" [contentEditable]="editingMode && isAdmin" (blur)="updateContent('diningInfoDescription', diningInfoDescription.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.diningInfoDescription }}</p>
+                            <button #diningInfoButton class="quick-view" [contentEditable]="editingMode && isAdmin" (blur)="updateContent('diningInfoButton', diningInfoButton.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.diningInfoButton }}</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="gallery-item medium bedroom fade-in" data-category="bedroom">
-                <div class="item-image">
-                    <img [src]="content.gallery.products[3].image" [alt]="content.gallery.products[3].name">
-                    @if (editingMode && isAdmin) {
-                    <div class="image-upload-overlay">
-                        <button class="btn btn-sm btn-primary" (click)="galleryImg3.click()">
-                            Change Image
-                        </button>
-                        <input #galleryImg3 type="file" accept="image/*" style="display: none;"
-                               (change)="onImageUpload($event, 'gallery', 3)">
-                    </div>
-                    }
-                    <div class="item-overlay">
-                        <div class="item-info">
-                            <h3 #sanctuaryName [contentEditable]="editingMode && isAdmin" (blur)="updateProductContent(3, 'name', sanctuaryName.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.gallery.products[3].name }}</h3>
-                            <p #sanctuaryPrice class="item-price" [contentEditable]="editingMode && isAdmin" (blur)="updateProductContent(3, 'price', sanctuaryPrice.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.gallery.products[3].price }}</p>
-                            <button #sanctuaryButton class="quick-view" [contentEditable]="editingMode && isAdmin" (blur)="updateProductContent(3, 'button', sanctuaryButton.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.gallery.products[3].button }}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </section>
@@ -514,8 +391,8 @@
 <!-- Newsletter -->
 <section class="newsletter">
     <div class="newsletter-container">
-        <h2 #newsletterTitle class="text-white" [contentEditable]="true" (blur)="updateContent('newsletter', 'title', newsletterTitle.textContent || '')" [class.editable]="true">Stay Connected</h2>
-        <p #newsletterText [contentEditable]="true" (blur)="updateContent('newsletter', 'text', newsletterText.textContent || '')" [class.editable]="true">Be the first to discover our latest collections, exclusive designs, and special offers crafted just for you.
+        <h2 #newsletterTitle class="text-white" [contentEditable]="editingMode && isAdmin" (blur)="updateContent('newsletterTitle', newsletterTitle.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.newsletterTitle || 'Stay Connected' }}</h2>
+        <p #newsletterText [contentEditable]="editingMode && isAdmin" (blur)="updateContent('newsletterText', newsletterText.textContent || '')" [class.editable]="editingMode && isAdmin">{{ content.newsletterText || 'Be the first to discover our latest collections, exclusive designs, and special offers crafted just for you.' }}
         </p>
         <form class="newsletter-form">
             <input type="email" class="newsletter-input" placeholder="Enter your email address" required>

@@ -1,5 +1,9 @@
-import { Component, OnInit, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { fetchHomepage2Data, updateHomepage2Data, updateHomepage2Images } from '../../store/Homepage2/homepage2.action';
+import { selectHomepage2Data, selectHomepage2Loading, selectHomepage2Error } from '../../store/Homepage2/homepage2-selector';
+import { Homepage2Model } from '../../store/Homepage2/homepage2.model';
 import { getUser } from 'src/app/store/Authentication/authentication-selector';
 import { fetchUser } from 'src/app/store/Authentication/authentication.actions';
 
@@ -10,144 +14,182 @@ import { fetchUser } from 'src/app/store/Authentication/authentication.actions';
   encapsulation: ViewEncapsulation.None
 
 })
-export class HomepageV2Component implements OnInit, AfterViewInit {
+export class HomepageV2Component implements OnInit, AfterViewInit, OnDestroy {
   connectedUser: any;
   isAdmin: boolean = false;
   editingMode: boolean = false;
   editingSection: string | null = null;
   editingField: string | null = null;
+  content$: Observable<Homepage2Model | null>;
+  loading$: Observable<boolean>;
+  error$: Observable<string | null>;
+  private subscription: Subscription = new Subscription();
 
-  // Homepage content data structure
-  content = {
-    hero: {
-      title: 'Luxury Redefined<br>For Modern Homes',
-      subtitle: 'Experience the pinnacle of contemporary design with our exclusive collection of handcrafted furniture.',
-      primaryCta: 'Explore Collection',
-      secondaryCta: 'View Featured',
-      backgroundImage: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-    },
-    experience: {
-      title: 'Crafting Excellence',
-      subtitle: 'Discover what makes our furniture extraordinary',
-      cards: [
-        {
-          title: 'Exceptional Craftsmanship',
-          description: 'Every piece is handcrafted by master artisans using time-honored techniques and the finest materials sourced globally. Our commitment to excellence ensures furniture that lasts generations.',
-          link: 'Discover Process →',
-          image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-        },
-        {
-          title: 'Bespoke Design',
-          description: 'Collaborate with our design team to create furniture that perfectly reflects your vision and lifestyle.',
-          link: 'Start Designing →',
-          image: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-        },
-        {
-          title: 'Sustainable Materials',
-          description: 'Committed to environmental responsibility through sustainable sourcing and eco-friendly practices.',
-          link: 'Learn More →',
-          image: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-        },
-        {
-          title: 'Lifetime Warranty',
-          description: 'We stand behind our craftsmanship with comprehensive warranty coverage and dedicated support.',
-          link: 'View Coverage →',
-          image: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
-        }
-      ]
-    },
-    gallery: {
-      title: 'Signature Collection',
-      subtitle: 'Discover pieces that redefine luxury living',
-      products: [
-        {
-          image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-          name: 'Venetian Sectional',
-          price: '$4,299',
-          button: 'Quick View'
-        },
-        {
-          image: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-          name: 'Heritage Dining Set',
-          price: '$3,199',
-          button: 'Quick View'
-        },
-        {
-          image: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-          name: 'Metropolitan Suite',
-          price: '$2,899',
-          button: 'Quick View'
-        },
-        {
-          image: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-          name: 'Sanctuary Collection',
-          price: 'From $1,899',
-          button: 'Quick View'
-        }
-      ],
-      artisan: {
-        title: 'Artisan Spotlight',
-        description: 'Meet our master craftspeople who bring decades of expertise to every piece. Each item tells a story of dedication, skill, and passion for exceptional design.',
-        link: 'Meet the Team →',
-        image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'
-      },
-      dining: {
-        title: 'Dining Experience',
-        description: 'Transform every meal into a memorable occasion',
-        button: 'Explore Collection',
-        image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
-      }
-    },
-    newsletter: {
-      title: 'Stay Connected',
-      text: 'Be the first to discover our latest collections, exclusive designs, and special offers crafted just for you.'
-    },
-    stats: {
-      items: [
-        {
-          number: '25+',
-          label: 'Years Experience'
-        },
-        {
-          number: '10k+',
-          label: 'Happy Clients'
-        },
-        {
-          number: '50+',
-          label: 'Master Artisans'
-        }
-      ]
-    },
-    whyChoose: {
-      title: 'Why Choose Us',
-      features: [
-        'Free Design Consultation',
-        'White Glove Delivery',
-        'Lifetime Support'
-      ]
-    },
-    artisan: {
-      title: 'Artisan Spotlight',
-      description: 'Meet our master craftspeople who bring decades of expertise to every piece. Each item tells a story of passion, precision, and uncompromising quality.',
-      link: 'Meet the Team →',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'
-    }
+  // Image files for upload
+  heroImageFile: File | null = null;
+  artisanImageFile: File | null = null;
+  featuredProduct1ImageFile: File | null = null;
+  featuredProduct2ImageFile: File | null = null;
+  featuredProduct3ImageFile: File | null = null;
+
+  // Default content as fallback (flat structure following Homepage2Model)
+  defaultContent: Homepage2Model = {
+    // Hero Section
+    heroTitle: 'Loading...',
+    heroSubtitle: 'Loading...',
+    heroPrimaryCta: 'Loading...',
+    heroSecondaryCta: 'Loading...',
+    heroBackgroundImage: '',
+    heroBadge: 'Loading...',
+    heroButtonText: 'Loading...',
+    heroPrimaryButton: 'Loading...',
+    heroSecondaryButton: 'Loading...',
+    heroImage: '',
+    
+    // Featured Section
+    featuredTitle: 'Loading...',
+    featuredSubtitle: 'Loading...',
+    
+    // Featured Products
+    featuredProduct1Image: '',
+    featuredProduct1Category: 'Loading...',
+    featuredProduct1Name: 'Loading...',
+    featuredProduct1Description: 'Loading...',
+    featuredProduct1Price: 'Loading...',
+    
+    featuredProduct2Image: '',
+    featuredProduct2Category: 'Loading...',
+    featuredProduct2Name: 'Loading...',
+    featuredProduct2Description: 'Loading...',
+    featuredProduct2Price: 'Loading...',
+    
+    featuredProduct3Image: '',
+    featuredProduct3Category: 'Loading...',
+    featuredProduct3Name: 'Loading...',
+    featuredProduct3Description: 'Loading...',
+    featuredProduct3Price: 'Loading...',
+    
+    // Categories Section
+    categoriesTitle: 'Loading...',
+    categoriesSubtitle: 'Loading...',
+    
+    // Category Items
+    categoryItem1Image: '',
+    categoryItem1Name: 'Loading...',
+    categoryItem1Count: 'Loading...',
+    
+    categoryItem2Image: '',
+    categoryItem2Name: 'Loading...',
+    categoryItem2Count: 'Loading...',
+    
+    categoryItem3Image: '',
+    categoryItem3Name: 'Loading...',
+    categoryItem3Count: 'Loading...',
+    
+    // Experience Section
+    experienceTitle: 'Loading...',
+    experienceSubtitle: 'Loading...',
+    
+    // Gallery Section
+    galleryTitle: 'Loading...',
+    gallerySubtitle: 'Loading...',
+    
+    // Features Section
+    featuresTitle: 'Loading...',
+    featuresSubtitle: 'Loading...',
+
+    // Feature 1
+    feature1Number: '01',
+    feature1Title: 'Exceptional Craftsmanship',
+    feature1Description: 'Every piece is handcrafted by master artisans using time-honored techniques and the finest materials sourced globally.',
+    feature1Link: 'Discover Process →',
+    feature1Image: 'homepage-default-feature-one.png',
+
+    // Feature 2
+    feature2Number: '02',
+    feature2Title: 'Sustainable Materials',
+    feature2Description: 'We source only the finest sustainable materials, ensuring each piece is both beautiful and environmentally responsible.',
+    feature2Link: 'Learn More →',
+    feature2Image: 'homepage-default-feature-two.png',
+
+    // Feature 3
+    feature3Number: '03',
+    feature3Title: 'Lifetime Quality',
+    feature3Description: 'Built to last generations, our furniture comes with a lifetime guarantee of quality and craftsmanship.',
+    feature3Link: 'View Warranty →',
+    feature3Image: 'homepage-default-feature-three.png',
+    
+    // Products Section
+    productsTitle: 'Loading...',
+    
+    // Why Choose Section
+    whyChooseTitle: 'Loading...',
+    
+    // Artisan Section
+    artisanTitle: 'Loading...',
+    artisanDescription: 'Loading...',
+    artisanLink: 'Loading...',
+    artisanImage: '',
+    
+    // Newsletter Section
+    newsletterTitle: 'Loading...',
+    newsletterText: 'Loading...',
+    
+    // Dining Info Section
+    diningInfoTitle: 'Loading...',
+    diningInfoDescription: 'Loading...',
+    diningInfoButton: 'Loading...',
+    diningInfoImage: '',
+    
+    isActive: true
   };
 
-  constructor(public store: Store) { }
+  // Content structure following the flat model
+  content: Homepage2Model = { ...this.defaultContent };
+
+  constructor(public store: Store) {
+    this.content$ = this.store.select(selectHomepage2Data);
+    this.loading$ = this.store.select(selectHomepage2Loading);
+    this.error$ = this.store.select(selectHomepage2Error);
+  }
 
   ngOnInit(): void {
+    // Fetch homepage data from store
+    this.store.dispatch(fetchHomepage2Data());
+    
     // Dispatch fetchUser action to get user from localStorage
     this.store.dispatch(fetchUser());
     
-    this.store.select(getUser).subscribe(user => {
-      this.connectedUser = user;
-      this.isAdmin = this.connectedUser?.roles?.[0] === 'ROLE_ADMIN';
-    });
+    this.subscription.add(
+      this.store.select(getUser).subscribe(user => {
+        this.connectedUser = user;
+        this.isAdmin = this.connectedUser?.roles?.[0] === 'ROLE_ADMIN';
+      })
+    );
+
+    // Subscribe to Homepage2 data and update content
+    this.subscription.add(
+      this.content$.subscribe(data => {
+        if (data) {
+          // Merge with default content and update flat structure
+          this.content = {
+            ...this.defaultContent,
+            ...data
+          };
+          console.log('Homepage2 content loaded:', this.content);
+        } else {
+          this.content = { ...this.defaultContent };
+        }
+      })
+    );
   }
 
   ngAfterViewInit(): void {
     this.initializeInteractions();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   private initializeInteractions(): void {
@@ -262,6 +304,20 @@ export class HomepageV2Component implements OnInit, AfterViewInit {
     });
   }
 
+  // Helper methods for image URLs
+  getImageUrl(field: string): string {
+    const imageValue = (this.content as any)[field];
+    // If image starts with 'data:', it's a local preview (base64)
+    if (imageValue && imageValue.startsWith('data:')) {
+      return imageValue;
+    }
+    // Otherwise, use backend URL or return the URL as is if it's already a full URL
+    if (imageValue && imageValue.startsWith('http')) {
+      return imageValue;
+    }
+    return imageValue ? `http://localhost:8080/api/files/${imageValue}` : '';
+  }
+
   // Admin control methods
   toggleEditMode() {
     if (this.isAdmin) {
@@ -273,14 +329,67 @@ export class HomepageV2Component implements OnInit, AfterViewInit {
     }
   }
 
-  saveChanges() {
+  saveChanges(): void {
     if (this.isAdmin && this.editingMode) {
-      // Here you would typically save to a backend service
       console.log('Saving homepage content changes:', this.content);
+
+      // Prepare Homepage data (without images for content update)
+      const homepageData = {
+        ...this.content
+      };
+
+      // Check if this is an update (has ID) or new creation
+      if (this.content.id) {
+        // Update existing Homepage data
+        console.log(homepageData);
+        this.store.dispatch(updateHomepage2Data({
+          id: parseInt(this.content.id),
+          updatedData: homepageData
+        }));
+
+        // Handle image uploads separately if there are any files
+        if (this.heroImageFile || this.artisanImageFile || this.featuredProduct1ImageFile || this.featuredProduct2ImageFile || this.featuredProduct3ImageFile) {
+          const imageFormData = new FormData();
+          console.log("updating images here");
+
+          // Add hero image if exists
+          if (this.heroImageFile) {
+            imageFormData.append('heroImage', this.heroImageFile);
+          }
+
+          // Add artisan image if exists
+          if (this.artisanImageFile) {
+            imageFormData.append('artisanImage', this.artisanImageFile);
+          }
+
+          // Add featured product images if they exist
+          if (this.featuredProduct1ImageFile) {
+            imageFormData.append('featuredProduct1Image', this.featuredProduct1ImageFile);
+          }
+
+          if (this.featuredProduct2ImageFile) {
+            imageFormData.append('featuredProduct2Image', this.featuredProduct2ImageFile);
+          }
+
+          if (this.featuredProduct3ImageFile) {
+            imageFormData.append('featuredProduct3Image', this.featuredProduct3ImageFile);
+          }
+
+          // Dispatch image update action
+          this.store.dispatch(updateHomepage2Images({ id: parseInt(this.content.id), imageData: imageFormData }));
+        }
+      }
+
+      // Reset image files after saving
+      this.heroImageFile = null;
+      this.artisanImageFile = null;
+      this.featuredProduct1ImageFile = null;
+      this.featuredProduct2ImageFile = null;
+      this.featuredProduct3ImageFile = null;
+
       this.editingMode = false;
       this.editingSection = null;
       this.editingField = null;
-      alert('Changes saved successfully!');
     }
   }
 
@@ -291,43 +400,10 @@ export class HomepageV2Component implements OnInit, AfterViewInit {
     }
   }
 
-  // Content editing methods
-  updateContent(section: string, field: string, value: string) {
+  // Content editing methods for flat structure
+  updateContent(field: string, value: string) {
     if (this.isAdmin && this.editingMode) {
-      const keys = section.split('.');
-      let obj: any = this.content;
-      
-      // Navigate to the correct nested object
-      for (let i = 0; i < keys.length - 1; i++) {
-        obj = obj[keys[i]];
-      }
-      
-      // Update the field
-      obj[keys[keys.length - 1]][field] = value;
-    }
-  }
-
-  updateProductContent(productIndex: number, field: string, value: string) {
-    if (this.isAdmin && this.editingMode) {
-      (this.content.gallery.products[productIndex] as any)[field] = value;
-    }
-  }
-
-  updateExperienceContent(cardIndex: number, field: string, value: string) {
-    if (this.isAdmin && this.editingMode) {
-      (this.content.experience.cards[cardIndex] as any)[field] = value;
-    }
-  }
-
-  updateStatsContent(statIndex: number, field: string, value: string) {
-    if (this.isAdmin && this.editingMode) {
-      (this.content.stats.items[statIndex] as any)[field] = value;
-    }
-  }
-
-  updateFeatureContent(featureIndex: number, value: string) {
-    if (this.isAdmin && this.editingMode) {
-      this.content.whyChoose.features[featureIndex] = value;
+      (this.content as any)[field] = value;
     }
   }
 
@@ -339,33 +415,31 @@ export class HomepageV2Component implements OnInit, AfterViewInit {
     }
   }
 
-  triggerFileInputForProduct(index: number) {
-    const fileInput = document.getElementById(`product-v2-${index}`) as HTMLInputElement;
-    if (fileInput) {
-      fileInput.click();
-    }
-  }
-
-  onImageUpload(event: any, section: string, index?: number | string) {
-    if (this.isAdmin && this.editingMode) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          if (section === 'gallery' && typeof index === 'number') {
-            this.content.gallery.products[index].image = e.target.result;
-          } else if (section === 'experience' && typeof index === 'number') {
-            this.content.experience.cards[index].image = e.target.result;
-          } else if (section === 'artisan' && index === 'image') {
-            this.content.artisan.image = e.target.result;
-          } else if (section === 'gallery.dining' && index === 'image') {
-            this.content.gallery.dining.image = e.target.result;
-          } else if (section === 'hero') {
-            this.content.hero.backgroundImage = e.target.result;
-          }
-        };
-        reader.readAsDataURL(file);
+  onImageUpload(event: any, field: string): void {
+    const file = event.target.files[0];
+    if (file && this.isAdmin && this.editingMode) {
+      // Store the file for later upload based on field name
+      if(field=='heroImage'){
+        this.heroImageFile = file;
+      }else if (field === 'heroBackgroundImage') {
+        this.heroImageFile = file;
+      } else if (field === 'artisanImage') {
+        this.artisanImageFile = file;
+      } else if (field === 'featuredProduct1Image') {
+        this.featuredProduct1ImageFile = file;
+      } else if (field === 'featuredProduct2Image') {
+        this.featuredProduct2ImageFile = file;
+      } else if (field === 'featuredProduct3Image') {
+        this.featuredProduct3ImageFile = file;
       }
+
+      // Create preview URL for immediate display
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const imageUrl = e.target.result;
+        (this.content as any)[field] = imageUrl;
+      };
+      reader.readAsDataURL(file);
     }
   }
 }
