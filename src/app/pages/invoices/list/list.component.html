@@ -160,7 +160,6 @@
                                 <th scope="col" class="sort cursor-pointer" (click)="onSort('email')">Email</th>
                                 <th scope="col" class="sort cursor-pointer" (click)="onSort('createDate')">Create Date
                                 </th>
-                                <th scope="col" class="sort cursor-pointer" (click)="onSort('dueDate')">Due Date</th>
                                 <th scope="col" class="sort cursor-pointer" (click)="onSort('invoice_amount')">Amount
                                 </th>
                                 <th scope="col" class="sort cursor-pointer" (click)="onSort('status')">Status</th>
@@ -178,14 +177,14 @@
                                 </td>
                                 <td class="invoice_id"><a routerLink="/invoices/overview">{{data.invoiceNumber}}</a>
                                 </td>
-                                <td class="customer_name">{{data.concernedCase.contacts[0].firstName}}
-                                    {{data.concernedCase.contacts[0].lastName}}</td>
-                                <td class="email">{{data.concernedCase.contacts[0].email}}</td>
-                                <td class="create_date">{{data.creationDate | date}}</td>
-                                <td class="due_date">{{data.dueDate | date}}</td>
+                                <td class="customer_name">{{data.userFirstName}}
+                                    {{data.userLastName}}</td>
+                                <td class="email">{{data.userEmail}}</td>
+                                <td class="create_date">{{data.createdAt | date}}</td>
+
                                 <td class="amount">{{data.totalAmount | number:'1.2-2'}} TND</td>
                                 <td class="status"><span class="badge"
-                                        [ngClass]="{'bg-success-subtle text-success':data.status == 'Paid','bg-danger-subtle text-danger':data.status === 'Unpaid' || data.status === 'Refund','bg-warning-subtle text-warning':data.status ==='Pending'}">{{data.status}}</span>
+                                        [ngClass]="{'bg-success-subtle text-success':data.status == 'PAID','bg-danger-subtle text-danger':data.status === 'CANCELLED','bg-warning-subtle text-warning':data.status ==='PENDING'}">{{data.status}}</span>
                                 </td>
                                 <td>
                                     <ul class="d-flex gap-2 list-unstyled mb-0">
@@ -281,7 +280,7 @@
                         <h4 class="mb-2">Add an invoice</h4>
                         <p class="text-muted mx-3 mb-3">Please select a case</p>
 
-                        <ng-select [items]="cases" bindLabel="title" bindValue="id" placeholder="Select a case"
+                        <ng-select [items]="articles" bindLabel="title" bindValue="id" placeholder="Select a case"
                             (change)="onChange($event)">
                         </ng-select>
 

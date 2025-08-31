@@ -25,6 +25,9 @@ import { CheckoutPopupComponent } from './checkout-popup/checkout-popup.componen
 import { ClientLoadingComponent } from './components/loading/loading.component';
 import { ClientLoginComponent } from './login/login.component';
 import { ClientRegisterComponent } from './register/register.component';
+import { SharedModule } from 'primeng/api';
+import { DropzoneModule } from 'ngx-dropzone-wrapper';
+import { ImageCropperComponent } from 'ngx-image-cropper';
 
 
 @NgModule({
@@ -57,7 +60,14 @@ import { ClientRegisterComponent } from './register/register.component';
     MatSliderModule,
     MatCheckboxModule,
     MatIconModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+
+
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    DropzoneModule,
+    ImageCropperComponent
   ],
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }

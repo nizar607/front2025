@@ -16,7 +16,7 @@ const routes: Routes = [
     component: OverviewComponent
   },
   {
-    path: 'create/:caseId',
+    path: 'create',
     component: CreateComponent
   },
 ];

@@ -43,7 +43,6 @@ export class GridComponent implements OnInit {
   } = { agentData: null, action: '' };
 
   action!: string;
-  imageTest: any;
 
   @ViewChild('addAgent', { static: false }) addAgent?: ModalDirective;
   @ViewChild('deleteRecordModal', { static: false }) deleteRecordModal?: ModalDirective;

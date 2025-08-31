@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
@@ -26,8 +26,9 @@ export class BasketComponent implements OnInit, OnDestroy {
 
   showSuccessMessage = false;
   showCheckoutPopup = false;
+  uriParam: string | null = null;
 
-  constructor(private store: Store, private router: Router) {
+  constructor(private store: Store, private router: Router, private route: ActivatedRoute) {
     this.cart$ = this.store.select(CartSelectors.selectCart);
     this.cartItems$ = this.store.select(CartSelectors.selectCartItems);
     this.cartItems$.forEach((i) => console.log(i));
@@ -42,6 +43,10 @@ export class BasketComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadCart();
 
+     this.route.parent?.paramMap.subscribe(params => {
+      this.uriParam = params.get('uriParam');
+      console.log('Fetched uriParam in LoadingComponent:', this.uriParam);
+    });
   }
 
   ngOnDestroy() {
@@ -105,7 +110,8 @@ export class BasketComponent implements OnInit, OnDestroy {
   }
 
   continueShopping() {
-    this.router.navigate(['/client/articles']);
+    this.router.navigate([`/client/${this.uriParam}/articles`]);
+
   }
 
   trackByItemId(index: number, item: CartItem): number {

@@ -64,9 +64,10 @@ export class ArticlesComponent implements OnInit, AfterViewInit, OnDestroy {
     this.fetchCategoryList();
   }
 
+//!TODO call the website from url to navigate
 
   viewArticleDetials(id: number) {
-    this.router.navigate(['/client/product', id]);
+    this.router.navigate(['/client/tttt/product', id]);
   }
 
   fetchArticleList() {

@@ -2,11 +2,14 @@ import { DecimalPipe } from '@angular/common';
 import { Component, ViewChild, QueryList, ViewChildren } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Store } from '@ngrx/store';
-import { selectData, selectlistData } from 'src/app/store/Invoices/invoices.selector';
-import { deleteinvoice, fetchInvoiceData, fetchInvoicelistData } from 'src/app/store/Invoices/invoices.action';
+import { selectinvoiceData } from 'src/app/store/Invoice/invoice-selector';
+import { deleteinvoiceData, fetchinvoiceData } from 'src/app/store/Invoice/invoice.action';
 import { InvoiceService } from 'src/app/core/services/invoice/invoice.service';
-import { CaseService } from 'src/app/core/services/case/case.service';  
+import { CaseService } from 'src/app/core/services/case/case.service';
 import { Router } from '@angular/router';
+import { fetcharticleData } from 'src/app/store/Article/article.action';
+import { selectarticleData } from 'src/app/store/Article/article-selector';
+import { fetchUserData } from 'src/app/store/User/users.action';
 
 @Component({
   selector: 'app-list',
@@ -26,23 +29,30 @@ export class ListComponent {
   masterSelected!: boolean;
   invoiceCard: any;
   term: any
-  cases : any[] = [];
+
   selectedCase: any;
-  invoicesData : any;
+  invoicesData: any;
   totalInvoiceAmount: any;
 
-  
+  articles: any[] = [];
+
+
 
   @ViewChild('deleteRecordModal', { static: false }) deleteRecordModal?: ModalDirective;
-  @ViewChild('addInvoiceModal', {static: false}) addInvoiceModal?: ModalDirective;
+  @ViewChild('addInvoiceModal', { static: false }) addInvoiceModal?: ModalDirective;
 
-  constructor(public store: Store, private invoiceService: InvoiceService, private caseService: CaseService, private router: Router) {
+  constructor(public store: Store, private invoiceService: InvoiceService, private router: Router) {
   }
 
   ngOnInit(): void {
     /**
      * BreadCrumb
      */
+
+    this.store.dispatch(fetcharticleData());
+    this.store.select(selectarticleData).subscribe((data) => {
+      this.articles = data;
+    })
     this.breadCrumbItems = [
       { label: 'Invoice', active: true },
       { label: 'Invoice List', active: true }
@@ -59,6 +69,8 @@ export class ListComponent {
       //   this.invoices = this.invoiceslist.slice(0, 10)
       // });
 
+
+
       this.invoiceService.fetchData().subscribe((data) => {
         this.invoices = data;
         this.invoiceslist = data;
@@ -71,16 +83,11 @@ export class ListComponent {
       }
       )
 
-      this.invoiceService.getAlldata().subscribe((data) => {
+      this.invoiceService.fetchData().subscribe((data) => {
         console.log('getAlldata : ', data)
         this.invoicesData = data;
       })
 
-      this.caseService.fetchData().subscribe((data) => {
-        this.cases = data;
-        console.log('this.cases', this.cases)
-      }
-      )
 
       document.getElementById('elmLoader')?.classList.add('d-none')
     }, 1000)
@@ -171,7 +178,7 @@ export class ListComponent {
   }
 
   deleteData(id: any) {
-   
+
     this.invoiceService.deleteData(id).subscribe((data) => {
       this.invoices = this.invoices.filter((x: { id: any; }) => x.id !== id)
     }
@@ -191,7 +198,7 @@ export class ListComponent {
   confirmCase(id: any) {
     this.deleteRecordModal?.hide();
     if (id) {
-      this.store.dispatch(deleteinvoice({ id: this.deleteID.toString() }));
+      this.store.dispatch(deleteinvoiceData({ id: this.deleteID.toString() }));
     }
     this.deleteRecordModal?.hide();
     this.masterSelected = false
@@ -208,7 +215,7 @@ export class ListComponent {
 
   addInvoice() {
     if (this.selectedCase) {
-      this.router.navigate(['/invoices/create/'+this.selectedCase.id]);
+      this.router.navigate(['/invoices/create/' + this.selectedCase.id]);
     }
     else {
       this.addInvoiceModal?.show();

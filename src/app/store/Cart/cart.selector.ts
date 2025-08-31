@@ -33,16 +33,14 @@ export const selectCartSubtotal = createSelector(
   (items) => items.reduce((total, item) => total + (item.price * item.quantity), 0)
 );
 
+// Total should now be equal to subtotal, with no shipping fees added
 export const selectCartTotal = createSelector(
   selectCartSubtotal,
-  selectCartItemsCount,
-  (subtotal, itemsCount) => {
-    const shippingCost = itemsCount > 0 ? 5 : 0;
-    return subtotal + shippingCost;
-  }
+  (subtotal) => subtotal
 );
 
+// Shipping cost has been removed from the calculation, keep selector for compatibility but always return 0
 export const selectShippingCost = createSelector(
   selectCartItemsCount,
-  (itemsCount) => itemsCount > 0 ? 5 : 0
+  () => 0
 );

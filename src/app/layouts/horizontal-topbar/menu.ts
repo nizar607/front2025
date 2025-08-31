@@ -51,12 +51,12 @@ export const MENU: MenuItem[] = [
     label: 'MENUITEMS.APPS.TEXT',
     isTitle: true
   },
-  {
-    id: 9,
-    label: 'MENUITEMS.APPS.LIST.CALENDAR',
-    icon: 'ph-calendar',
-    link: '/apps/calendar',
-  },
+  // {
+  //   id: 9,
+  //   label: 'MENUITEMS.APPS.LIST.CALENDAR',
+  //   icon: 'ph-calendar',
+  //   link: '/apps/calendar',
+  // },
   {
     id: 16,
     label: 'MENUITEMS.APPS.LIST.INVOICES',
@@ -96,6 +96,12 @@ export const MENU: MenuItem[] = [
   },
   {
     id: 21,
+    label: 'MENUITEMS.APPS.LIST.USERS',
+    icon: 'ph-users',
+    link: '/users/list',
+  },
+  {
+    id: 22,
     label: 'AGENTS',
     icon: 'ph-identification-badge',
     link: '/agent',

@@ -9,7 +9,13 @@ import {
   uploadImageSuccess,
   createCompanyWithImage,
   createCompanyWithImageSuccess,
-  createCompanyWithImageFailure
+  createCompanyWithImageFailure,
+  fetchcompanyByWebsite,
+  fetchcompanyByWebsiteSuccess,
+  fetchcompanyByWebsiteFailure,
+  fetchVersionByWebsite,
+  fetchVersionByWebsiteSuccess,
+  fetchVersionByWebsiteFailure
 } from './company.action';
 
 
@@ -17,12 +23,16 @@ export interface CompanyState {
   companyData: any[];
   loading: boolean;
   error: any;
+  selectedCompanyByWebsite: any | null;
+  selectedVersionByWebsite: string | null;
 }
 
 export const initialState: CompanyState = {
   companyData: [],
   loading: false,
-  error: null
+  error: null,
+  selectedCompanyByWebsite: null,
+  selectedVersionByWebsite: null
 };
 
 export const CompanyReducer = createReducer(
@@ -41,6 +51,7 @@ export const CompanyReducer = createReducer(
   }),
 
   on(addcompanyDataSuccess, (state, {newData}) => {
+    
     return {...state, companyData: [newData, ...state.companyData], error: null};
   }),
 
@@ -75,6 +86,32 @@ export const CompanyReducer = createReducer(
 
   on(createCompanyWithImageFailure, (state, {error}) => {
     return {...state, loading: false, error};
+  }),
+
+  // New: fetch company by website
+  on(fetchcompanyByWebsite, (state) => {
+    return { ...state, loading: true, error: null, selectedCompanyByWebsite: null };
+  }),
+
+  on(fetchcompanyByWebsiteSuccess, (state, { company }) => {
+    return { ...state, selectedCompanyByWebsite: company, loading: false };
+  }),
+
+  on(fetchcompanyByWebsiteFailure, (state, { error }) => {
+    return { ...state, error, loading: false };
+  }),
+
+  // New: fetch version (string) by website
+  on(fetchVersionByWebsite, (state) => {
+    return { ...state, loading: true, error: null, selectedVersionByWebsite: null };
+  }),
+
+  on(fetchVersionByWebsiteSuccess, (state, { version }) => {
+    return { ...state, selectedVersionByWebsite: version, loading: false };
+  }),
+
+  on(fetchVersionByWebsiteFailure, (state, { error }) => {
+    return { ...state, error, loading: false };
   }),
 )
 

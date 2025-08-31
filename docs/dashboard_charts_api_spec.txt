@@ -1,0 +1,186 @@
+Dashboard Charts API Specification
+
+Overview
+This document specifies the backend endpoints and payloads required to power the simplified dashboard. The UI currently displays:
+- Total Revenue (KPI card)
+- Revenue chart (time series)
+- Popular Products (list)
+- Orders Status (status breakdown with progress bars)
+
+General query parameters used across endpoints
+- range: Enum of time ranges to filter data.
+  • today | yesterday | last_7_days | last_30_days | this_month | last_month | this_year | last_year | custom
+- from, to: ISO-8601 date strings (inclusive) used when range=custom, e.g., 2025-08-01
+- tz: IANA time zone name for correct period boundaries (default: UTC), e.g., Europe/Paris
+- currency: ISO currency code if amounts should be converted/formatted (default: USD)
+
+
+1) Total Revenue (KPI)
+Purpose
+- Show total revenue for the selected range and the percentage change versus an adjacent comparison period (e.g., last week vs previous week).
+
+Endpoint
+- GET /api/dashboard/total-revenue
+
+Query parameters
+- range (string, required)
+- from, to (string, optional; required if range=custom)
+- tz (string, optional)
+- currency (string, optional)
+
+Response (JSON)
+{
+  "value": number,                  // total revenue for the selected range
+  "currency": "USD",
+  "changePct": number,             // percentage change vs compareToRange, signed
+  "compareToRange": {
+    "label": "previous_period",   // e.g., previous_week, previous_month
+    "from": "2025-08-01",
+    "to": "2025-08-07"
+  },
+  "rangeUsed": { "from": "2025-08-08", "to": "2025-08-14", "label": "last_7_days" },
+  "lastUpdatedAt": "2025-08-14T10:30:00Z"
+}
+
+Example
+{
+  "value": 750360000,           // in cents if you prefer integer minor units
+  "currency": "USD",
+  "changePct": 19.07,
+  "compareToRange": { "label": "previous_week", "from": "2025-08-01", "to": "2025-08-07" },
+  "rangeUsed": { "from": "2025-08-08", "to": "2025-08-14", "label": "last_7_days" },
+  "lastUpdatedAt": "2025-08-14T10:30:00Z"
+}
+
+Notes
+- The frontend formats value for display (e.g., $750.36M). Returning minor units (cents) is recommended to avoid floating point errors.
+
+
+2) Revenue Chart (Time Series)
+Purpose
+- Plot revenue over time for the selected range, with variable granularity based on range and user interactions (ALL, 1M, 6M, 1Y in UI).
+
+Endpoint
+- GET /api/dashboard/revenue-timeseries
+
+Query parameters
+- range (string, required): all | 1m | 6m | 1y | last_7_days | last_30_days | this_month | last_month | this_year | last_year | custom
+- from, to (string, optional; required if range=custom)
+- interval (string, optional): day | week | month (server can auto-select when omitted)
+- tz (string, optional)
+- currency (string, optional)
+
+Response (JSON)
+{
+  "series": [
+    {
+      "name": "Revenue",
+      "data": [ { "x": "2025-08-01", "y": 1200000 }, { "x": "2025-08-02", "y": 980000 }, ... ]
+    }
+  ],
+  "interval": "day",                 // actual aggregation interval used
+  "rangeUsed": { "from": "2025-08-01", "to": "2025-08-31", "label": "1m" },
+  "currency": "USD",
+  "totals": { "revenue": 32000000 }
+}
+
+Example
+{
+  "series": [
+    {
+      "name": "Revenue",
+      "data": [
+        { "x": "2025-08-01", "y": 1200000 },
+        { "x": "2025-08-02", "y": 980000 },
+        { "x": "2025-08-03", "y": 1430000 }
+      ]
+    }
+  ],
+  "interval": "day",
+  "rangeUsed": { "from": "2025-08-01", "to": "2025-08-31", "label": "1m" },
+  "currency": "USD",
+  "totals": { "revenue": 36100000 }
+}
+
+Notes
+- The frontend uses ApexCharts with x as ISO date (datetime x-axis) and y as revenue amount (minor units recommended).
+- If you want to include additional series later (e.g., Orders count), you can add another object in series.
+
+
+3) Popular Products (List)
+Purpose
+- Display the most popular products for the selected range with rating, cart/orders count, and current price.
+
+Endpoint
+- GET /api/dashboard/popular-products
+
+Query parameters
+- range (string, required)
+- from, to (string, optional; required if range=custom)
+- sortBy (string, optional; default: revenue): revenue | orders | views | rating
+- order (string, optional; default: desc): asc | desc
+- limit (number, optional; default: 10)
+- offset (number, optional; default: 0)
+- currency (string, optional)
+
+Response (JSON)
+{
+  "items": [
+    {
+      "id": "prod_123",
+      "title": "Noise Evolve Smartwatch",
+      "imageUrl": "https://cdn.example.com/products/prod_123.png",
+      "rating": 4.6,
+      "ordersCount": 1240,           // or use cartCount if you track add-to-carts
+      "views": 8420,
+      "price": 12999,                // minor units
+      "currency": "USD",
+      "revenue": 161000000           // revenue contributed in the selected range
+    }
+  ],
+  "total": 250,
+  "rangeUsed": { "from": "2025-08-01", "to": "2025-08-31", "label": "1m" }
+}
+
+Notes
+- The UI shows: title, image, rating (star), cart count, and price. Please include those fields.
+- If price varies per period or currency, ensure price and currency are provided per item.
+
+
+4) Orders Status (Breakdown)
+Purpose
+- Show counts and percentages per order status for the selected range to drive progress bars for: New, Pending, Rejected, Returns, Dispatched, Delivered, Cancelled.
+
+Endpoint
+- GET /api/dashboard/orders-status
+
+Query parameters
+- range (string, required)
+- from, to (string, optional; required if range=custom)
+- tz (string, optional)
+
+Response (JSON)
+{
+  "totalOrders": 2575,
+  "statuses": [
+    { "code": "new",        "label": "New",        "count": 307,  "percent": 11.92 },
+    { "code": "pending",    "label": "Pending",    "count": 177,  "percent": 6.87 },
+    { "code": "rejected",   "label": "Rejected",   "count": 39,   "percent": 1.52 },
+    { "code": "returns",    "label": "Returns",    "count": 17,   "percent": 0.66 },
+    { "code": "dispatched", "label": "Dispatched", "count": 661,  "percent": 25.67 },
+    { "code": "delivered",  "label": "Delivered",  "count": 1320, "percent": 51.26 },
+    { "code": "cancelled",  "label": "Cancelled",  "count": 74,   "percent": 2.87 }
+  ],
+  "rangeUsed": { "from": "2025-01-01", "to": "2025-12-31", "label": "this_year" }
+}
+
+Notes
+- percent should reflect count / totalOrders * 100 with 2 decimals (frontend can compute if only counts are provided).
+- The label values should match the text in the UI where possible.
+
+
+Implementation guidance
+- Ensure all endpoints are performant (indices on created_at/order_date and status fields).
+- Respect tz at day/week/month boundaries to align with the frontend’s charts and counters.
+- Prefer returning numeric amounts in minor currency units; frontend will localize and format.
+- Include rangeUsed in responses to help debugging alignment between frontend and backend.

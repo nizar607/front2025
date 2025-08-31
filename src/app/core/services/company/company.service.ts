@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { GlobalComponent } from 'src/app/global-component';
 import { CompanyModel } from "../../../store/Company/company.model";
@@ -33,5 +33,19 @@ export class CompanyService {
 
   deleteData(id: string): Observable<any[]> {
     return this.http.delete<any[]>(`${API_URL}/${id}`);
+  }
+
+  // New: Get company by website
+  getCompanyByWebsite(website: string): Observable<any> {
+    // Assuming backend supports query param like /companies/by-website?website=...
+    const params = new HttpParams().set('website', website);
+    return this.http.get<any>(`${API_URL}/by-website`, { params });
+  }
+  
+  // New: Get version (simple string) by website
+  getVersionByWebsite(website: string): Observable<any> {
+    const params = new HttpParams().set('website', website);
+    // Expect a plain text response from backend (e.g., 'v1', 'v2', 'v3', 'custom')
+    return this.http.get(`${API_URL}/version-by-website`, { params, responseType: 'text' as 'json' });
   }
 }

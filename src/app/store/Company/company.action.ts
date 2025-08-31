@@ -82,3 +82,35 @@ export const createCompanyWithImageFailure = createAction(
   '[Data] Create Company with Image Failure',
   props<{ error: string }>()
 );
+
+// Fetch Company By Website
+export const fetchcompanyByWebsite = createAction(
+  '[Data] Fetch company By Website',
+  props<{ website: string }>()
+);
+
+export const fetchcompanyByWebsiteSuccess = createAction(
+  '[Data] Fetch company By Website Success',
+  props<{ company: any }>()
+);
+
+export const fetchcompanyByWebsiteFailure = createAction(
+  '[Data] Fetch company By Website Failure',
+  props<{ error: string }>()
+);
+
+// New: Fetch Version By Website (simple string)
+export const fetchVersionByWebsite = createAction(
+  '[Data] Fetch version By Website',
+  props<{ website: string }>()
+);
+
+export const fetchVersionByWebsiteSuccess = createAction(
+  '[Data] Fetch version By Website Success',
+  props<{ version: string }>()
+);
+
+export const fetchVersionByWebsiteFailure = createAction(
+  '[Data] Fetch version By Website Failure',
+  props<{ error: string }>()
+);

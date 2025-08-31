@@ -7,6 +7,7 @@ export const environment = {
   production: false,
   defaultauth: 'springboot',
   //defaultauth: 'fakebackend',
+  apiUrl: 'http://localhost:8080', // Backend base URL for API calls
   stripe: {
     publishableKey: 'pk_test_51RXlPKQ6JcV4ZCjF1vl3NeGmma3hKAnfSGEKpULi1MYwVyduiUhViG3Dkdvdhl9IOhe6AkzlKgbyNUJGXumc2XLs00qULacej6'
   },

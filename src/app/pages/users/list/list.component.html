@@ -1,0 +1,350 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Users List" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+    <div class="col-xl-7">
+        <div class="card">
+            <div class="card-body">
+                <div class="row g-4">
+
+                    <div class="col-lg-4 col-sm-6 border-end-sm">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-4">
+                                <div class="avatar-xs flex-shrink-0">
+                                    <div
+                                        class="avatar-title bg-body-secondary text-primary border border-primary-subtle rounded-circle">
+                                        <i class="bi bi-people"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="text-muted mb-0">Total Users</p>
+                                </div>
+                            </div>
+
+                            <h3 class="mb-0"><span class="counter-value" [countUp]="userStats?.total"></span>
+                                <small class="text-success fs-xs fw-normal ms-1"><i
+                                        class="bi bi-arrow-up align-baseline"></i> Total</small>
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-sm-6 border-end-sm">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-4">
+                                <div class="avatar-xs flex-shrink-0">
+                                    <div
+                                        class="avatar-title bg-body-secondary text-danger border border-danger-subtle rounded-circle">
+                                        <i class="bi bi-x-circle-fill"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="text-muted mb-0">Banned Users</p>
+                                </div>
+                            </div>
+                            <h3 class="mb-0"><span class="counter-value" [countUp]="userStats?.banned"></span>
+                                <small class="text-success fs-xs fw-normal ms-1"><i
+                                        class="bi bi-arrow-up align-baseline"></i> Total</small>
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-sm-6">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-4">
+                                <div class="avatar-xs flex-shrink-0">
+                                    <div
+                                        class="avatar-title bg-body-secondary text-success border border-success-subtle rounded-circle">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="text-muted mb-0">Permitted Users</p>
+                                </div>
+                            </div>
+                            <h3 class="mb-0"><span class="counter-value" [countUp]="userStats?.permitted"></span>
+                                <small class="text-success fs-xs fw-normal ms-1"><i
+                                        class="bi bi-arrow-up align-baseline"></i> Total</small>
+                            </h3>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div><!--end card-->
+    </div><!--end col-->
+
+    <!-- <div class="col-xl-5">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex mb-4 pb-1">
+                    <div class="flex-grow-1">
+                        <h6 class="card-title">Total Receivables <i
+                                class="bi bi-exclamation-circle align-baseline ms-1 fs-sm"
+                                tooltip="Once you send an invoice (or bill), it becomes part of your accounts receivable – until it's paid."></i>
+                        </h6>
+                        <p class="text-muted mb-0"><b>{{usersData?.totalUnpaidUsers | number:'1.2-2'}} TND</b>
+                            Total unpaid users</p>
+                    </div>
+                </div>
+                <div tooltip="{{totalInvoiceAmount - usersData?.totalUnpaidUsers | number:'1.2-2'}}">
+                    <progressbar [value]="usersData?.totalUnpaidUsers / totalInvoiceAmount *100" [striped]="true"
+                        [animate]="true"></progressbar>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div><!--end row-->
+
+<div class="row" id="invoiceList">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center g-2">
+                    <div class="col-lg-3 me-auto">
+                        <h6 class="card-title mb-0">Users List</h6>
+                    </div><!--end col-->
+
+                    <div class="col-xl-2 col-md-3">
+                        <div class="search-box">
+                            <input type="text" class="form-control search"
+                                placeholder="Search for invoice, date, client or something..." [(ngModel)]="term"
+                                (keyup)="filterdata()">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
+                    </div><!--end col-->
+
+                </div><!--end row-->
+            </div>
+            <div class="card-body mt-3">
+                <div class="table-responsive table-card">
+                    <table class="table table-centered align-middle table-custom-effect table-nowrap mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="checkAll"
+                                            [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
+                                        <label class="form-check-label" for="checkAll"></label>
+                                    </div>
+                                </th>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('invoice_no')">INDEX</th>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('customer')">Full Name
+                                </th>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('email')">Email</th>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('createDate')">Create Date
+                                </th>
+                                <th scope="col" class="sort cursor-pointer">Phone Number
+                                </th>
+                                <th scope="col" class="sort cursor-pointer" (click)="onSort('status')">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list form-check-all" id="invoice-list-data">
+                            @for (data of users; track $index) {
+                            <tr id="l_{{data._id}}">
+                                <td>
+                                    <div class="form-check"> <input class="form-check-input" type="checkbox"
+                                            name="checkAll" value="{{data._id}}" [(ngModel)]="data.states"
+                                            (change)="onCheckboxChange($event)"> <label
+                                            class="form-check-label"></label> </div>
+                                </td>
+                                <td class="invoice_id"><a routerLink="/users/overview">{{$index}}</a>
+                                </td>
+                                <td class="customer_name">{{data.firstName}}
+                                    {{data.lastName}}</td>
+                                <td class="email">{{data.email}}</td>
+                                <td class="create_date">{{data.createdAt | date}}</td>
+
+                                <td class="amount">{{data.phoneNumber || 'No Phone Number'}}</td>
+                                <td class="status"><span class="badge"
+                                        [ngClass]="{'bg-success-subtle text-success':data.enabled == true ,'bg-danger-subtle text-danger':data.enabled === false}">{{data.enabled}}</span>
+                                </td>
+                                <td>
+                                    <ul class="d-flex gap-2 list-unstyled mb-0">
+                                        <li><a href="javascript:void(0);" class="btn btn-subtle-primary btn-icon btn-sm"
+                                                (click)="viewUser(data)"><i class="ph-eye"></i></a> </li>
+                                        <!-- <li><a href="javascript:void(0);" class="btn btn-subtle-secondary btn-icon btn-sm" routerLink="/users/create" data-edit-id="24301901"><i class="ph-pencil"></i></a> </li> -->
+                                        <li>
+                                            <button type="button" (click)="changeStatus(data)"
+                                                class="btn btn-icon btn-sm"
+                                                [ngClass]="data?.enabled ? 'btn-subtle-warning' : 'btn-subtle-success'">
+                                                <i [class]="data?.enabled ? 'ph-lock me-1' : 'ph-check me-1'"></i>
+                                            </button>
+
+
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            }
+                        </tbody><!-- end tbody -->
+                    </table><!-- end table -->
+
+                    <div id="elmLoader">
+                        <div class="spinner-border text-primary avatar-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+
+                    <div class="noresult" style="display: none;">
+                        <div class="text-center py-4">
+                            <i class="ph-magnifying-glass fs-1 text-primary"></i>
+                            <h5 class="mt-2">Sorry! No Result Found</h5>
+                            <p class="text-muted mb-0">We've searched more than 6+ invoice We did not find any invoice
+                                for you search.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mt-4 pt-3" id="pagination-element">
+                    <div class="col-sm">
+                        <div class="text-muted text-center text-sm-start">
+                            Showing <span class="fw-semibold">{{users?.length}}</span> of <span
+                                class="fw-semibold">{{userslist?.length}}</span> Results
+                        </div>
+                    </div><!--end col-->
+                    <div class="col-sm-auto mt-3 mt-sm-0">
+                        <pagination class="pagination-wrap hstack justify-content-center gap-2"
+                            [totalItems]="userslist?.legnth" [itemsPerPage]="10" (pagrChanged)="pageChanged($event)">
+                        </pagination>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        </div>
+    </div><!--end col-->
+</div><!--end row-->
+
+<!-- deleteRecordModal -->
+<div bsModal #deleteRecordModal="bs-modal" id="deleteRecordModal" class="modal fade zoomIn" tabindex="-1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" (click)="deleteRecordModal.hide()"></button>
+            </div>
+            <div class="modal-body p-md-5">
+                <div class="text-center">
+                    <div class="text-danger">
+                        <i class="bi bi-trash display-5"></i>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="mb-2">Are you sure ?</h4>
+                        <p class="text-muted mx-3 mb-0">Are you sure you want to remove this record ?</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 pt-2 mb-2">
+                    <button type="button" class="btn w-sm btn-light btn-hover"
+                        (click)="deleteRecordModal.hide()">Close</button>
+                    <button type="button" class="btn w-sm btn-danger btn-hover" id="delete-record"
+                        (click)="deleteData(deleteID)">Yes, Delete
+                        It!</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /deleteRecordModal/ -->
+
+<!-- viewUserModal -->
+<div bsModal #viewUserModal="bs-modal" id="viewUserModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-light align-items-center">
+                <div class="d-flex align-items-center w-100">
+                    <div class="rounded-circle bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center me-3"
+                        style="width: 48px; height: 48px;">
+                        <span class="fw-semibold">{{selectedUser?.firstName?.charAt(0) ||
+                            'U'}}{{selectedUser?.lastName?.charAt(0) || ''}}</span>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="modal-title mb-0">{{selectedUser?.firstName}} {{selectedUser?.lastName}}</h5>
+                        <div class="text-muted small">ID: #{{selectedUser?.id}} {{selectedUser?.username}}</div>
+                    </div>
+                    <button type="button" class="btn-close" (click)="viewUserModal.hide()"></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 d-flex flex-wrap gap-2" *ngIf="selectedUser">
+                    <span class="badge" [ngClass]="selectedUser.enabled ? 'bg-success' : 'bg-danger'">
+                        <i class="ph-check-circle me-1"></i>{{selectedUser.enabled ? 'Enabled' : 'Disabled'}}
+                    </span>
+
+                    <span class="badge" [ngClass]="selectedUser.subscribed ? 'bg-primary' : 'bg-secondary'">
+                        <i class="ph-bell me-1"></i>{{selectedUser.subscribed ? 'Subscribed' : 'Not Subscribed'}}
+                    </span>
+
+                </div>
+                <div class="row g-3" *ngIf="selectedUser">
+                    <div class="col-md-6">
+                        <div class="border rounded-3 h-100 p-3">
+                            <h6 class="mb-3">Contact & Account</h6>
+                            <div class="d-flex align-items-start mb-2">
+                                <i class="ph-at text-primary me-2"></i>
+                                <div>
+                                    <div class="text-muted small">Email</div>
+                                    <div class="fw-medium">{{selectedUser.email}}</div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start mb-2">
+                                <i class="ph-phone text-primary me-2"></i>
+                                <div>
+                                    <div class="text-muted small">Phone</div>
+                                    <div class="fw-medium">{{selectedUser.phoneNumber || 'Not provided'}}</div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start mb-2">
+                                <i class="ph-map-pin text-primary me-2"></i>
+                                <div>
+                                    <div class="text-muted small">Address</div>
+                                    <div class="fw-medium">{{selectedUser.address || 'Not provided'}}</div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start mb-2">
+                                <i class="ph-identification-card text-primary me-2"></i>
+                                <div>
+                                    <div class="text-muted small">Role</div>
+                                    <div class="fw-medium">{{selectedUser.roles[0].name}}</div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start">
+                                <i class="ph-key text-primary me-2"></i>
+                                <div>
+                                    <div class="text-muted small">Client Permissions</div>
+                                    <div class="fw-medium">Shopping Access</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="border rounded-3 h-100 p-3">
+                            <h6 class="mb-3">Access & Activity</h6>
+
+                            <div class="mb-2">
+                                <div class="text-muted small mb-1">Access Permissions</div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="badge bg-info"
+                                        *ngFor="let access of selectedUser.accesses">{{access}}</span>
+                                    <span *ngIf="!selectedUser.accesses || selectedUser.accesses.length === 0"
+                                        class="text-muted">No access permissions</span>
+                                </div>
+                            </div>
+                            <div class="pt-2 mt-1 border-top">
+                                <div class="d-flex align-items-center small text-muted mb-2">
+                                    <i class="ph-calendar me-2"></i>
+                                    <span>Created: {{selectedUser.createdAt | date:'medium'}}</span>
+                                </div>
+                                <div class="d-flex align-items-center small text-muted mb-2">
+                                    <i class="ph-arrow-clockwise me-2"></i>
+                                    <span>Updated: {{selectedUser.updatedAt | date:'medium'}}</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="viewUserModal.hide()">Close</button>
+            </div>
+        </div>
+    </div>
+</div><!-- /viewUserModal/ -->

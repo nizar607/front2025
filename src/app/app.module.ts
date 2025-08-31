@@ -34,7 +34,7 @@ import { fakebackendInterceptor } from './core/helpers/fake-backend';
 import { ErrorInterceptor } from './core/helpers/error.interceptor';
 import { JwtInterceptor } from './core/helpers/jwt.interceptor';
 import { AgentEffects } from './store/Agent/agent.effects';
-import { InvoiceEffects } from './store/Invoices/invoices.effects';
+import { InvoiceEffects } from './store/Invoice/invoice.effects';
 import { AuthenticationEffects } from './store/Authentication/authentication.effects';
 import { initFirebaseBackend } from './authUtils';
 import { CustomerEffects } from './store/Customer/customer.effects';
@@ -50,6 +50,9 @@ import { HomepageEffects } from './store/Homepage/homepage.effects';
 import { Homepage1Effects } from './store/Homepage1/homepage1.effects';
 import { Homepage2Effects } from './store/Homepage2/homepage2.effects';
 import { Homepage3Effects } from './store/Homepage3/homepage3.effects';
+import { ProfileEffects } from './store/Profile/profile.effects';
+import { UserEffects } from './store/User/users.effects';
+
 
 
 export function createTranslateLoader(http: HttpClient): any {
@@ -97,7 +100,9 @@ if (environment.defaultauth === 'firebase') {
       HomepageEffects,
       Homepage1Effects,
       Homepage2Effects,
-      Homepage3Effects
+      Homepage3Effects,
+      ProfileEffects,
+      UserEffects,
 ]),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     HttpClientModule,

@@ -4,8 +4,8 @@
 
 <div class="row justify-content-center">
     <div class="col-xxl-9">
-        <form (ngSubmit)="saveInvoice()" [formGroup]="InvoicesForm" class="needs-validation" novalidate id="invoice_form"
-            autocomplete="off">
+        <form (ngSubmit)="saveInvoice()" [formGroup]="InvoicesForm" class="needs-validation" novalidate
+            id="invoice_form" autocomplete="off">
             <div class="card overflow-hidden">
                 <div class="invoice-effect-top position-absolute start-0">
                     <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 764 182" width="764"
@@ -49,40 +49,48 @@
 
                         <div class="col-lg-4 ms-auto">
                             <div class="mb-2">
-                                <input type="email" class="form-control" formControlName="companyEmail" id="companyEmail" placeholder="Email" required>
+                                <input type="text" class="form-control" formControlName="companyName" id="companyName"
+                                    placeholder="name" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid name, Ex., company name
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <input type="text" class="form-control" formControlName="companyWebsite" id="companyWebsite"
+                                    placeholder="website" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid website, Ex., www.website.com
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <input type="email" class="form-control" formControlName="companyEmail"
+                                    id="companyEmail" placeholder="Email" required>
                                 <div class="invalid-feedback">
                                     Please enter a valid email, Ex., example&#64;gamil.com
                                 </div>
                             </div>
                             <div class="mb-2">
-                                <input type="text" class="form-control" formControlName="companyAddress" id="companyAddess" placeholder="Address"
-                                    required>
+                                <input type="text" class="form-control" formControlName="companyAddress"
+                                    id="companyAddess" placeholder="Address" required>
                                 <div class="invalid-feedback">
                                     Please enter an address
                                 </div>
                             </div>
                             <div class="mb-2">
-                                <input type="text" class="form-control" formControlName="companyPhoneNumber" data-plugin="cleave-phone" id="compnayContactno"
-                                    placeholder="Contact No" required>
+                                <input type="text" class="form-control" formControlName="companyPhone"
+                                    data-plugin="cleave-phone" id="companyPhone" placeholder="Contact No" required>
                                 <div class="invalid-feedback">
                                     Please enter a contact number
                                 </div>
                             </div>
-                            <div>
-                                <input type="text" class="form-control" id="date-field" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-dark-blue',showWeekNumbers:false, dateInputFormat: 'DD MMM, YYYY'}"
-                                    placeholder="Create Date">
-                            </div>
+
                         </div>
                     </div>
                     <!--end row-->
                     <div class="mt-4">
                         <div class="row g-3">
-                            <div class="col-lg-3 col-sm-6">
-                                <label class="form-label" for="invoicenoInput">Invoice No</label>
-                                <input type="text" class="form-control" formControlName="invoiceNumber" id="invoicenoInput" placeholder="Invoice No"
-                                    readonly="readonly">
-                            </div>
 
                             <!--end col-->
                             <div class="col-lg-3 col-sm-6">
@@ -90,33 +98,23 @@
                                     <label class="form-label" for="due-date-field">Date</label>
                                     <input type="text" class="form-control" id="due-date-field" bsDatepicker
                                         [bsConfig]="{containerClass:'theme-dark-blue',showWeekNumbers:false, dateInputFormat: 'DD MMM, YYYY'}"
-                                        placeholder="Select due date">
+                                        formControlName="createdAt"
+                                        placeholder="Created at" readonly>
                                 </div>
                             </div>
-
                             <!--end col-->
+                            
                             <div class="col-lg-3 col-sm-6">
                                 <label class="form-label" for="choices-payment-status">Payment Status</label>
                                 <select class="form-control" data-choices data-choices-search-false
-                                    formControlName="status"
-                                    id="choices-payment-status" required>
+                                    formControlName="status" id="choices-payment-status" required>
                                     <option value="">Select Status</option>
                                     <option value="Paid">Paid</option>
                                     <option value="Unpaid">Unpaid</option>
                                 </select>
                             </div>
-                            
-                            <!--end col-->
-                            <div class="col-lg-3 col-sm-6">
-                                <div>
-                                    <label class="form-label" for="totalamountInput">Total Amount</label>
-                                    <input type="text" class="form-control" id="totalamountInput"
-                                        formControlName="totalAmount" mask="separator.2" thousandSeparator=","
-                                        decimalMarker="." [allowNegativeNumbers]="false" [prefix]="paymentSign"
-                                        placeholder="$0.00" placeholder="$0.00" readonly>
-                                </div>
-                            </div>
-                            <!--end col-->
+
+
                         </div>
                         <!--end row-->
                     </div>
@@ -124,13 +122,57 @@
 
                     <div class="mt-4 pt-2">
                         <div class="row g-3">
-                            <div class="col-6">
+
                                 <p class="text-muted text-uppercase">Client details</p>
-                                <h6 class="fs-md" id="billing-name">{{case?.contacts[0].firstName}} {{case?.contacts[0].lastName}}</h6>
-                                <p class="text-muted mb-1" id="billing-address-line-1">{{case?.contacts[0].address}}</p>
-                                <p class="text-muted mb-0"><span>Email: </span><span id="billing-tax-no">{{case?.contacts[0].email}}</span> </p>
-                                <p class="text-muted mb-1"><span>Phone: +</span><span id="billing-phone-no">{{case?.contacts[0].phoneNumber}}</span></p>
-                            </div>
+                                
+                               
+
+                                    <div class="col-auto">
+                                        <label class="form-label" for="userFirstName">First Name</label>
+                                        <input type="text" class="form-control" formControlName="userFirstName" 
+                                               id="userFirstName" placeholder="First Name" required>
+                                        <div class="invalid-feedback">
+                                            Please enter first name
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-auto">
+                                        <label class="form-label" for="userLastName">Last Name</label>
+                                        <input type="text" class="form-control" formControlName="userLastName" 
+                                               id="userLastName" placeholder="Last Name" required>
+                                        <div class="invalid-feedback">
+                                            Please enter last name
+                                        </div>
+                                    </div>
+                             
+                                
+                                <div class="mb-2 col-auto">
+                                    <label class="form-label" for="userEmail">Email</label>
+                                    <input type="email" class="form-control" formControlName="userEmail" 
+                                           id="userEmail" placeholder="Email" required>
+                                    <div class="invalid-feedback">
+                                        Please enter a valid email
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-2 col-auto">
+                                    <label class="form-label" for="userPhone">Phone</label>
+                                    <input type="text" class="form-control" formControlName="userPhone" 
+                                           id="userPhone" placeholder="Phone Number" required>
+                                    <div class="invalid-feedback">
+                                        Please enter phone number
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-2 col-3">
+                                    <label class="form-label" for="userAddress">Address</label>
+                                    <input class="form-control" formControlName="userAddress" 
+                                              id="userAddress" rows="3" placeholder="Address" required>
+                                    <div class="invalid-feedback">
+                                        Please enter address
+                                    </div>
+                                </div>
+                            
                         </div><!--end row-->
                     </div>
 
@@ -142,70 +184,79 @@
                                 <tr class="table-light">
                                     <th scope="col" style="width: 50px;">#</th>
                                     <th scope="col">
-                                        Service Details
+                                        Items Details
                                     </th>
-                                    <th scope="col" style="width: 120px;">
+                                    <th scope="col">
                                         <div class="d-flex currency-select input-light align-items-center">
-                                            Rate <span class="ms-1">(TND)</span>
+                                            Price <span class="ms-1">(USD)</span>
                                         </div>
                                     </th>
-                                    <th scope="col" style="width: 120px;">Hours</th>
-                                    <th scope="col" class="text-end" style="width: 150px;">Amount</th>
-                                    <th scope="col" class="text-end" style="width: 105px;"></th>
+                                    <th scope="col" class="text-start" >Quantity</th>
+                                    <th scope="col" class="text-start">Total</th>
+                                    <th scope="col" class="text-start" >Actions</th>
                                 </tr>
                             </thead>
 
-                      
-                            
-                            <tbody id="newlink" formArrayName="invoiceServices">
-                                <tr *ngFor="let data of services.controls; let index = index" [formGroupName]="index" class="product-elem">
+
+
+                            <tbody id="newlink" formArrayName="invoiceItems">
+                                <tr *ngFor="let data of items.controls; let index = index" [formGroupName]="index"
+                                    class="product-elem">
                                     <th scope="row" class="product-id">{{ index + 1 }}</th>
                                     <td class="text-start">
                                         <div class="mb-2">
                                             <input type="text" class="form-control" [id]="'productName-' + index"
-                                                placeholder="Service" formControlName="activity"
-                                                [ngClass]="{ 'is-invalid': submitted && data.get('activity')?.errors }"
-                                                required>
+                                                placeholder="Article" formControlName="name"
+                                                [ngClass]="{ 'is-invalid': submitted && data.get('name')?.errors }"
+                                                required readonly>
                                             <div class="invalid-feedback">
                                                 Please enter a service name
                                             </div>
                                         </div>
                                         <textarea class="form-control" [id]="'productDetails-' + index" rows="2"
-                                            placeholder="Descriptions" formControlName="description"></textarea>
+                                            placeholder="Descriptions" formControlName="description" readonly></textarea>
                                     </td>
 
                                     <td>
-                                        <input type="number" class="form-control product-price" [id]="'productRate-' + index"
-                                            step="0.01" placeholder="0.00" required formControlName="rate"
-                                            [ngClass]="{ 'is-invalid': submitted && data.get('rate')?.errors }">
+                                        <input type="number" class="form-control product-price"
+                                            [id]="'productRate-' + index" step="0.01" placeholder="0.00" required
+                                            formControlName="price"
+                                            [ngClass]="{ 'is-invalid': submitted && data.get('price')?.errors }"
+                                            readonly>
                                         <div class="invalid-feedback">
-                                            Please enter a rate
+                                            Please enter a price
                                         </div>
                                     </td>
 
                                     <td>
                                         <div class="input-step">
-                                            <button type="button" class="minus-btn" (click)="calculateQty(index, '0')">–</button>
-                                                <input type="number" class="form-control product-hours" [id]="'productHours-' + index"
-                                                    formControlName="hours" placeholder="0.00" (input)="calculateAmount(index)">
-                                            <button type="button" class="plus-btn" (click)="calculateQty(index, '1')">+</button>
+                                            <button type="button" class="minus-btn"
+                                                (click)="calculateQty(index, '0')">–</button>
+                                            <input type="number" class="form-control product-quantity"
+                                                [id]="'productHours-' + index" formControlName="quantity"
+                                                placeholder="0.00">
+                                            <button type="button" class="plus-btn"
+                                                (click)="calculateQty(index, '1')">+</button>
                                         </div>
                                     </td>
 
                                     <td class="text-end">
                                         <div>
-                                            <input type="number" class="form-control invoice-product-line-price" [id]="'productAmount-' + index"
-                                                formControlName="amount" placeholder="$0.00" readonly>
+                                            <input type="number" class="form-control invoice-product-line-price"
+                                                [id]="'productQuantity-' + index" formControlName="amount"
+                                                (input)="calculateAmount(index)"
+                                                placeholder="$0.00" readonly>
                                         </div>
                                     </td>
                                     <td class="product-removal">
-                                        <a href="javascript:void(0)" class="btn btn-danger" (click)="removeItem(index)">Delete</a>
+                                        <a href="javascript:void(0)" class="btn btn-danger"
+                                            (click)="removeItem(index)">Delete</a>
                                     </td>
                                 </tr>
                             </tbody>
-                            
-                            
-                        
+
+
+
                             <tbody>
                                 <tr id="newForm" style="display: none;">
                                     <td class="d-none" colspan="5">
@@ -230,27 +281,27 @@
                                                         <input type="text" class="form-control" id="cart-subtotal"
                                                             mask="separator.2" thousandSeparator="," decimalMarker="."
                                                             [allowNegativeNumbers]="false" [prefix]="paymentSign"
-                                                            formControlName="subtotal" placeholder="$0.00">
+                                                            formControlName="subtotalAmount" placeholder="$0.00">
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th scope="row">Estimated Tax (18%)</th>
+                                                    <th scope="row">Tax Amount(18%)</th>
                                                     <td>
                                                         <input type="text" class="form-control" id="cart-tax"
-                                                            formControlName="tax" mask="separator.2"
+                                                            formControlName="taxAmount" mask="separator.2"
                                                             thousandSeparator="," decimalMarker="."
                                                             [allowNegativeNumbers]="false" [prefix]="paymentSign"
                                                             placeholder="$0.00" readonly>
                                                     </td>
                                                 </tr>
-                                                <tr class="border-top border-top-dashed">
+                                                <tr class="border-top">
                                                     <th scope="row">Total Amount</th>
                                                     <td>
                                                         <input type="text" class="form-control" id="cart-total"
                                                             formControlName="totalAmount" mask="separator.2"
                                                             thousandSeparator="," decimalMarker="."
                                                             [allowNegativeNumbers]="false" [prefix]="paymentSign"
-                                                            placeholder="0.00 TND" readonly>
+                                                            placeholder="$0.00" readonly>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -268,20 +319,17 @@
                         <p class="text-muted mb-1">Payment Method: <span class="fw-medium"
                                 id="payment-method">Cash</span></p>
                         <p class="text-muted mb-0">Total Amount: <span
-                                id="card-total-amount">{{form["totalAmount"].value | number:'1.2-3'}}</span> <span class="fw-medium"> TND</span></p>
+                                id="card-total-amount">{{form["totalAmount"].value | number:'1.2-3'}}</span> <span
+                                class="fw-medium"> TND</span></p>
                     </div>
-                    <!--end row-->
-                    <!-- <div class="mt-4 mb-4">
-                        <label for="exampleFormControlTextarea1"
-                            class="form-label text-muted text-uppercase fw-semibold">NOTES</label>
-                        <textarea class="form-control alert alert-danger" id="exampleFormControlTextarea1"
-                            placeholder="Notes" rows="2"
-                            required>All accounts are to be paid within 7 days from receipt of invoice. To be paid by cheque or credit card or direct payment online. If account is not paid within 7 days the credits details supplied as confirmation of work undertaken will be charged the agreed quoted fee noted above.</textarea>
-                    </div> -->
+
                     <div>
                         <div class="pt-2 mt-4">
                             <input type="text" class="form-control" id="successMsg" placeholder="Enter Postal Code"
-                                value="Thank you for entrusting us with your legal needs. It has been our privilege to assist you, and we look forward to serving you again in the future." required>
+                                formControlName="footerText"
+                                value="Thank you for entrusting us with your legal needs. It has been our privilege to assist you, and we look forward to serving you again in the future."
+                                required
+                                readonly>
                         </div>
                         <div class="invoice-signature text-center">
                             <div class="mb-3 mt-4">
@@ -334,4 +382,39 @@
     </div>
     <!--end col-->
 </div>
-<!--end row-->
+<!-- addItemModal: Select Article to Add -->
+<div bsModal #addItemModal="bs-modal" id="addItemModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select an article</h5>
+        <button type="button" class="btn-close" (click)="addItemModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <div class="d-flex gap-3 overflow-auto py-2" style="white-space: nowrap;">
+            <div class="card flex-shrink-0" style="width: 220px; cursor: pointer;"
+                 *ngFor="let article of articles"
+                 (click)="onSelectArticle(article)"
+                 [ngClass]="{'border border-2 border-primary': selectedArticle?.id === article.id}">
+              <div class="card-body p-2">
+                <div class="ratio ratio-4x3 mb-2 rounded overflow-hidden">
+                  <img
+                    [src]="article.image ? 'http://localhost:8080/api/files/' + article.image : 'https://fastly.picsum.photos/id/677/350/200.jpg?hmac=n3-Up8asdopiFMxG7LU8g_kRnqT7rYmbb6Z2qBJJSyQ'"
+                    [alt]="article.name" style="object-fit: cover; width: 100%; height: 100%;" />
+                </div>
+                <h6 class="mb-0 text-truncate" [title]="article.name">{{ article.name }}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-hover" (click)="addItemModal.hide()">Close</button>
+        <button type="button" class="btn btn-secondary" [disabled]="!selectedItemForm" (click)="confirmAddItem()">Add Item</button>
+      </div>
+    </div>
+  </div>
+</div>

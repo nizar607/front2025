@@ -107,23 +107,14 @@
                 <span id="subtotal">${{(cartSubtotal$ | async) | number:'1.2-2'}}</span>
             </div>
 
-            <div class="summary-row shipping">
-                <span>Shipping</span>
-                <span id="shipping">${{(shippingCost$ | async) | number:'1.2-2'}}</span>
-            </div>
+            <!-- Removed Shipping row -->
 
             <div class="summary-row total">
                 <span>Total</span>
                 <span id="total">${{(cartTotal$ | async) | number:'1.2-2'}}</span>
             </div>
 
-            <div class="promo-code-section">
-                <div class="promo-code-title">Promo Code</div>
-                <div class="promo-code-input">
-                    <input type="text" class="promo-input" id="promo-input" placeholder="Enter code">
-                    <button class="apply-promo-btn">Apply</button>
-                </div>
-            </div>
+            <!-- Removed Promo Code section -->
 
             <button class="checkout-btn" id="checkout-btn"
                 [disabled]="(cartItemsCount$ | async) === 0 || (cartLoading$ | async)" (click)="proceedToCheckout()">

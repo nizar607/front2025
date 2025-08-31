@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { exhaustAll, of, switchMap } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { CompanyService } from "src/app/core/services/company/company.service";
 import {
@@ -21,9 +21,16 @@ import {
   uploadImageFailure,
   createCompanyWithImage,
   createCompanyWithImageSuccess,
-  createCompanyWithImageFailure
+  createCompanyWithImageFailure,
+  fetchcompanyByWebsite,
+  fetchcompanyByWebsiteSuccess,
+  fetchcompanyByWebsiteFailure,
+  fetchVersionByWebsite,
+  fetchVersionByWebsiteSuccess,
+  fetchVersionByWebsiteFailure
 } from "./company.action";
 import { CompanyModel } from "./company.model";
+import { Router } from "@angular/router";
 
 
 @Injectable()
@@ -109,10 +116,49 @@ export class CompanyEffects {
     )
   );
 
+  fetchByWebsite$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fetchcompanyByWebsite),
+      mergeMap(({ website }) =>
+        this.companyService.getCompanyByWebsite(website).pipe(
+          map((company) => fetchcompanyByWebsiteSuccess({ company })),
+          catchError((error) => of(fetchcompanyByWebsiteFailure({ error })))
+        )
+      )
+    )
+  );
 
+  // New: Fetch simple version string by website
+  fetchVersionByWebsite$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fetchVersionByWebsite),
+      mergeMap(({ website }) =>
+        this.companyService.getVersionByWebsite(website).pipe(
+          map((version: string) => fetchVersionByWebsiteSuccess({ version })),
+          catchError((error) => of(fetchVersionByWebsiteFailure({ error })))
+        )
+      )
+    )
+  );
+
+  // Navigate to /client/:companyName/articles after successful fetch by website
+  navigateOnFetchByWebsiteSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fetchcompanyByWebsiteSuccess),
+        map(({ company }) => {
+          const rawName: string = company?.name || company?.companyName || company?.heroTitle || company?.ctaTitle || '';
+          const slug = encodeURIComponent(rawName.trim().replace(/\s+/g, '-'));
+          if (slug) {
+            this.router.navigate(['/client', slug]);
+          }
+        })
+      ),
+    { dispatch: false }
+  );
   constructor(
     private actions$: Actions,
-    private companyService: CompanyService
-  ) {
-  }
+    private companyService: CompanyService,
+    private router: Router
+  ) {}
 }

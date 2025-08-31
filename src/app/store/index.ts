@@ -3,7 +3,7 @@ import { ActionReducerMap } from "@ngrx/store";
 
 
 
-import { InvoiceReducer, InvoiceState } from "./Invoices/invoices.reducer";
+import { InvoiceReducer, InvoiceState } from "./Invoice/invoice.reducer";
 import { AuthenticationState, authenticationReducer } from "./Authentication/authentication.reducer";
 import { LayoutState, layoutReducer } from "./layouts/layout-reducers";
 import { CustomerReducer, CustomerState } from "./Customer/customer.reducer";
@@ -19,6 +19,8 @@ import { HomepageReducer, HomepageState } from "./Homepage/homepage.reducer";
 import { Homepage1Reducer, Homepage1State } from "./Homepage1/homepage1.reducer";
 import { Homepage2Reducer, Homepage2State } from "./Homepage2/homepage2.reducer";
 import { Homepage3Reducer, Homepage3State } from "./Homepage3/homepage3.reducer";
+import { ProfileReducer, ProfileState } from "./Profile/profile.reducer";
+import { UserReducer, UserState } from "./User/users.reducer";
 
 export interface RootReducerState {
   CategoryList: CategoryState;
@@ -37,6 +39,8 @@ export interface RootReducerState {
   Homepage1List: Homepage1State;
   Homepage2List: Homepage2State;
   Homepage3List: Homepage3State;
+  Profilelist: ProfileState;
+  Userlist: UserState;
 }
 
 export const rootReducer: ActionReducerMap<RootReducerState> = {
@@ -55,7 +59,9 @@ export const rootReducer: ActionReducerMap<RootReducerState> = {
   HomepageList: HomepageReducer,
   Homepage1List: Homepage1Reducer,
   Homepage2List: Homepage2Reducer,
-  Homepage3List: Homepage3Reducer
+  Homepage3List: Homepage3Reducer,
+  Profilelist: ProfileReducer,
+  Userlist: UserReducer,
 }
 
 

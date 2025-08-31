@@ -19,12 +19,11 @@ import { ClientLoadingComponent } from './components/loading/loading.component';
 const routes: Routes = [
   { path: 'login', component: ClientLoginComponent },
   { path: 'register', component: ClientRegisterComponent },
-  {//path: ':uriParam', 
+  {
     path: '', component: MainComponent, children: [
-      // { path: '', component: ClientLoadingComponent },
       { path: 'v1', component: HomepageComponent },
-      { path: 'v2', component: HomepageV2Component },
       { path: 'v3', component: HomepageV3Component },
+      { path: 'v2', component: HomepageV2Component },
       { path: 'room-planner', component: RoomPlannerComponent },
       { path: '3D', component: Room3dComponent },
       { path: 'articles', component: ArticlesComponent },
@@ -33,6 +32,7 @@ const routes: Routes = [
       { path: 'product/:id', component: ProductDetailsComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'about', component: AboutComponent },
+      { path: '', pathMatch: 'full', redirectTo: 'v1' }
     ]
   },
 ];

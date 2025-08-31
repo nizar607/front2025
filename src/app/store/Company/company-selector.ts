@@ -21,4 +21,14 @@ export const selectDataError = createSelector(
     (state: CompanyState) => state.error
 );
 
+export const selectCompanyByWebsite = createSelector(
+  selectDataState,
+  (state: CompanyState) => state.selectedCompanyByWebsite
+);
+
+export const selectVersionByWebsite = createSelector(
+  selectDataState,
+  (state: CompanyState) => state.selectedVersionByWebsite
+);
+
 

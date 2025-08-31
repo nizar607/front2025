@@ -11,13 +11,13 @@ import { InvoiceService } from 'src/app/core/services/invoice/invoice.service';
 // Overview Component
 export class OverviewComponent {
 
-  invoiceId!: string;
+  invoiceId!: number;
   invoiceData: any;
 
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
-  constructor(private route: ActivatedRoute, private invoiceService: InvoiceService) { } 
+  constructor(private route: ActivatedRoute, private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
     /**
@@ -28,9 +28,9 @@ export class OverviewComponent {
       { label: 'Invoice Overview', active: true }
     ];
 
-    this.invoiceId = this.route.snapshot.paramMap.get('invoiceId')!;
+    this.invoiceId = Number(this.route.snapshot.paramMap.get('invoiceId')!);
 
-    this.invoiceService.getSelectedInvoice(this.invoiceId).subscribe((data) => {
+    this.invoiceService.fetchDataById(this.invoiceId).subscribe((data: any) => {
       console.log('data', data)
       this.invoiceData = data;
     }
